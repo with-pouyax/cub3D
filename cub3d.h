@@ -11,7 +11,8 @@
 
 typedef struct s_file
 {
-    char *line;
+    char **map;
+    char **texture;
     struct s_file *next;
 } t_file;
 
