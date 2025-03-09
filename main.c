@@ -141,10 +141,32 @@ int map_is_empty(char **map)
 }
 
 
+// int exceeds_length(char **map)
+// {
+//     int i;
+//     int j;
+//     int len;
+
+//     i = 0;
+//     len = 5;
+//     while (map[i])
+//     {
+//         j = 0;
+//         while (map[i][j])
+//             j++;
+//         if (j > len)
+//             return (ft_perror("line too long", EINVAL), 1);
+//         i++;
+//     }
+//     return (0);
+// } 
+
 int parse_map(t_file **map)
 {
     if(map_is_empty((*map)->map))
         return (1);
+    // if(exceeds_length((*map)->map))
+    //     return (1);
 
     return (0);
 }
@@ -169,7 +191,7 @@ int parse_args(int ac, char **av, t_file **map)
     //printf("tmp: %s\n", tmp);
     (*map)->map = ft_split(tmp, '\n');
     if (!(*map)->map)
-        return (ft_perror("malloc", errno), 1);
+        return (free(tmp), ft_perror("malloc", errno), 1);
     // we print the map
     for (int i = 0; (*map)->map[i]; i++)
     {
