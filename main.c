@@ -215,14 +215,14 @@ int no_xpm_extension(char *line)
     if (len < 5 )
        return(ft_perror("Error", EINVAL), 1);
     if (ft_strncmp(line + len - 4, ".xmp", 4)) // strncmp returns 0 if the strings are equal
-        return(ft_perror("Error", EINVAL), 1);
+        return(1);
     if (len > 4 && line[len - 5] == '/')
         return(ft_perror("Error", EINVAL), 1);
     return (0);
 }
     
 
-int wrong_direction(char **map, int *index, t_dir_flags *flags)
+int wrong_dir_and_ex(char **map, int *index, t_dir_flags *flags)
 {
     if (map[*index][0] == 'N' && map[*index][1] == 'O' && \
     (map[*index][2] == ' ' || map[*index][2] == '\t'))
@@ -268,7 +268,7 @@ int not_textures(char **map, int *index)
     
     while (i < 4)
     {
-        if(wrong_direction(map, index, &flags))
+        if(wrong_dir_and_ex(map, index, &flags))
             return (1);
         skip_empty_lines(map, index);
         i++;
