@@ -203,6 +203,25 @@ void skip_empty_lines(char **map, int *index)
     }
 }
 
+int no_xpm_extension(char *line)
+{
+    int len;
+    
+    if (!line)
+        return(ft_perror("Error", EINVAL), 1);
+    len = ft_strlen(line);
+    while (len > 0 && (line[len - 1] == ' ' || line[len - 1] == '\t'))
+        len--;
+    if (len < 5 )
+       return(ft_perror("Error", EINVAL), 1);
+    if (ft_strncmp(line + len - 4, ".xmp", 4)) // strncmp returns 0 if the strings are equal
+        return(ft_perror("Error", EINVAL), 1);
+    if (len > 4 && line[len - 5] == '/')
+        return(ft_perror("Error", EINVAL), 1);
+    return (0);
+}
+    
+
 int wrong_direction(char **map, int *index, t_dir_flags *flags)
 {
     if (map[*index][0] == 'N' && map[*index][1] == 'O' && \
@@ -221,6 +240,8 @@ int wrong_direction(char **map, int *index, t_dir_flags *flags)
         return (ft_perror("wrong direction", EINVAL), 1);
     if (flags->no > 2 || flags->so > 2 || flags->we > 2 || flags->ea > 2)
         return (ft_perror("duplicate direction", EINVAL), 1);
+    if (no_xpm_extension(map[*index]))
+        return (ft_perror("wrong extension", EINVAL), 1);
     (*index)++;
     return (0);
 }
@@ -244,7 +265,6 @@ int not_textures(char **map, int *index)
 
     printf("index: %d\n", *index);
     printf("map[index]: %s\n", map[*index]);
-
     
     while (i < 4)
     {
@@ -252,12 +272,12 @@ int not_textures(char **map, int *index)
             return (1);
         skip_empty_lines(map, index);
         i++;
-        if (flags.no && flags.so && flags.we && flags.ea)
-        break;
     }
     if (is_duplicate(&flags))
-        return (1);
+        return (ft_perror("duplicate direction", EINVAL), 1);
 
+    printf("index: %d\n", *index);
+    printf("map[index]: %s\n", map[*index]);
 
 
 
