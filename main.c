@@ -150,7 +150,7 @@ int exceeds_size(char **map)
 
     i = 0;
     len = 50;
-    height = 5;
+    height = 50;
     while (map[i])
     {
         j = 0;
@@ -187,13 +187,96 @@ int is_last_line_empty(char **map)
     return (ft_perror("last line empty", EINVAL), 1);
 }
 
+void skip_empty_lines(char **map, int *index)
+{
+    int j;
+    while (map[*index])
+    {
+        j = 0;
+        while (map[*index][j])
+        {
+            if (map[*index][j] != ' ' && map[*index][j] != '\t')
+                return;
+            j++;
+        }
+        (*index)++;
+    }
+}
+
+int wrong_direction(char **map, int *index, t_dir_flags *flags)
+{
+    if (map[*index][0] == 'N' && map[*index][1] == 'O' && \
+    (map[*index][2] == ' ' || map[*index][2] == '\t'))
+        flags->no++;
+    else if (map[*index][0] == 'S' && map[*index][1] == 'O' && \
+    (map[*index][2] == ' ' || map[*index][2] == '\t'))
+        flags->so++;
+    else if (map[*index][0] == 'W' && map[*index][1] == 'E' && \
+    (map[*index][2] == ' ' || map[*index][2] == '\t'))
+        flags->we++;
+    else if (map[*index][0] == 'E' && map[*index][1] == 'A' && \
+    (map[*index][2] == ' ' || map[*index][2] == '\t'))
+        flags->ea++;
+    else
+        return (ft_perror("wrong direction", EINVAL), 1);
+    if (flags->no > 2 || flags->so > 2 || flags->we > 2 || flags->ea > 2)
+        return (ft_perror("duplicate direction", EINVAL), 1);
+    (*index)++;
+    return (0);
+}
+
+int is_duplicate(t_dir_flags *flags)
+{
+    if (flags->no != 1 || flags->so != 1 || flags->we != 1 || flags->ea != 1)
+        return (ft_perror("missing direction", EINVAL), 1);
+    return (0);
+}       
+
+int not_textures(char **map, int *index)
+{
+    int i;
+    t_dir_flags flags;
+
+    (void)flags;
+    i = 0;
+    flags = (t_dir_flags){0, 0, 0, 0};
+    skip_empty_lines(map, index);
+
+    printf("index: %d\n", *index);
+    printf("map[index]: %s\n", map[*index]);
+
+    
+    while (i < 4)
+    {
+        if(wrong_direction(map, index, &flags))
+            return (1);
+        skip_empty_lines(map, index);
+        i++;
+        if (flags.no && flags.so && flags.we && flags.ea)
+        break;
+    }
+    if (is_duplicate(&flags))
+        return (1);
+
+
+
+
+    
+    return 0;
+}
+
 int parse_map(t_file **map)
 {
+    int index;
+
+    index = 0;
     if(map_is_empty((*map)->map))
         return (1);
     if(exceeds_size((*map)->map))
         return (1);
     if (is_last_line_empty((*map)->map))
+        return (1);
+    if (not_textures((*map)->map, &index))
         return (1);
 
     return (0);
@@ -221,10 +304,10 @@ int parse_args(int ac, char **av, t_file **map)
     if (!(*map)->map)
         return (free(tmp), ft_perror("malloc", errno), 1);
     // we print the map
-    for (int i = 0; (*map)->map[i]; i++)
-    {
-        printf("%s\n", (*map)->map[i]);
-    }
+    // for (int i = 0; (*map)->map[i]; i++)
+    // {
+    //     printf("%s\n", (*map)->map[i]);
+    // }
     
    if (parse_map(map))
       return (free(tmp), 1);

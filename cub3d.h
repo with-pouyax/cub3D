@@ -16,5 +16,13 @@ typedef struct s_file
     struct s_file *next;
 } t_file;
 
+typedef struct s_dir_flags
+{
+    int no;
+    int so;
+    int we;
+    int ea;
+} t_dir_flags;
+
 
 #endif
