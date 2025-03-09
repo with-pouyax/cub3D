@@ -148,7 +148,7 @@ int exceeds_length(char **map)
     int len;
 
     i = 0;
-    len = 5;
+    len = 50;
     while (map[i])
     {
         j = 0;
@@ -161,11 +161,32 @@ int exceeds_length(char **map)
     return (0);
 } 
 
+int is_last_line_empty(char **map)
+{
+    int i;
+    int j;
+
+    i = 0;
+    while (map[i])
+        i++;
+    i--;
+    j = 0;
+    while (map[i][j])
+    {
+        if (map[i][j] != ' ' && map[i][j] != '\t')
+            return (0);
+        j++;
+    }
+    return (ft_perror("last line empty", EINVAL), 1);
+}
+
 int parse_map(t_file **map)
 {
     if(map_is_empty((*map)->map))
         return (1);
     if(exceeds_length((*map)->map))
+        return (1);
+    if (is_last_line_empty((*map)->map))
         return (1);
 
     return (0);
