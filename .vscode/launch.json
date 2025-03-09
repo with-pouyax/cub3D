@@ -7,7 +7,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/cub3d",
-            "args": [],
+            "args": ["maps/empty.cub"],
             "stopAtEntry": true,
             "cwd": "${workspaceFolder}",
             "externalConsole": false,

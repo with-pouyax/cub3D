@@ -117,8 +117,37 @@ char *get_string(int *file_len, char **av)
     return (tmp);
 }
 
+int map_is_empty(char **map)
+{
+    int i;
+    int j;
+
+    i = 0;
+    if (!map || !map[0])
+        return (ft_perror("empty map", EINVAL), 1);
+    while (map[i])
+    {
+        j = 0;
+        while (map[i][j])
+        {
+            if (map[i][j] != ' ' && map[i][j] != '\t')
+                return (0);
+            j++;
+        }
+        i++;
+    }
+    
+    return (ft_perror("empty map", EINVAL), 1);
+}
 
 
+int parse_map(t_file **map)
+{
+    if(map_is_empty((*map)->map))
+        return (ft_perror("Error", EINVAL), 1);
+
+    return (0);
+}
 
 
 
@@ -147,7 +176,8 @@ int parse_args(int ac, char **av, t_file **map)
         printf("%s\n", (*map)->map[i]);
     }
     
-   
+   if (parse_map(map))
+      return (1);
 
     free(tmp);
     return (0);
