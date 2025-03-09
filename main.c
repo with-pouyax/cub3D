@@ -144,7 +144,7 @@ int map_is_empty(char **map)
 int parse_map(t_file **map)
 {
     if(map_is_empty((*map)->map))
-        return (ft_perror("Error", EINVAL), 1);
+        return (1);
 
     return (0);
 }
