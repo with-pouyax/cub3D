@@ -12,7 +12,7 @@
 typedef struct s_file
 {
     char **map;
-    char **texture;
+    char *texture[4];
     struct s_file *next;
 } t_file;
 

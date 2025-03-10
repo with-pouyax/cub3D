@@ -253,32 +253,59 @@ int is_duplicate(t_dir_flags *flags)
     return (0);
 }       
 
-int not_textures(char **map, int *index)
+int save_textures(t_file *map, int *index)
+{
+    int i;
+
+    i = 0;
+    while (i < 4)
+    {
+        skip_empty_lines(map->map, index); // Ensure we are at a non-empty line
+        map->texture[i] = ft_strdup(map->map[*index]);
+        if (!map->texture[i])
+        {
+            while (i >= 0)
+                free(map->texture[i--]);
+            return (ft_perror("malloc", errno), 1);
+        }
+        i++;
+        (*index)++;
+    }
+    return (0);
+}
+
+int not_textures(t_file *map, int *index)
 {
     int i;
     t_dir_flags flags;
+    int tmp_index;
 
-    (void)flags;
     i = 0;
     flags = (t_dir_flags){0, 0, 0, 0};
-    skip_empty_lines(map, index);
-
-    printf("index: %d\n", *index);
-    printf("map[index]: %s\n", map[*index]);
-    
+    skip_empty_lines(map->map, index);
+    // printf("index: %d\n", *index);
+    // printf("map[index]: %s\n", map->map[*index]);
+    tmp_index = *index;  
     while (i < 4)
     {
-        if(wrong_dir_and_ex(map, index, &flags))
+        if(wrong_dir_and_ex(map->map, index, &flags))
             return (1);
-        skip_empty_lines(map, index);
+        skip_empty_lines(map->map, index);
         i++;
     }
     if (is_duplicate(&flags))
         return (ft_perror("duplicate direction", EINVAL), 1);
-
-    printf("index: %d\n", *index);
-    printf("map[index]: %s\n", map[*index]);
-
+    if (save_textures(map, &tmp_index))
+        return (1);
+    // printf("index: %d\n", *index);
+    // printf("map[index]: %s\n", map->map[*index]);
+    
+    //we print the textures
+    printf("textures\n");
+    for (int i = 0; i < 4; i++)
+    {
+        printf("%s\n", map->texture[i]);
+    }
 
 
     
@@ -296,7 +323,7 @@ int parse_map(t_file **map)
         return (1);
     if (is_last_line_empty((*map)->map))
         return (1);
-    if (not_textures((*map)->map, &index))
+    if (not_textures(*map, &index))
         return (1);
 
     return (0);
@@ -342,7 +369,8 @@ int init_map(t_file **map)
     if (!*map)
         return(ft_perror("malloc", errno), 1);
     (*map)->map = NULL;
-    (*map)->texture = NULL;
+    for (int i = 0; i < 4; i++)
+        (*map)->texture[i] = NULL;
     (*map)->next = NULL;
     return (0);
 }
