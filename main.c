@@ -1,5 +1,7 @@
 #include "cub3d.h"
 
+int is_direction(char *line, char *dir);
+
 void ft_perror(char *msg, int err)
 {
     if (err)
@@ -206,15 +208,22 @@ void skip_empty_lines(char **map, int *index)
 int no_xpm_extension(char *line)
 {
     int len;
+    int i;
     
+    i = 2;
     if (!line)
         return(ft_perror("Error", EINVAL), 1);
+    while (line[i] && (line[i] == ' ' || line[i] == '\t'))
+        i++;
+    if (line[i] == '.' && line[i + 1] == 'x' && line[i + 2] == 'p' && \
+    line[i + 3] == 'm')
+        return(1);
     len = ft_strlen(line);
     while (len > 0 && (line[len - 1] == ' ' || line[len - 1] == '\t'))
         len--;
     if (len < 5 )
        return(ft_perror("Error", EINVAL), 1);
-    if (ft_strncmp(line + len - 4, ".xmp", 4)) // strncmp returns 0 if the strings are equal
+    if (ft_strncmp(line + len - 4, ".xpm", 4)) // strncmp returns 0 if the strings are equal
         return(1);
     if (len > 4 && line[len - 5] == '/')
         return(ft_perror("Error", EINVAL), 1);
@@ -253,25 +262,76 @@ int is_duplicate(t_dir_flags *flags)
     return (0);
 }       
 
+int is_direction(char *line, char *dir)
+{
+	if (line[0] == dir[0] && line[1] == dir[1] && 
+		(line[2] == ' ' || line[2] == '\t'))
+		return (1);
+	return (0);
+}
+
+int extract_and_assign_path(char *line, char **dest)
+{
+	char *path;
+
+	path = line + 3;
+	while (*path && (*path == ' ' || *path == '\t'))
+		path++;
+	*dest = ft_strdup(path);
+	if (!*dest)
+		return (ft_perror("malloc", errno), 1);
+	return (0);
+}
+
+int process_texture(t_file *map, int *index, char *dir, char **dest)
+{
+	char *line;
+
+	skip_empty_lines(map->map, index);
+	line = map->map[*index];
+	
+	if (is_direction(line, dir))
+	{
+		if (extract_and_assign_path(line, dest))
+		{
+			return (1);
+		}
+		(*index)++;
+		return (0);
+	}
+	return (2); // Return 2 if this is not the expected direction
+}
+
+int handle_texture_result(int result, int *directions_found)
+{
+	if (result == 0)
+		(*directions_found)++;
+	else if (result == 1)
+		return (1);
+	return (0);
+}
+
 int save_textures(t_file *map, int *index)
 {
-    int i;
+	int result;
+	int directions_found;
 
-    i = 0;
-    while (i < 4)
-    {
-        skip_empty_lines(map->map, index); // Ensure we are at a non-empty line
-        map->texture[i] = ft_strdup(map->map[*index]);
-        if (!map->texture[i])
-        {
-            while (i >= 0)
-                free(map->texture[i--]);
-            return (ft_perror("malloc", errno), 1);
-        }
-        i++;
-        (*index)++;
-    }
-    return (0);
+	directions_found = 0;
+	result = process_texture(map, index, "NO", &map->textures.north);
+	if (handle_texture_result(result, &directions_found))
+		return (1);
+	result = process_texture(map, index, "SO", &map->textures.south);
+	if (handle_texture_result(result, &directions_found))
+		return (1);
+	result = process_texture(map, index, "WE", &map->textures.west);
+	if (handle_texture_result(result, &directions_found))
+		return (1);
+	result = process_texture(map, index, "EA", &map->textures.east);
+	if (handle_texture_result(result, &directions_found))
+		return (1);
+	if (directions_found != 4)
+		return (ft_perror("Missing texture directions", EINVAL), 1);
+	return (0);
 }
 
 int not_textures(t_file *map, int *index)
@@ -301,11 +361,10 @@ int not_textures(t_file *map, int *index)
     // printf("map[index]: %s\n", map->map[*index]);
     
     //we print the textures
-    printf("textures\n");
-    for (int i = 0; i < 4; i++)
-    {
-        printf("%s\n", map->texture[i]);
-    }
+    printf("North texture: %s\n", map->textures.north);
+    printf("South texture: %s\n", map->textures.south);
+    printf("West texture: %s\n", map->textures.west);
+    printf("East texture: %s\n", map->textures.east);
 
 
     
@@ -365,34 +424,41 @@ int parse_args(int ac, char **av, t_file **map)
 
 int init_map(t_file **map)
 {
-    *map = malloc(sizeof(t_file));
-    if (!*map)
-        return(ft_perror("malloc", errno), 1);
-    (*map)->map = NULL;
-    for (int i = 0; i < 4; i++)
-        (*map)->texture[i] = NULL;
-    (*map)->next = NULL;
-    return (0);
+	*map = malloc(sizeof(t_file));
+	if (!*map)
+		return(ft_perror("malloc", errno), 1);
+	(*map)->map = NULL;
+	(*map)->textures.north = NULL;
+	(*map)->textures.south = NULL;
+	(*map)->textures.west = NULL;
+	(*map)->textures.east = NULL;
+	(*map)->next = NULL;
+	return (0);
 }
 
 void map_clean(t_file **map)
 {
-    int i;
+	int i;
 
-    i = 0;
-    if ((*map)->map)
-    {
-        while ((*map)->map[i])
-            free((*map)->map[i++]);
-        free((*map)->map);
-        free(*map);
-        *map = NULL;
-    }
-    else
-    {
-        free(*map);
-        *map = NULL;
-    }
+	if (!map || !*map)
+		return ;
+	if ((*map)->map)
+	{
+		i = 0;
+		while ((*map)->map[i])
+			free((*map)->map[i++]);
+		free((*map)->map);
+	}
+	if ((*map)->textures.north)
+		free((*map)->textures.north);
+	if ((*map)->textures.south)
+		free((*map)->textures.south);
+	if ((*map)->textures.west)
+		free((*map)->textures.west);
+	if ((*map)->textures.east)
+		free((*map)->textures.east);
+	free(*map);
+	*map = NULL;
 }
 
 int main(int ac, char **av)

@@ -9,19 +9,27 @@
 #include "libraries/libft/libft.h"
 
 
+typedef struct s_texture_paths
+{
+	char *north;
+	char *south;
+	char *west;
+	char *east;
+} t_texture_paths;
+
 typedef struct s_file
 {
-    char **map;
-    char *texture[4];
-    struct s_file *next;
+	char **map;
+	t_texture_paths textures;
+	struct s_file *next;
 } t_file;
 
 typedef struct s_dir_flags
 {
-    int no;
-    int so;
-    int we;
-    int ea;
+	int no;
+	int so;
+	int we;
+	int ea;
 } t_dir_flags;
 
 
