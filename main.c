@@ -637,12 +637,39 @@ int	copy_map(t_file *map, int index)
 	return (0);
 }
 
+int wrong_ratio(char **map)
+{
+    int i;
+    size_t MAX_HEIGHT;
+    size_t MAX_WIDTH;
+
+    MAX_HEIGHT = 50;
+    MAX_WIDTH = 50;
+    i = 0;
+    while (map[i])
+    {
+        if (ft_strlen(map[i]) > (size_t)MAX_WIDTH)
+            return (ft_perror("wrong width", EINVAL), 1);
+        i++;
+    }
+    if ((size_t)i > MAX_HEIGHT)
+        return (ft_perror("wrong height", EINVAL), 1);
+    return (0);
+}
+
 int not_map(t_file *map, int *index)
 {
     if (basic_map_check(map->map, index))
         return(ft_perror("basic map check", EINVAL), 1);
     if (copy_map(map, *index))
         return(ft_perror("copy map", EINVAL), 1);
+    if (wrong_ratio(map->map_copy))
+        return(ft_perror("wrong ratio", EINVAL), 1);
+    
+    for (int i = 0; map->map_copy[i]; i++)
+    {
+        printf("%s\n", map->map_copy[i]);
+    }
     return (0);
 }
 
