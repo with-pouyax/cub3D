@@ -1,6 +1,11 @@
 #include "cub3d.h"
 
 int is_direction(char *line, char *dir);
+int not_valid_char(char c, int *player_count);
+int check_player_count(int player_count);
+int get_map_height(char **map, int start_index);
+char *ft_strdup_map(char *str);
+int copy_map(t_file *map, int index);
 
 void ft_perror(char *msg, int err)
 {
@@ -525,8 +530,120 @@ int not_colors(t_file *map, int *index)
 		return (ft_perror("duplicate color", EINVAL), 1);
 	if (save_colors(map, &tmp_index))
 		return (1);
+    printf("index: %d\n", *index);
+    printf("map[index]: %s\n", map->map[*index]);
 	
 	return (0);
+}
+
+int not_valid_char(char c, int *player_count)
+{
+    if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
+        (*player_count)++;
+    if (*player_count > 1)
+        return (ft_perror("multiple players", EINVAL), 1);
+    else if (c != '1' && c != '0' && c != 'N' && c != 'S' && c != 'E' && \
+    c != 'W' && c != ' ' && c != '\t')
+        return (ft_perror("invalid character", EINVAL), 1);
+    return (0);
+}
+
+int check_player_count(int player_count)
+{
+    if (player_count == 0)
+        return (ft_perror("no player", EINVAL), 1);
+    return (0);
+}
+
+int basic_map_check(char **map, int *index)
+{
+    int i;
+    int j;
+    int player_count;
+
+    i = *index;
+    player_count = 0;
+    while (map[i])
+    {
+        j = 0;
+        while (map[i][j])
+        {
+            if (not_valid_char(map[i][j], &player_count))
+                return (1);
+            j++;
+        }
+        i++;
+    }
+    if (check_player_count(player_count))
+        return (1);
+    return (0);
+}
+
+int	get_map_height(char **map, int start_index)
+{
+	int	height;
+
+	height = 0;
+	while (map[start_index + height])
+		height++;
+	return (height);
+}
+
+char	*ft_strdup_map(char *str)
+{
+	char	*dup;
+	int		i;
+
+	if (!str)
+		return (NULL);
+	dup = malloc(sizeof(char) * (ft_strlen(str) + 1));
+	if (!dup)
+		return (ft_perror("malloc", errno), NULL);
+	i = 0;
+	while (str[i])
+	{
+		dup[i] = str[i];
+		i++;
+	}
+	dup[i] = '\0';
+	return (dup);
+}
+
+int	copy_map(t_file *map, int index)
+{
+	int	i;
+	int	height;
+
+	height = get_map_height(map->map, index);
+	map->map_copy = malloc(sizeof(char *) * (height + 1));
+	if (!map->map_copy)
+		return (ft_perror("malloc", errno), 1);
+	i = 0;
+	while (i < height)
+	{
+		map->map_copy[i] = ft_strdup_map(map->map[index + i]);
+		if (!map->map_copy[i])
+		{
+			while (--i >= 0)
+				free(map->map_copy[i]);
+			free(map->map_copy);
+			map->map_copy = NULL;
+			return (1);
+		}
+		i++;
+	}
+	map->map_copy[i] = NULL;
+    
+	return (0);
+}
+
+int not_map(t_file *map, int *index)
+{
+    if (basic_map_check(map->map, index))
+        return(ft_perror("basic map check", EINVAL), 1);
+    if (copy_map(map, *index))
+        return(ft_perror("copy map", EINVAL), 1);
+    return (0);
 }
 
 int parse_map(t_file **map)
@@ -544,7 +661,8 @@ int parse_map(t_file **map)
         return (1);
     if (not_colors(*map, &index))
         return (1);
-
+    if (not_map(*map, &index))
+        return (1);
     return (0);
 }
 
@@ -594,6 +712,7 @@ int init_map(t_file **map)
 	(*map)->textures.east = NULL;
 	(*map)->colors.floor = 0;
 	(*map)->colors.ceiling = 0;
+	(*map)->map_copy = NULL;
 	return (0);
 }
 
@@ -609,6 +728,13 @@ void map_clean(t_file **map)
 		while ((*map)->map[i])
 			free((*map)->map[i++]);
 		free((*map)->map);
+	}
+	if ((*map)->map_copy)
+	{
+		i = 0;
+		while ((*map)->map_copy[i])
+			free((*map)->map_copy[i++]);
+		free((*map)->map_copy);
 	}
 	if ((*map)->textures.north)
 		free((*map)->textures.north);

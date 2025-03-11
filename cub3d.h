@@ -27,6 +27,7 @@ typedef struct s_file
 	char **map;
 	t_texture_paths textures;
 	t_colors colors;
+	char **map_copy;
 } t_file;
 
 typedef struct s_dir_flags
@@ -42,6 +43,7 @@ typedef struct s_color_flags
 	int floor;
 	int ceiling;
 } t_color_flags;
+
 
 
 #endif
