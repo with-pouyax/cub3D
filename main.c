@@ -1,7 +1,7 @@
 #include "cub3d.h"
 
 int is_direction(char *line, char *dir);
-int not_valid_char(char c, int *player_count);
+int not_valid_char(char c, int *player_count, t_file *map);
 int check_player_count(int player_count);
 int get_map_height(char **map, int start_index);
 char *ft_strdup_map(char *str);
@@ -536,10 +536,20 @@ int not_colors(t_file *map, int *index)
 	return (0);
 }
 
-int not_valid_char(char c, int *player_count)
+int not_valid_char(char c, int *player_count, t_file *map)
 {
     if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
+    {
         (*player_count)++;
+        if (*player_count == 1 && c == 'N')
+            map->player_dir = 'N';
+        else if (*player_count == 1 && c == 'S')
+            map->player_dir = 'S';
+        else if (*player_count == 1 && c == 'E')
+            map->player_dir = 'E';
+        else if (*player_count == 1 && c == 'W')
+            map->player_dir = 'W';
+    }
     if (*player_count > 1)
         return (ft_perror("multiple players", EINVAL), 1);
     else if (c != '1' && c != '0' && c != 'N' && c != 'S' && c != 'E' && \
@@ -555,7 +565,7 @@ int check_player_count(int player_count)
     return (0);
 }
 
-int basic_map_check(char **map, int *index)
+int basic_map_check(t_file *map, char **raw_file, int *index)
 {
     int i;
     int j;
@@ -563,12 +573,12 @@ int basic_map_check(char **map, int *index)
 
     i = *index;
     player_count = 0;
-    while (map[i])
+    while (raw_file[i])
     {
         j = 0;
-        while (map[i][j])
+        while (raw_file[i][j])
         {
-            if (not_valid_char(map[i][j], &player_count))
+            if (not_valid_char(raw_file[i][j], &player_count, map))
                 return (1);
             j++;
         }
@@ -617,31 +627,61 @@ char	*ft_strdup_map(char *str)
 	return (dup);
 }
 
-int	copy_map(t_file *map, int index)
+void	free_game_map(char **game_map, int last_index)
 {
 	int	i;
+
+	i = 0;
+	while (i < last_index)
+		free(game_map[i++]);
+	free(game_map);
+}
+
+size_t	update_max_width(char **map, int i, size_t max_width)
+{
+	size_t	current_width;
+
+	current_width = ft_strlen(map[i]);
+	if (current_width > max_width)
+		return (current_width);
+	return (max_width);
+}
+
+int	copy_map_lines(t_file *map, int index, int height)
+{
+	int		i;
+	size_t	max_width;
+
+	i = 0;
+	max_width = 0;
+	while (i < height)
+	{
+		map->game_map[i] = ft_strdup_map(map->raw_file[index + i]);
+		if (!map->game_map[i])
+		{
+			free_game_map(map->game_map, i);
+			map->game_map = NULL;
+			return (1);
+		}
+		max_width = update_max_width(map->game_map, i, max_width);
+		i++;
+	}
+	map->game_map[i] = NULL;
+	map->map_height = height;
+	map->map_width = max_width;
+	return (0);
+}
+
+int	copy_map(t_file *map, int index)
+{
 	int	height;
 
 	height = get_map_height(map->raw_file, index);
 	map->game_map = malloc(sizeof(char *) * (height + 1));
 	if (!map->game_map)
 		return (ft_perror("malloc", errno), 1);
-	i = 0;
-	while (i < height)
-	{
-		map->game_map[i] = ft_strdup_map(map->raw_file[index + i]);
-		if (!map->game_map[i])
-		{
-			while (--i >= 0)
-				free(map->game_map[i]);
-			free(map->game_map);
-			map->game_map = NULL;
-			return (1);
-		}
-		i++;
-	}
-	map->game_map[i] = NULL;
-    
+	if (copy_map_lines(map, index, height))
+		return (1);
 	return (0);
 }
 
@@ -669,7 +709,7 @@ int wrong_ratio(char **map)
 
 int not_map(t_file *map, int *index)
 {
-    if (basic_map_check(map->raw_file, index))
+    if (basic_map_check(map ,map->raw_file, index))
         return(ft_perror("basic map check", EINVAL), 1);
     if (copy_map(map, *index))
         return(ft_perror("copy map", EINVAL), 1);
@@ -758,6 +798,11 @@ int init_map(t_file **map)
 	(*map)->colors.floor = 0;
 	(*map)->colors.ceiling = 0;
 	(*map)->game_map = NULL;
+	(*map)->map_height = 0;
+	(*map)->map_width = 0;
+	(*map)->player_dir = '\0';
+	(*map)->player_x = 0;
+	(*map)->player_y = 0;
 	return (0);
 }
 
