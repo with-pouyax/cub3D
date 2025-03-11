@@ -44,6 +44,10 @@ typedef struct s_color_flags
 	int ceiling;
 } t_color_flags;
 
-
+/* Function prototypes */
+int	check_walls(char **map);
+int	is_valid_position(char **map, int row, int col);
+int	is_space_or_tab(char c);
+void	flood_fill(char **map, int row, int col, int *found_edge);
 
 #endif

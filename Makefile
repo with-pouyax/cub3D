@@ -9,7 +9,7 @@ CFLAGS = -Wall -Wextra -Werror -g
 INCLUDES = -I. -I./libraries/libft
 
 # Source files
-SRCS = main.c
+SRCS = main.c check_walls.c
 OBJS = $(SRCS:.c=.o)
 
 # Libraries

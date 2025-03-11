@@ -657,6 +657,8 @@ int wrong_ratio(char **map)
     return (0);
 }
 
+
+
 int not_map(t_file *map, int *index)
 {
     if (basic_map_check(map->map, index))
@@ -666,6 +668,14 @@ int not_map(t_file *map, int *index)
     if (wrong_ratio(map->map_copy))
         return(ft_perror("wrong ratio", EINVAL), 1);
     
+    for (int i = 0; map->map_copy[i]; i++)
+    {
+        printf("%s\n", map->map_copy[i]);
+    }
+    if (check_walls(map->map_copy))
+        return (ft_perror("wrong walls", EINVAL), 1);
+    // we print the map copy after checking the walls
+    printf("-----------after checking the walls-----------\n");
     for (int i = 0; map->map_copy[i]; i++)
     {
         printf("%s\n", map->map_copy[i]);
