@@ -148,32 +148,32 @@ int map_is_empty(char **map)
 }
 
 
-int exceeds_size(char **map)
-{
-    int i;
-    int j;
-    int len;
-    int height;
+// int exceeds_size(char **map)
+// {
+//     int i;
+//     int j;
+//     int len;
+//     int height;
 
-    i = 0;
-    len = 50;
-    height = 50;
-    while (map[i])
-    {
-        j = 0;
-        while (map[i][j])
-            j++;
-        if (j > len)
-            return (ft_perror("line too long", EINVAL), 1);
-        i++;
-    }
-    i = 0;
-    while (map[i])
-        i++;
-    if (i > height)
-        return (ft_perror("map too high", EINVAL), 1);
-    return (0);
-}
+//     i = 0;
+//     len = 50;
+//     height = 50;
+//     while (map[i])
+//     {
+//         j = 0;
+//         while (map[i][j])
+//             j++;
+//         if (j > len)
+//             return (ft_perror("line too long", EINVAL), 1);
+//         i++;
+//     }
+//     i = 0;
+//     while (map[i])
+//         i++;
+//     if (i > height)
+//         return (ft_perror("map too high", EINVAL), 1);
+//     return (0);
+// }
 
 int is_last_line_empty(char **map)
 {
@@ -680,8 +680,8 @@ int parse_map(t_file **map)
     index = 0;
     if(map_is_empty((*map)->map))
         return (1);
-    if(exceeds_size((*map)->map))
-        return (1);
+    // if(exceeds_size((*map)->map))
+    //     return (1);
     if (is_last_line_empty((*map)->map))
         return (1);
     if (not_textures(*map, &index))
