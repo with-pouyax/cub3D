@@ -292,8 +292,8 @@ int process_texture(t_file *map, int *index, char *dir, char **dest)
 {
 	char *line;
 
-	skip_empty_lines(map->map, index);
-	line = map->map[*index];
+	skip_empty_lines(map->raw_file, index);
+	line = map->raw_file[*index];
 	
 	if (is_direction(line, dir))
 	{
@@ -347,15 +347,15 @@ int not_textures(t_file *map, int *index)
 
     i = 0;
     flags = (t_dir_flags){0, 0, 0, 0};
-    skip_empty_lines(map->map, index);
+    skip_empty_lines(map->raw_file, index);
     // printf("index: %d\n", *index);
-    // printf("map[index]: %s\n", map->map[*index]);
+    // printf("map[index]: %s\n", map->raw_file[*index]);
     tmp_index = *index;  
     while (i < 4)
     {
-        if(wrong_dir_and_ex(map->map, index, &flags))
+        if(wrong_dir_and_ex(map->raw_file, index, &flags))
             return (1);
-        skip_empty_lines(map->map, index);
+        skip_empty_lines(map->raw_file, index);
         i++;
     }
     if (is_duplicate(&flags))
@@ -363,7 +363,7 @@ int not_textures(t_file *map, int *index)
     if (save_textures(map, &tmp_index))
         return (1);
     // printf("index: %d\n", *index);
-    // printf("map[index]: %s\n", map->map[*index]);
+    // printf("map[index]: %s\n", map->raw_file[*index]);
     
     //we print the textures
     printf("North texture: %s\n", map->textures.north);
@@ -459,19 +459,19 @@ int save_colors(t_file *map, int *index)
 	int result;
 
 	i = *index;
-	while (map->map[i])
+	while (map->raw_file[i])
 	{
-		if (map->map[i][0] == 'F' && (map->map[i][1] == ' ' || \
-		map->map[i][1] == '\t'))
+		if (map->raw_file[i][0] == 'F' && (map->raw_file[i][1] == ' ' || \
+		map->raw_file[i][1] == '\t'))
 		{
-			result = extract_rgb(map->map[i], &map->colors.floor); // we extract the rgb value from the line
+			result = extract_rgb(map->raw_file[i], &map->colors.floor); // we extract the rgb value from the line
 			if (result)
 				return (ft_perror("invalid floor RGB format", EINVAL), 1);
 		}
-		else if (map->map[i][0] == 'C' && (map->map[i][1] == ' ' || \
-		map->map[i][1] == '\t'))
+		else if (map->raw_file[i][0] == 'C' && (map->raw_file[i][1] == ' ' || \
+		map->raw_file[i][1] == '\t'))
 		{
-			result = extract_rgb(map->map[i], &map->colors.ceiling);
+			result = extract_rgb(map->raw_file[i], &map->colors.ceiling);
 			if (result)
 				return (ft_perror("invalid ceiling RGB format", EINVAL), 1);
 		}
@@ -515,15 +515,15 @@ int not_colors(t_file *map, int *index)
 	t_color_flags flags;
 
 	flags = (t_color_flags){0, 0};
-	skip_empty_lines(map->map, index);
+	skip_empty_lines(map->raw_file, index);
 	tmp_index = *index;
 	
 	// Process all color definitions until we find a non-color line
-	while (map->map[*index] && (map->map[*index][0] == 'F' || map->map[*index][0] == 'C'))
+	while (map->raw_file[*index] && (map->raw_file[*index][0] == 'F' || map->raw_file[*index][0] == 'C'))
 	{
-		if(wrong_color_and_rgb(map->map, index, &flags))
+		if(wrong_color_and_rgb(map->raw_file, index, &flags))
 			return (1);
-		skip_empty_lines(map->map, index);
+		skip_empty_lines(map->raw_file, index);
 	}
 	
 	if (is_duplicate_colors(&flags))
@@ -531,7 +531,7 @@ int not_colors(t_file *map, int *index)
 	if (save_colors(map, &tmp_index))
 		return (1);
     printf("index: %d\n", *index);
-    printf("map[index]: %s\n", map->map[*index]);
+    printf("map[index]: %s\n", map->raw_file[*index]);
 	
 	return (0);
 }
@@ -593,14 +593,22 @@ char	*ft_strdup_map(char *str)
 {
 	char	*dup;
 	int		i;
+	int		len;
 
 	if (!str)
 		return (NULL);
-	dup = malloc(sizeof(char) * (ft_strlen(str) + 1));
+	
+	// Find the length without trailing whitespace
+	len = ft_strlen(str);
+	while (len > 0 && (str[len - 1] == ' ' || str[len - 1] == '\t'))
+		len--;
+	
+	dup = malloc(sizeof(char) * (len + 1));
 	if (!dup)
 		return (ft_perror("malloc", errno), NULL);
+	
 	i = 0;
-	while (str[i])
+	while (i < len)
 	{
 		dup[i] = str[i];
 		i++;
@@ -614,25 +622,25 @@ int	copy_map(t_file *map, int index)
 	int	i;
 	int	height;
 
-	height = get_map_height(map->map, index);
-	map->map_copy = malloc(sizeof(char *) * (height + 1));
-	if (!map->map_copy)
+	height = get_map_height(map->raw_file, index);
+	map->game_map = malloc(sizeof(char *) * (height + 1));
+	if (!map->game_map)
 		return (ft_perror("malloc", errno), 1);
 	i = 0;
 	while (i < height)
 	{
-		map->map_copy[i] = ft_strdup_map(map->map[index + i]);
-		if (!map->map_copy[i])
+		map->game_map[i] = ft_strdup_map(map->raw_file[index + i]);
+		if (!map->game_map[i])
 		{
 			while (--i >= 0)
-				free(map->map_copy[i]);
-			free(map->map_copy);
-			map->map_copy = NULL;
+				free(map->game_map[i]);
+			free(map->game_map);
+			map->game_map = NULL;
 			return (1);
 		}
 		i++;
 	}
-	map->map_copy[i] = NULL;
+	map->game_map[i] = NULL;
     
 	return (0);
 }
@@ -661,24 +669,24 @@ int wrong_ratio(char **map)
 
 int not_map(t_file *map, int *index)
 {
-    if (basic_map_check(map->map, index))
+    if (basic_map_check(map->raw_file, index))
         return(ft_perror("basic map check", EINVAL), 1);
     if (copy_map(map, *index))
         return(ft_perror("copy map", EINVAL), 1);
-    if (wrong_ratio(map->map_copy))
+    if (wrong_ratio(map->game_map))
         return(ft_perror("wrong ratio", EINVAL), 1);
     
-    for (int i = 0; map->map_copy[i]; i++)
+    for (int i = 0; map->game_map[i]; i++)
     {
-        printf("%s\n", map->map_copy[i]);
+        printf("%s\n", map->game_map[i]);
     }
-    if (check_walls(map->map_copy))
+    if (check_walls(map->game_map))
         return (ft_perror("wrong walls", EINVAL), 1);
     // we print the map copy after checking the walls
     printf("-----------after checking the walls-----------\n");
-    for (int i = 0; map->map_copy[i]; i++)
+    for (int i = 0; map->game_map[i]; i++)
     {
-        printf("%s\n", map->map_copy[i]);
+        printf("%s\n", map->game_map[i]);
     }
     return (0);
 }
@@ -688,11 +696,11 @@ int parse_map(t_file **map)
     int index;
 
     index = 0;
-    if(map_is_empty((*map)->map))
+    if(map_is_empty((*map)->raw_file))
         return (1);
-    // if(exceeds_size((*map)->map))
+    // if(exceeds_size((*map)->raw_file))
     //     return (1);
-    if (is_last_line_empty((*map)->map))
+    if (is_last_line_empty((*map)->raw_file))
         return (1);
     if (not_textures(*map, &index))
         return (1);
@@ -721,13 +729,13 @@ int parse_args(int ac, char **av, t_file **map)
          return (1);
     tmp = get_string(&file_len, av);
     //printf("tmp: %s\n", tmp);
-    (*map)->map = ft_split(tmp, '\n');
-    if (!(*map)->map)
+    (*map)->raw_file = ft_split(tmp, '\n');
+    if (!(*map)->raw_file)
         return (free(tmp), ft_perror("malloc", errno), 1);
     // we print the map
-    // for (int i = 0; (*map)->map[i]; i++)
+    // for (int i = 0; (*map)->raw_file[i]; i++)
     // {
-    //     printf("%s\n", (*map)->map[i]);
+    //     printf("%s\n", (*map)->raw_file[i]);
     // }
     
    if (parse_map(map))
@@ -742,14 +750,14 @@ int init_map(t_file **map)
 	*map = malloc(sizeof(t_file));
 	if (!*map)
 		return(ft_perror("malloc", errno), 1);
-	(*map)->map = NULL;
+	(*map)->raw_file = NULL;
 	(*map)->textures.north = NULL;
 	(*map)->textures.south = NULL;
 	(*map)->textures.west = NULL;
 	(*map)->textures.east = NULL;
 	(*map)->colors.floor = 0;
 	(*map)->colors.ceiling = 0;
-	(*map)->map_copy = NULL;
+	(*map)->game_map = NULL;
 	return (0);
 }
 
@@ -759,19 +767,19 @@ void map_clean(t_file **map)
 
 	if (!map || !*map)
 		return ;
-	if ((*map)->map)
+	if ((*map)->raw_file)
 	{
 		i = 0;
-		while ((*map)->map[i])
-			free((*map)->map[i++]);
-		free((*map)->map);
+		while ((*map)->raw_file[i])
+			free((*map)->raw_file[i++]);
+		free((*map)->raw_file);
 	}
-	if ((*map)->map_copy)
+	if ((*map)->game_map)
 	{
 		i = 0;
-		while ((*map)->map_copy[i])
-			free((*map)->map_copy[i++]);
-		free((*map)->map_copy);
+		while ((*map)->game_map[i])
+			free((*map)->game_map[i++]);
+		free((*map)->game_map);
 	}
 	if ((*map)->textures.north)
 		free((*map)->textures.north);

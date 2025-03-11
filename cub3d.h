@@ -24,10 +24,15 @@ typedef struct s_texture_paths
 
 typedef struct s_file
 {
-	char **map;
+	char **raw_file;
 	t_texture_paths textures;
 	t_colors colors;
-	char **map_copy;
+	char **game_map;
+	int map_height;
+	int map_width;
+	char player_dir;
+	int player_x;
+	int player_y;
 } t_file;
 
 typedef struct s_dir_flags
