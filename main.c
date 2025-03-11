@@ -247,7 +247,7 @@ int wrong_dir_and_ex(char **map, int *index, t_dir_flags *flags)
         flags->ea++;
     else
         return (ft_perror("wrong direction", EINVAL), 1);
-    if (flags->no > 2 || flags->so > 2 || flags->we > 2 || flags->ea > 2)
+    if (flags->no > 1 || flags->so > 1 || flags->we > 1 || flags->ea > 1)
         return (ft_perror("duplicate direction", EINVAL), 1);
     if (no_xpm_extension(map[*index]))
         return (ft_perror("wrong extension", EINVAL), 1);
@@ -371,6 +371,164 @@ int not_textures(t_file *map, int *index)
     return 0;
 }
 
+int wrong_rgb(char *line)
+{
+	int i;
+	int len;
+	int comma_count;
+
+	i = 1;
+	len = ft_strlen(line);
+	comma_count = 0;
+	while (line[i] && (line[i] == ' ' || line[i] == '\t')) // we skip the spaces and tabs at the beginning of the line
+		i++;
+	while (len > 0 && (line[len - 1] == ' ' || line[len - 1] == '\t')) // we skip the spaces and tabs at the end of the line
+		len--;
+	while (i < len)
+	{
+		if (line[i] == ',')
+			comma_count++;
+		else if (!ft_isdigit(line[i]) && line[i] != ' ' && line[i] != '\t') // we check if the character is not a digit and not a space or a tab so we can even have 2 2 2 , 2 2 2 , 2 2 2
+			return (1);
+		i++; // we increment the
+	}
+	if (comma_count != 2)
+		return (1);
+	return (0);
+}
+
+int parse_rgb_value(char *str, int *i)
+{
+	int value;
+	int start;
+
+    (void)start;
+	start = *i; 
+	while (str[*i] && (str[*i] == ' ' || str[*i] == '\t'))
+		(*i)++;
+	if (!str[*i] || !ft_isdigit(str[*i]))
+		return (-1);
+	value = 0;
+	while (str[*i] && ft_isdigit(str[*i]))
+	{
+		value = value * 10 + (str[*i] - '0');
+		if (value > 255)
+			return (-1);
+		(*i)++;
+	}
+	while (str[*i] && (str[*i] == ' ' || str[*i] == '\t')) // we skip the spaces and tabs at the end of the line
+		(*i)++;
+	return (value);
+}
+
+int extract_rgb(char *line, int *rgb_value)
+{
+	int i;
+	int r;
+	int g;
+	int b;
+
+	i = 1;
+	while (line[i] && (line[i] == ' ' || line[i] == '\t')) // skip the spaces and tabs at the beginning of the line
+		i++;
+	r = parse_rgb_value(line, &i);
+	if (r < 0 || r > 255 || line[i++] != ',')
+		return (1);
+	g = parse_rgb_value(line, &i);
+	if (g < 0 || g > 255 || line[i++] != ',')
+		return (1);
+	b = parse_rgb_value(line, &i);
+	if (b < 0 || b > 255)
+		return (1);
+	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
+		i++;
+	if (line[i])
+		return (1);
+	*rgb_value = (r << 16) | (g << 8) | b; // we convert the rgb value to a single integer
+	return (0);
+}
+
+int save_colors(t_file *map, int *index)
+{
+	int i;
+	int result;
+
+	i = *index;
+	while (map->map[i])
+	{
+		if (map->map[i][0] == 'F' && (map->map[i][1] == ' ' || \
+		map->map[i][1] == '\t'))
+		{
+			result = extract_rgb(map->map[i], &map->colors.floor); // we extract the rgb value from the line
+			if (result)
+				return (ft_perror("invalid floor RGB format", EINVAL), 1);
+		}
+		else if (map->map[i][0] == 'C' && (map->map[i][1] == ' ' || \
+		map->map[i][1] == '\t'))
+		{
+			result = extract_rgb(map->map[i], &map->colors.ceiling);
+			if (result)
+				return (ft_perror("invalid ceiling RGB format", EINVAL), 1);
+		}
+		i++;
+		if (i >= *index + 2)
+			break;
+	}
+	return (0);
+}
+
+
+
+int wrong_color_and_rgb(char **map, int *index, t_color_flags *flags)
+{
+    if (map[*index][0] == 'F' && (map[*index][1] == ' ' || \
+    map[*index][1] == '\t'))
+        flags->floor++;
+    else if (map[*index][0] == 'C' && (map[*index][1] == ' ' || \
+    map[*index][1] == '\t'))
+        flags->ceiling++;
+    else
+        return (ft_perror("wrong color", EINVAL), 1);
+    if (flags->floor > 1 || flags->ceiling > 1)
+        return (ft_perror("duplicate color", EINVAL), 1);
+    if (wrong_rgb(map[*index]))
+        return (ft_perror("wrong rgb", EINVAL), 1);
+    (*index)++;
+    return (0);
+}
+
+int is_duplicate_colors(t_color_flags *flags)
+{
+    if (flags->floor != 1 || flags->ceiling != 1)
+        return (ft_perror("missing color", EINVAL), 1);
+    return (0);
+}
+
+int not_colors(t_file *map, int *index)
+{
+	int tmp_index;
+	t_color_flags flags;
+
+	flags = (t_color_flags){0, 0};
+	skip_empty_lines(map->map, index);
+	tmp_index = *index;
+	
+	// Process all color definitions until we find a non-color line
+	while (map->map[*index] && (map->map[*index][0] == 'F' || map->map[*index][0] == 'C'))
+	{
+		if(wrong_color_and_rgb(map->map, index, &flags))
+			return (1);
+		skip_empty_lines(map->map, index);
+	}
+	
+	if (is_duplicate_colors(&flags))
+		return (ft_perror("duplicate color", EINVAL), 1);
+	if (save_colors(map, &tmp_index))
+		return (1);
+	
+	return (0);
+}
+
 int parse_map(t_file **map)
 {
     int index;
@@ -383,6 +541,8 @@ int parse_map(t_file **map)
     if (is_last_line_empty((*map)->map))
         return (1);
     if (not_textures(*map, &index))
+        return (1);
+    if (not_colors(*map, &index))
         return (1);
 
     return (0);
@@ -432,7 +592,8 @@ int init_map(t_file **map)
 	(*map)->textures.south = NULL;
 	(*map)->textures.west = NULL;
 	(*map)->textures.east = NULL;
-	(*map)->next = NULL;
+	(*map)->colors.floor = 0;
+	(*map)->colors.ceiling = 0;
 	return (0);
 }
 
