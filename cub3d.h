@@ -31,8 +31,8 @@ typedef struct s_file
 	int map_height;
 	int map_width;
 	char player_dir;
-	int player_x;
-	int player_y;
+	int player_x; // player position
+	int player_y; // player position
 } t_file;
 
 typedef struct s_dir_flags
@@ -48,6 +48,12 @@ typedef struct s_color_flags
 	int floor;
 	int ceiling;
 } t_color_flags;
+
+typedef struct s_coord
+{
+	int i;
+	int j;
+} t_coord;
 
 /* Function prototypes */
 int	check_walls(char **map);

@@ -1,11 +1,5 @@
 #include "cub3d.h"
 
-int is_direction(char *line, char *dir);
-int not_valid_char(char c, int *player_count, t_file *map);
-int check_player_count(int player_count);
-int get_map_height(char **map, int start_index);
-char *ft_strdup_map(char *str);
-int copy_map(t_file *map, int index);
 
 void ft_perror(char *msg, int err)
 {
@@ -366,10 +360,10 @@ int not_textures(t_file *map, int *index)
     // printf("map[index]: %s\n", map->raw_file[*index]);
     
     //we print the textures
-    printf("North texture: %s\n", map->textures.north);
-    printf("South texture: %s\n", map->textures.south);
-    printf("West texture: %s\n", map->textures.west);
-    printf("East texture: %s\n", map->textures.east);
+    // printf("North texture: %s\n", map->textures.north);
+    // printf("South texture: %s\n", map->textures.south);
+    // printf("West texture: %s\n", map->textures.west);
+    // printf("East texture: %s\n", map->textures.east);
 
 
     
@@ -530,25 +524,23 @@ int not_colors(t_file *map, int *index)
 		return (ft_perror("duplicate color", EINVAL), 1);
 	if (save_colors(map, &tmp_index))
 		return (1);
-    printf("index: %d\n", *index);
-    printf("map[index]: %s\n", map->raw_file[*index]);
+    // printf("index: %d\n", *index);
+    // printf("map[index]: %s\n", map->raw_file[*index]);
 	
 	return (0);
 }
 
-int not_valid_char(char c, int *player_count, t_file *map)
+int not_valid_char(char c, int *player_count, t_file *map, t_coord *pos)
 {
     if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
     {
         (*player_count)++;
-        if (*player_count == 1 && c == 'N')
-            map->player_dir = 'N';
-        else if (*player_count == 1 && c == 'S')
-            map->player_dir = 'S';
-        else if (*player_count == 1 && c == 'E')
-            map->player_dir = 'E';
-        else if (*player_count == 1 && c == 'W')
-            map->player_dir = 'W';
+        if (*player_count == 1)
+        {
+            map->player_dir = c;
+            map->player_x = (*pos).j;
+            map->player_y = (*pos).i;
+        }
     }
     if (*player_count > 1)
         return (ft_perror("multiple players", EINVAL), 1);
@@ -567,22 +559,21 @@ int check_player_count(int player_count)
 
 int basic_map_check(t_file *map, char **raw_file, int *index)
 {
-    int i;
-    int j;
+    t_coord pos;
     int player_count;
 
-    i = *index;
+    pos.i = *index;
     player_count = 0;
-    while (raw_file[i])
+    while (raw_file[pos.i])
     {
-        j = 0;
-        while (raw_file[i][j])
+        pos.j = 0;
+        while (raw_file[pos.i][pos.j])
         {
-            if (not_valid_char(raw_file[i][j], &player_count, map))
+            if (not_valid_char(raw_file[pos.i][pos.j], &player_count, map, &pos))
                 return (1);
-            j++;
+            pos.j++;
         }
-        i++;
+        pos.i++;
     }
     if (check_player_count(player_count))
         return (1);
@@ -716,20 +707,70 @@ int not_map(t_file *map, int *index)
     if (wrong_ratio(map->game_map))
         return(ft_perror("wrong ratio", EINVAL), 1);
     
-    for (int i = 0; map->game_map[i]; i++)
-    {
-        printf("%s\n", map->game_map[i]);
-    }
+    // for (int i = 0; map->game_map[i]; i++)
+    // {
+    //     printf("%s\n", map->game_map[i]);
+    // }
     if (check_walls(map->game_map))
         return (ft_perror("wrong walls", EINVAL), 1);
     // we print the map copy after checking the walls
-    printf("-----------after checking the walls-----------\n");
-    for (int i = 0; map->game_map[i]; i++)
-    {
-        printf("%s\n", map->game_map[i]);
-    }
+    // printf("-----------after checking the walls-----------\n");
+    // for (int i = 0; map->game_map[i]; i++)
+    // {
+    //     printf("%s\n", map->game_map[i]);
+    // }
+    
+    // Print player position
+    
     return (0);
 }
+
+void print_whole_structure_in_order(t_file *map)
+{
+	int	r, g, b;
+
+	printf("\n========================================\n");
+	printf("            CUB3D MAP STRUCTURE         \n");
+	printf("========================================\n\n");
+
+	// Texture paths
+	printf(">>> TEXTURE PATHS <<<\n");
+	printf("  ▸ North : %s\n", map->textures.north);
+	printf("  ▸ South : %s\n", map->textures.south);
+	printf("  ▸ West  : %s\n", map->textures.west);
+	printf("  ▸ East  : %s\n\n", map->textures.east);
+
+	// Colors
+	printf(">>> COLORS <<<\n");
+
+	r = (map->colors.floor >> 16) & 0xFF;
+	g = (map->colors.floor >> 8) & 0xFF;
+	b = map->colors.floor & 0xFF;
+	printf("  ▸ Floor  : RGB(%3d, %3d, %3d) | Hex: 0x%06X\n", r, g, b, map->colors.floor);
+
+	r = (map->colors.ceiling >> 16) & 0xFF;
+	g = (map->colors.ceiling >> 8) & 0xFF;
+	b = map->colors.ceiling & 0xFF;
+	printf("  ▸ Ceiling: RGB(%3d, %3d, %3d) | Hex: 0x%06X\n\n", r, g, b, map->colors.ceiling);
+
+	// Map dimensions
+	printf(">>> MAP DIMENSIONS <<<\n");
+	printf("  ▸ Width : %d\n", map->map_width);
+	printf("  ▸ Height: %d\n\n", map->map_height);
+
+	// Player info
+	printf(">>> PLAYER INFORMATION <<<\n");
+	printf("  ▸ Direction: %c\n", map->player_dir);
+	printf("  ▸ Position : (%d, %d)\n\n", map->player_x, map->player_y);
+
+	// Game map
+	printf(">>> GAME MAP <<<\n");
+	for (int i = 0; map->game_map[i]; i++)
+		printf("  %s\n", map->game_map[i]);
+
+	printf("\n========================================\n");
+}
+
 
 int parse_map(t_file **map)
 {
@@ -748,6 +789,11 @@ int parse_map(t_file **map)
         return (1);
     if (not_map(*map, &index))
         return (1);
+    
+    print_whole_structure_in_order(*map);
+
+    
+    
     return (0);
 }
 
@@ -806,34 +852,44 @@ int init_map(t_file **map)
 	return (0);
 }
 
-void map_clean(t_file **map)
+void	clean_string_array(char ***array)
 {
-	int i;
+	int	i;
 
+	if (!array || !*array)
+		return ;
+	i = 0;
+	while ((*array)[i])
+		free((*array)[i++]);
+	free(*array);
+	*array = NULL;
+}
+
+void	clean_texture_paths(t_texture_paths *textures)
+{
+	if (!textures)
+		return ;
+	if (textures->north)
+		free(textures->north);
+	if (textures->south)
+		free(textures->south);
+	if (textures->west)
+		free(textures->west);
+	if (textures->east)
+		free(textures->east);
+	textures->north = NULL;
+	textures->south = NULL;
+	textures->west = NULL;
+	textures->east = NULL;
+}
+
+void	cleanup(t_file **map)
+{
 	if (!map || !*map)
 		return ;
-	if ((*map)->raw_file)
-	{
-		i = 0;
-		while ((*map)->raw_file[i])
-			free((*map)->raw_file[i++]);
-		free((*map)->raw_file);
-	}
-	if ((*map)->game_map)
-	{
-		i = 0;
-		while ((*map)->game_map[i])
-			free((*map)->game_map[i++]);
-		free((*map)->game_map);
-	}
-	if ((*map)->textures.north)
-		free((*map)->textures.north);
-	if ((*map)->textures.south)
-		free((*map)->textures.south);
-	if ((*map)->textures.west)
-		free((*map)->textures.west);
-	if ((*map)->textures.east)
-		free((*map)->textures.east);
+	clean_string_array(&((*map)->raw_file));
+	clean_string_array(&((*map)->game_map));
+	clean_texture_paths(&((*map)->textures));
 	free(*map);
 	*map = NULL;
 }
@@ -846,10 +902,20 @@ int main(int ac, char **av)
         return (1);
     if (parse_args(ac, av, &map))
     {
-        map_clean(&map);
+        cleanup(&map);
         return (1);
     }
-    printf("we are good to go\n");
-    map_clean(&map);
+    // now that we parsed the map, we can start the game
+    // but should we start raycasting first or should we start the game first?
+    // i think we should start the game first
+    // because we need to load the textures first
+    // and then we can start the game
+    // but we need to load the textures first
+    // so we need to start the game first
+    // so we need to start the game first
+
+
+    printf("\nwe are good to go\n");
+    cleanup(&map);
     return (0);
 }
