@@ -816,14 +816,8 @@ int parse_args(int ac, char **av, t_file **map)
 	if (!(*map)->raw_file)
 		return (free(tmp), ft_perror("malloc", errno), 1);
 	trim_empty_lines(&((*map)->raw_file)); // we trim the empty lines at the end of the map->raw_file 
-    printf("========================================\n");
-    for (int i = 0; (*map)->raw_file[i]; i++)
-        printf("  %s\n", (*map)->raw_file[i]);
-    printf("========================================\n");
-	
 	if (parse_map(map))
 		return (free(tmp), 1);
-
 	free(tmp);
 	return (0);
 }
