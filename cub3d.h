@@ -55,17 +55,13 @@ typedef struct s_coord
 	int j;
 } t_coord;
 
-typedef struct s_texture_check
+typedef struct s_parse_data
 {
-	t_file *map;
-	int *i;
-	int *directions_found;
-}	t_texture_check;
+	t_dir_flags *dir_flags;
+	t_color_flags *color_flags;
+	int *found_map_start;
+} t_parse_data;
 
-/* Function prototypes */
-int	check_walls(char **map);
-int	is_valid_position(char **map, int row, int col);
-int	is_space_or_tab(char c);
-void	flood_fill(char **map, int row, int col, int *found_edge);
+int check_walls(char **map);
 
 #endif

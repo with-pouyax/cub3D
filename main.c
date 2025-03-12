@@ -230,37 +230,6 @@ int no_xpm_extension(char *line)
 }
     
 
-int wrong_dir_and_ex(char **map, int *index, t_dir_flags *flags)
-{
-    if (map[*index][0] == 'N' && map[*index][1] == 'O' && \
-    (map[*index][2] == ' ' || map[*index][2] == '\t'))
-        flags->no++;
-    else if (map[*index][0] == 'S' && map[*index][1] == 'O' && \
-    (map[*index][2] == ' ' || map[*index][2] == '\t'))
-        flags->so++;
-    else if (map[*index][0] == 'W' && map[*index][1] == 'E' && \
-    (map[*index][2] == ' ' || map[*index][2] == '\t'))
-        flags->we++;
-    else if (map[*index][0] == 'E' && map[*index][1] == 'A' && \
-    (map[*index][2] == ' ' || map[*index][2] == '\t'))
-        flags->ea++;
-    else
-        return (ft_perror("wrong direction", EINVAL), 1);
-    if (flags->no > 1 || flags->so > 1 || flags->we > 1 || flags->ea > 1)
-        return (ft_perror("duplicate direction", EINVAL), 1);
-    if (no_xpm_extension(map[*index]))
-        return (ft_perror("wrong extension", EINVAL), 1);
-    (*index)++;
-    return (0);
-}
-
-int is_duplicate(t_dir_flags *flags)
-{
-    if (flags->no != 1 || flags->so != 1 || flags->we != 1 || flags->ea != 1)
-        return (ft_perror("missing direction", EINVAL), 1);
-    return (0);
-}       
-
 int is_direction(char *line, char *dir)
 {
 	if (line[0] == dir[0] && line[1] == dir[1] && 
@@ -276,155 +245,10 @@ int extract_and_assign_path(char *line, char **dest)
 	path = line + 3;
 	while (*path && (*path == ' ' || *path == '\t'))
 		path++;
-	*dest = ft_strdup(path);
+	*dest = ft_strdup(path); 
 	if (!*dest)
 		return (ft_perror("malloc", errno), 1);
 	return (0);
-}
-
-int process_texture(t_file *map, int *index, char *dir, char **dest)
-{
-	char *line;
-
-	skip_empty_lines(map->raw_file, index);
-	line = map->raw_file[*index];
-	if (is_direction(line, dir))
-	{
-		if (extract_and_assign_path(line, dest))
-		{
-			return (1);
-		}
-		(*index)++;
-		return (0);
-	}
-	return (2); // Return 2 if this is not the expected direction
-}
-
-int handle_texture_result(int result, int *directions_found)
-{
-	if (result == 0)
-		(*directions_found)++;
-	else if (result == 1)
-		return (1);
-	return (0);
-}
-
-/* 
-- check is a pointer to a struct that contains a pointer to the map, a pointer to the index, and a pointer to the directions_found
-- dir is the direction we are trying to process
-- dest is the destination we are trying to assign the path to
- */
-
-int try_process_texture(t_texture_check *check, char *dir, char **dest)
-{
-	int temp_i;
-	int result;
-
-	if (*dest) 
-		return (2); // Already processed this texture
-	temp_i = *(check->i);
-	result = process_texture(check->map, &temp_i, dir, dest); // we process the texture
-	if (result == 0)
-	{
-		(*(check->directions_found))++;
-		*(check->i) = temp_i;
-		return (0); // Successfully processed
-	}
-	else if (result == 1)
-		return (1); // Error occurred
-	
-	return (2); // Not this direction
-}
-
-int process_north_south(t_texture_check *check)
-{
-	int result;
-
-	result = try_process_texture(check, "NO", &check->map->textures.north);
-	if (result == 0)
-		return (0); // Successfully processed
-	if (result == 1)
-		return (1); // Error occurred
-	result = try_process_texture(check, "SO", &check->map->textures.south);
-	if (result == 0)
-		return (0); // Successfully processed
-	if (result == 1)
-		return (1); // Error occurred
-	return (2); // No texture processed
-}
-
-int process_west_east(t_texture_check *check)
-{
-	int result;
-
-	// Try west texture
-	result = try_process_texture(check, "WE", &check->map->textures.west);
-	if (result == 0)
-		return (0); // Successfully processed
-	if (result == 1)
-		return (1); // Error occurred
-	// Try east texture
-	result = try_process_texture(check, "EA", &check->map->textures.east);
-	if (result == 0)
-		return (0); // Successfully processed
-	if (result == 1)
-		return (1); // Error occurred
-	return (2); // No texture processed
-}
-
-int try_all_textures(t_file *map, int *i, int *directions_found)
-{
-	t_texture_check check;
-	int result;
-
-	check.map = map; // from now check.map is pointing to map
-	check.i = i;
-	check.directions_found = directions_found;
-	result = process_north_south(&check);
-	if (result == 0)
-		return (0); // Successfully processed
-	if (result == 1)
-		return (1); // Error occurred
-	// Process west and east textures
-	result = process_west_east(&check);
-	if (result == 0)
-		return (0); // Successfully processed
-	if (result == 1)
-		return (1); // Error occurred
-	return (2); // No texture processed on this line
-}
-
-int save_textures(t_file *map, int *index)
-{
-	int i;
-	int directions_found;
-	int result;
-
-	directions_found = 0;
-	i = *index;
-	while (map->raw_file[i] && directions_found < 4)
-	{
-		skip_empty_lines(map->raw_file, &i); 
-		if (!map->raw_file[i])
-			break;
-		
-		result = try_all_textures(map, &i, &directions_found);
-		if (result == 1)
-			return (1); // Error occurred
-		if (result == 2)
-			return (ft_perror("invalid texture", EINVAL), 1);
-	}
-	*index = i;
-	if (directions_found != 4)
-		return (ft_perror("Missing texture directions", EINVAL), 1);
-	return (0);
-}
-
-int not_textures(t_file *map, int *index)
-{
-    if (save_textures(map, index))
-        return (ft_perror("unable to save textures", EINVAL), 1);
-    return 0;
 }
 
 int wrong_rgb(char *line)
@@ -501,89 +325,6 @@ int extract_rgb(char *line, int *rgb_value)
 	if (line[i])
 		return (1);
 	*rgb_value = (r << 16) | (g << 8) | b; // we convert the rgb value to a single integer
-	return (0);
-}
-
-int save_colors(t_file *map, int *index)
-{
-	int i;
-	int result;
-
-	i = *index;
-	while (map->raw_file[i])
-	{
-		if (map->raw_file[i][0] == 'F' && (map->raw_file[i][1] == ' ' || \
-		map->raw_file[i][1] == '\t'))
-		{
-			result = extract_rgb(map->raw_file[i], &map->colors.floor); // we extract the rgb value from the line
-			if (result)
-				return (ft_perror("invalid floor RGB format", EINVAL), 1);
-		}
-		else if (map->raw_file[i][0] == 'C' && (map->raw_file[i][1] == ' ' || \
-		map->raw_file[i][1] == '\t'))
-		{
-			result = extract_rgb(map->raw_file[i], &map->colors.ceiling);
-			if (result)
-				return (ft_perror("invalid ceiling RGB format", EINVAL), 1);
-		}
-		i++;
-		if (i >= *index + 2)
-			break;
-	}
-	return (0);
-}
-
-
-
-int wrong_color_and_rgb(char **map, int *index, t_color_flags *flags)
-{
-    if (map[*index][0] == 'F' && (map[*index][1] == ' ' || \
-    map[*index][1] == '\t'))
-        flags->floor++;
-    else if (map[*index][0] == 'C' && (map[*index][1] == ' ' || \
-    map[*index][1] == '\t'))
-        flags->ceiling++;
-    else
-        return (ft_perror("wrong color", EINVAL), 1);
-    if (flags->floor > 1 || flags->ceiling > 1)
-        return (ft_perror("duplicate color", EINVAL), 1);
-    if (wrong_rgb(map[*index]))
-        return (ft_perror("wrong rgb", EINVAL), 1);
-    (*index)++;
-    return (0);
-}
-
-int is_duplicate_colors(t_color_flags *flags)
-{
-    if (flags->floor != 1 || flags->ceiling != 1)
-        return (ft_perror("missing color", EINVAL), 1);
-    return (0);
-}
-
-int not_colors(t_file *map, int *index)
-{
-	int tmp_index;
-	t_color_flags flags;
-
-	flags = (t_color_flags){0, 0};
-	skip_empty_lines(map->raw_file, index);
-	tmp_index = *index;
-	
-	// Process all color definitions until we find a non-color line
-	while (map->raw_file[*index] && (map->raw_file[*index][0] == 'F' || map->raw_file[*index][0] == 'C'))
-	{
-		if(wrong_color_and_rgb(map->raw_file, index, &flags))
-			return (1);
-		skip_empty_lines(map->raw_file, index);
-	}
-	
-	if (is_duplicate_colors(&flags))
-		return (ft_perror("duplicate color", EINVAL), 1);
-	if (save_colors(map, &tmp_index))
-		return (1);
-    // printf("index: %d\n", *index);
-    // printf("map[index]: %s\n", map->raw_file[*index]);
-	
 	return (0);
 }
 
@@ -763,21 +504,9 @@ int not_map(t_file *map, int *index)
         return(ft_perror("copy map", EINVAL), 1);
     if (wrong_ratio(map->game_map))
         return(ft_perror("wrong ratio", EINVAL), 1);
-    
-    // for (int i = 0; map->game_map[i]; i++)
-    // {
-    //     printf("%s\n", map->game_map[i]);
-    // }
     if (check_walls(map->game_map))
         return (ft_perror("wrong walls", EINVAL), 1);
-    // we print the map copy after checking the walls
-    // printf("-----------after checking the walls-----------\n");
-    // for (int i = 0; map->game_map[i]; i++)
-    // {
-    //     printf("%s\n", map->game_map[i]);
-    // }
-    
-    // Print player position
+  
     
     return (0);
 }
@@ -828,29 +557,198 @@ void print_whole_structure_in_order(t_file *map)
 	printf("\n========================================\n");
 }
 
+int is_texture_line(char *line)
+{
+	return ((line[0] == 'N' && line[1] == 'O' && 
+		(line[2] == ' ' || line[2] == '\t')) ||
+		(line[0] == 'S' && line[1] == 'O' && 
+		(line[2] == ' ' || line[2] == '\t')) ||
+		(line[0] == 'W' && line[1] == 'E' && 
+		(line[2] == ' ' || line[2] == '\t')) ||
+		(line[0] == 'E' && line[1] == 'A' && 
+		(line[2] == ' ' || line[2] == '\t')));
+}
+
+int is_color_line(char *line)
+{
+	return ((line[0] == 'F' && (line[1] == ' ' || line[1] == '\t')) ||
+		(line[0] == 'C' && (line[1] == ' ' || line[1] == '\t')));
+}
+
+int process_no_texture(t_file *map, char *line, t_dir_flags *dir_flags)
+{
+	dir_flags->no++;
+	if (dir_flags->no > 1)
+		return (ft_perror("duplicate NO texture", EINVAL), 1);
+	if (extract_and_assign_path(line, &map->textures.north)) // we extract the path and assign it to the map->textures.north
+		return (1);
+	return (0);
+}
+
+int process_so_texture(t_file *map, char *line, t_dir_flags *dir_flags)
+{
+	dir_flags->so++;
+	if (dir_flags->so > 1)
+		return (ft_perror("duplicate SO texture", EINVAL), 1);
+	if (extract_and_assign_path(line, &map->textures.south))
+		return (1);
+	return (0);
+}
+
+int process_we_texture(t_file *map, char *line, t_dir_flags *dir_flags)
+{
+	dir_flags->we++;
+	if (dir_flags->we > 1)
+		return (ft_perror("duplicate WE texture", EINVAL), 1);
+	if (extract_and_assign_path(line, &map->textures.west))
+		return (1);
+	return (0);
+}
+
+int process_ea_texture(t_file *map, char *line, t_dir_flags *dir_flags)
+{
+	dir_flags->ea++;
+	if (dir_flags->ea > 1)
+		return (ft_perror("duplicate EA texture", EINVAL), 1);
+	if (extract_and_assign_path(line, &map->textures.east))
+		return (1);
+	return (0);
+}
+
+int process_texture_line(t_file *map, char *line, t_dir_flags *dir_flags)
+{
+	if (line[0] == 'N' && line[1] == 'O')
+		return (process_no_texture(map, line, dir_flags));
+	else if (line[0] == 'S' && line[1] == 'O')
+		return (process_so_texture(map, line, dir_flags));
+	else if (line[0] == 'W' && line[1] == 'E')
+		return (process_we_texture(map, line, dir_flags));
+	else if (line[0] == 'E' && line[1] == 'A')
+		return (process_ea_texture(map, line, dir_flags));
+	return (0);
+}
+
+int process_floor_color(t_file *map, char *line, t_color_flags *color_flags)
+{
+	color_flags->floor++;
+	if (color_flags->floor > 1)
+		return (ft_perror("duplicate floor color", EINVAL), 1);
+	if (extract_rgb(line, &map->colors.floor))
+		return (ft_perror("invalid floor RGB format", EINVAL), 1);
+	return (0);
+}
+
+int process_ceiling_color(t_file *map, char *line, t_color_flags *color_flags)
+{
+	color_flags->ceiling++;
+	if (color_flags->ceiling > 1)
+		return (ft_perror("duplicate ceiling color", EINVAL), 1);
+	if (extract_rgb(line, &map->colors.ceiling))
+		return (ft_perror("invalid ceiling RGB format", EINVAL), 1);
+	return (0);
+}
+
+int process_color_line(t_file *map, char *line, t_color_flags *color_flags)
+{
+	if (line[0] == 'F')
+		return (process_floor_color(map, line, color_flags));
+	else if (line[0] == 'C')
+		return (process_ceiling_color(map, line, color_flags));
+	return (0);
+}
+
+int check_all_elements_present(t_dir_flags *dir_flags, t_color_flags *color_flags)
+{
+	if (dir_flags->no != 1 || dir_flags->so != 1 || 
+		dir_flags->we != 1 || dir_flags->ea != 1)
+		return (ft_perror("missing texture direction", EINVAL), 1);
+	if (color_flags->floor != 1 || color_flags->ceiling != 1)
+		return (ft_perror("missing color", EINVAL), 1);
+	return (0);
+}
+
+int process_line(t_file *map, char *line, t_parse_data *data)
+{
+	if (is_texture_line(line)) // if the line starts with NO, SO, WE, EA
+	{
+		if (process_texture_line(map, line, data->dir_flags)) // we process the line
+			return (1);
+		return (0);
+	}
+	else if (is_color_line(line)) // if the line starts with F or C
+	{
+		if (process_color_line(map, line, data->color_flags)) // we process color line
+			return (1);
+		return (0);
+	}
+	else // if the line is not a texture or color line
+	{
+		*(data->found_map_start) = 1;
+		return (0);
+	}
+}
+
+void init_parse_data(t_parse_data *data, t_dir_flags *dir_flags,
+	t_color_flags *color_flags, int *found_map_start)
+{
+	*found_map_start = 0;
+	data->dir_flags = dir_flags;
+	data->color_flags = color_flags;
+	data->found_map_start = found_map_start;
+}
+
+int process_current_line(t_file *map, int *index, t_parse_data *data)
+{
+	char *line;
+
+	skip_empty_lines(map->raw_file, index);
+	if (!map->raw_file[*index]) // if the line is empty, we return 0
+		return (0);
+	line = map->raw_file[*index];
+	if (process_line(map, line, data)) //we process the line
+		return (1);
+	if (!*(data->found_map_start))
+		(*index)++;
+	return (0);
+}
+
+int parse_textures_and_colors(t_file *map, int *index, 
+	t_dir_flags *dir_flags, t_color_flags *color_flags)
+{
+	int found_map_start;
+	t_parse_data data;
+
+	init_parse_data(&data, dir_flags, color_flags, &found_map_start);
+	
+	while (map->raw_file[*index] && !found_map_start)
+	{
+		if (process_current_line(map, index, &data))
+			return (1);
+	}
+	
+	return (check_all_elements_present(dir_flags, color_flags));
+}
 
 int parse_map(t_file **map)
 {
     int index;
+    t_dir_flags dir_flags;
+    t_color_flags color_flags;
 
     index = 0;
+    dir_flags = (t_dir_flags){0, 0, 0, 0};
+    color_flags = (t_color_flags){0, 0};
+    
     if(map_is_empty((*map)->raw_file))
         return (1);
-    // if(exceeds_size((*map)->raw_file))
-    //     return (1);
     if (is_last_line_empty((*map)->raw_file))
         return (1);
-    if (not_textures(*map, &index))
-        return (1);
-    if (not_colors(*map, &index))
+    if (parse_textures_and_colors(*map, &index, &dir_flags, &color_flags))
         return (1);
     if (not_map(*map, &index))
         return (1);
     
     print_whole_structure_in_order(*map);
-
-    
-    
     return (0);
 }
 
@@ -871,16 +769,9 @@ int parse_args(int ac, char **av, t_file **map)
     if(extentions_check(av[1]))
          return (1);
     tmp = get_string(&file_len, av);
-    //printf("tmp: %s\n", tmp);
     (*map)->raw_file = ft_split(tmp, '\n');
     if (!(*map)->raw_file)
         return (free(tmp), ft_perror("malloc", errno), 1);
-    // we print the map
-    // for (int i = 0; (*map)->raw_file[i]; i++)
-    // {
-    //     printf("%s\n", (*map)->raw_file[i]);
-    // }
-    
    if (parse_map(map))
       return (free(tmp), 1);
 
