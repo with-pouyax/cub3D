@@ -55,6 +55,13 @@ typedef struct s_coord
 	int j;
 } t_coord;
 
+typedef struct s_texture_check
+{
+	t_file *map;
+	int *i;
+	int *directions_found;
+}	t_texture_check;
+
 /* Function prototypes */
 int	check_walls(char **map);
 int	is_valid_position(char **map, int row, int col);

@@ -288,7 +288,6 @@ int process_texture(t_file *map, int *index, char *dir, char **dest)
 
 	skip_empty_lines(map->raw_file, index);
 	line = map->raw_file[*index];
-	
 	if (is_direction(line, dir))
 	{
 		if (extract_and_assign_path(line, dest))
@@ -310,24 +309,112 @@ int handle_texture_result(int result, int *directions_found)
 	return (0);
 }
 
-int save_textures(t_file *map, int *index)
+/* 
+- check is a pointer to a struct that contains a pointer to the map, a pointer to the index, and a pointer to the directions_found
+- dir is the direction we are trying to process
+- dest is the destination we are trying to assign the path to
+ */
+
+int try_process_texture(t_texture_check *check, char *dir, char **dest)
+{
+	int temp_i;
+	int result;
+
+	if (*dest) 
+		return (2); // Already processed this texture
+	temp_i = *(check->i);
+	result = process_texture(check->map, &temp_i, dir, dest); // we process the texture
+	if (result == 0)
+	{
+		(*(check->directions_found))++;
+		*(check->i) = temp_i;
+		return (0); // Successfully processed
+	}
+	else if (result == 1)
+		return (1); // Error occurred
+	
+	return (2); // Not this direction
+}
+
+int process_north_south(t_texture_check *check)
 {
 	int result;
+
+	result = try_process_texture(check, "NO", &check->map->textures.north);
+	if (result == 0)
+		return (0); // Successfully processed
+	if (result == 1)
+		return (1); // Error occurred
+	result = try_process_texture(check, "SO", &check->map->textures.south);
+	if (result == 0)
+		return (0); // Successfully processed
+	if (result == 1)
+		return (1); // Error occurred
+	return (2); // No texture processed
+}
+
+int process_west_east(t_texture_check *check)
+{
+	int result;
+
+	// Try west texture
+	result = try_process_texture(check, "WE", &check->map->textures.west);
+	if (result == 0)
+		return (0); // Successfully processed
+	if (result == 1)
+		return (1); // Error occurred
+	// Try east texture
+	result = try_process_texture(check, "EA", &check->map->textures.east);
+	if (result == 0)
+		return (0); // Successfully processed
+	if (result == 1)
+		return (1); // Error occurred
+	return (2); // No texture processed
+}
+
+int try_all_textures(t_file *map, int *i, int *directions_found)
+{
+	t_texture_check check;
+	int result;
+
+	check.map = map; // from now check.map is pointing to map
+	check.i = i;
+	check.directions_found = directions_found;
+	result = process_north_south(&check);
+	if (result == 0)
+		return (0); // Successfully processed
+	if (result == 1)
+		return (1); // Error occurred
+	// Process west and east textures
+	result = process_west_east(&check);
+	if (result == 0)
+		return (0); // Successfully processed
+	if (result == 1)
+		return (1); // Error occurred
+	return (2); // No texture processed on this line
+}
+
+int save_textures(t_file *map, int *index)
+{
+	int i;
 	int directions_found;
+	int result;
 
 	directions_found = 0;
-	result = process_texture(map, index, "NO", &map->textures.north);
-	if (handle_texture_result(result, &directions_found))
-		return (1);
-	result = process_texture(map, index, "SO", &map->textures.south);
-	if (handle_texture_result(result, &directions_found))
-		return (1);
-	result = process_texture(map, index, "WE", &map->textures.west);
-	if (handle_texture_result(result, &directions_found))
-		return (1);
-	result = process_texture(map, index, "EA", &map->textures.east);
-	if (handle_texture_result(result, &directions_found))
-		return (1);
+	i = *index;
+	while (map->raw_file[i] && directions_found < 4)
+	{
+		skip_empty_lines(map->raw_file, &i); 
+		if (!map->raw_file[i])
+			break;
+		
+		result = try_all_textures(map, &i, &directions_found);
+		if (result == 1)
+			return (1); // Error occurred
+		if (result == 2)
+			return (ft_perror("invalid texture", EINVAL), 1);
+	}
+	*index = i;
 	if (directions_found != 4)
 		return (ft_perror("Missing texture directions", EINVAL), 1);
 	return (0);
@@ -335,38 +422,8 @@ int save_textures(t_file *map, int *index)
 
 int not_textures(t_file *map, int *index)
 {
-    int i;
-    t_dir_flags flags;
-    int tmp_index;
-
-    i = 0;
-    flags = (t_dir_flags){0, 0, 0, 0};
-    skip_empty_lines(map->raw_file, index);
-    // printf("index: %d\n", *index);
-    // printf("map[index]: %s\n", map->raw_file[*index]);
-    tmp_index = *index;  
-    while (i < 4)
-    {
-        if(wrong_dir_and_ex(map->raw_file, index, &flags))
-            return (1);
-        skip_empty_lines(map->raw_file, index);
-        i++;
-    }
-    if (is_duplicate(&flags))
-        return (ft_perror("duplicate direction", EINVAL), 1);
-    if (save_textures(map, &tmp_index))
-        return (1);
-    // printf("index: %d\n", *index);
-    // printf("map[index]: %s\n", map->raw_file[*index]);
-    
-    //we print the textures
-    // printf("North texture: %s\n", map->textures.north);
-    // printf("South texture: %s\n", map->textures.south);
-    // printf("West texture: %s\n", map->textures.west);
-    // printf("East texture: %s\n", map->textures.east);
-
-
-    
+    if (save_textures(map, index))
+        return (ft_perror("unable to save textures", EINVAL), 1);
     return 0;
 }
 

@@ -7,7 +7,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/cub3d",
-            "args": ["maps/texture.cub"],
+            "args": ["maps/r_standard.cub"],
             "stopAtEntry": true,
             "cwd": "${workspaceFolder}",
             "externalConsole": false,
