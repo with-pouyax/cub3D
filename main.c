@@ -533,20 +533,42 @@ void print_whole_structure_in_order(t_file *map)
 
 int is_texture_line(char *line)
 {
-	return ((line[0] == 'N' && line[1] == 'O' && 
-		(line[2] == ' ' || line[2] == '\t')) ||
-		(line[0] == 'S' && line[1] == 'O' && 
-		(line[2] == ' ' || line[2] == '\t')) ||
-		(line[0] == 'W' && line[1] == 'E' && 
-		(line[2] == ' ' || line[2] == '\t')) ||
-		(line[0] == 'E' && line[1] == 'A' && 
-		(line[2] == ' ' || line[2] == '\t')));
+	int i;
+
+	i = 0;
+	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
+		i++;
+	
+	return ((line[i] == 'N' && line[i + 1] == 'O' && 
+		(line[i + 2] == ' ' || line[i + 2] == '\t')) ||
+		(line[i] == 'S' && line[i + 1] == 'O' && 
+		(line[i + 2] == ' ' || line[i + 2] == '\t')) ||
+		(line[i] == 'W' && line[i + 1] == 'E' && 
+		(line[i + 2] == ' ' || line[i + 2] == '\t')) ||
+		(line[i] == 'E' && line[i + 1] == 'A' && 
+		(line[i + 2] == ' ' || line[i + 2] == '\t')));
 }
 
 int is_color_line(char *line)
 {
-	return ((line[0] == 'F' && (line[1] == ' ' || line[1] == '\t')) ||
-		(line[0] == 'C' && (line[1] == ' ' || line[1] == '\t')));
+	int i;
+
+	i = 0;
+	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
+		i++;
+	
+	return ((line[i] == 'F' && (line[i + 1] == ' ' || line[i + 1] == '\t')) ||
+		(line[i] == 'C' && (line[i + 1] == ' ' || line[i + 1] == '\t')));
+}
+
+int get_identifier_position(char *line)
+{
+	int i;
+
+	i = 0;
+	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
+		i++;
+	return (i);
 }
 
 int process_no_texture(t_file *map, char *line, t_dir_flags *dir_flags)
@@ -591,14 +613,18 @@ int process_ea_texture(t_file *map, char *line, t_dir_flags *dir_flags)
 
 int process_texture_line(t_file *map, char *line, t_dir_flags *dir_flags)
 {
-	if (line[0] == 'N' && line[1] == 'O')
-		return (process_no_texture(map, line, dir_flags));
-	else if (line[0] == 'S' && line[1] == 'O')
-		return (process_so_texture(map, line, dir_flags));
-	else if (line[0] == 'W' && line[1] == 'E')
-		return (process_we_texture(map, line, dir_flags));
-	else if (line[0] == 'E' && line[1] == 'A')
-		return (process_ea_texture(map, line, dir_flags));
+	int i;
+
+	i = get_identifier_position(line);
+	
+	if (line[i] == 'N' && line[i + 1] == 'O')
+		return (process_no_texture(map, line + i, dir_flags));
+	else if (line[i] == 'S' && line[i + 1] == 'O')
+		return (process_so_texture(map, line + i, dir_flags));
+	else if (line[i] == 'W' && line[i + 1] == 'E')
+		return (process_we_texture(map, line + i, dir_flags));
+	else if (line[i] == 'E' && line[i + 1] == 'A')
+		return (process_ea_texture(map, line + i, dir_flags));
 	return (0);
 }
 
@@ -624,10 +650,14 @@ int process_ceiling_color(t_file *map, char *line, t_color_flags *color_flags)
 
 int process_color_line(t_file *map, char *line, t_color_flags *color_flags)
 {
-	if (line[0] == 'F')
-		return (process_floor_color(map, line, color_flags));
-	else if (line[0] == 'C')
-		return (process_ceiling_color(map, line, color_flags));
+	int i;
+
+	i = get_identifier_position(line);
+	
+	if (line[i] == 'F')
+		return (process_floor_color(map, line + i, color_flags));
+	else if (line[i] == 'C')
+		return (process_ceiling_color(map, line + i, color_flags));
 	return (0);
 }
 
