@@ -1,8 +1,12 @@
+
+
 F 76,76,76
-C 99,99,99
+
+
 
 NO textures/simonkraft/cobblestone.xpm
 SO textures/simonkraft/cobblestone_01.xpm
+C 99,99,99
 WE textures/simonkraft/mossy_cobblestone1.xpm
 EA textures/simonkraft/cobblestone_02.xpm
 
@@ -16,4 +20,4 @@ EA textures/simonkraft/cobblestone_02.xpm
 1111000000000001011
 1000000001000000001
 1111111111111111111
-
+     

@@ -1,7 +1,7 @@
 
 
 # Program name
-NAME = cub3d
+NAME = cub3D
 
 # Compiler and flags
 CC = cc
