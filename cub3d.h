@@ -64,6 +64,25 @@ typedef struct s_parse_data
 
 /* Function prototypes */
 int	check_walls(char **map);
-
+int	is_valid_position(char **map, int row, int col);
+int	is_space_or_tab(char c);
+void	flood_fill(char **map, int row, int col, int *found_edge);
+int	parse_textures_and_colors(t_file *map, int *index, 
+	t_dir_flags *dir_flags, t_color_flags *color_flags);
+int	process_line(t_file *map, char *line, t_parse_data *data);
+int	process_texture_line(t_file *map, char *line, t_dir_flags *dir_flags);
+int	process_no_texture(t_file *map, char *line, t_dir_flags *dir_flags);
+int	process_so_texture(t_file *map, char *line, t_dir_flags *dir_flags);
+int	process_we_texture(t_file *map, char *line, t_dir_flags *dir_flags);
+int	process_ea_texture(t_file *map, char *line, t_dir_flags *dir_flags);
+int	process_color_line(t_file *map, char *line, t_color_flags *color_flags);
+int	process_floor_color(t_file *map, char *line, t_color_flags *color_flags);
+int	process_ceiling_color(t_file *map, char *line, t_color_flags *color_flags);
+void	init_parse_data(t_parse_data *data, t_dir_flags *dir_flags,
+	t_color_flags *color_flags, int *found_map_start);
+int	process_current_line(t_file *map, int *index, t_parse_data *data);
+int	get_identifier_position(char *line);
+int	is_empty_line(char *line);
+void	trim_empty_lines(char ***map);
 
 #endif

@@ -745,8 +745,6 @@ int parse_map(t_file **map)
     
     if(map_is_empty((*map)->raw_file))
         return (1);
-    if (is_last_line_empty((*map)->raw_file))
-        return (1);
     if (parse_textures_and_colors(*map, &index, &dir_flags, &color_flags))
         return (1);
     if (not_map(*map, &index))
@@ -756,31 +754,78 @@ int parse_map(t_file **map)
     return (0);
 }
 
+int is_empty_line(char *line)
+{
+	int j;
 
+	j = 0;
+	if (!line)
+		return (1);
+	while (line[j]) // we iterate through the line
+	{
+		if (line[j] != ' ' && line[j] != '\t')
+			return (1);
+		j++;
+	}
+	return (0);
+}
 
+void trim_empty_lines(char ***map)
+{
+    // here we print ***map is our raw file
+    //(*map)[i] is our raw file[i] means the line we are currently on
+	int i;
+	int last_non_empty;
+
+	i = 0;
+	last_non_empty = -1;
+	while ((*map)[i])
+	{
+		if (is_empty_line((*map)[i]))
+			last_non_empty = i; // we store the index of the last non empty line
+		i++;
+	}
+	if (last_non_empty < i - 1) // if the last non empty line is less than the last line means there are empty lines at the end
+    // so we need to trim them
+	{
+		i = last_non_empty + 1;
+		while ((*map)[i]) // we iterate from the last non empty line to the last line
+		{
+			free((*map)[i]); 
+			(*map)[i] = NULL;
+			i++;
+		}
+	}
+}
 
 int parse_args(int ac, char **av, t_file **map)
 {
-    int file_len;
-    char *tmp;
+	int file_len;
+	char *tmp;
 
-    (void)tmp;
-    (void)av;
-    (void)file_len;
-    (void)map;
-    if (arg_check(ac))
-        return (1);
-    if(extentions_check(av[1]))
-         return (1);
-    tmp = get_string(&file_len, av);
-    (*map)->raw_file = ft_split(tmp, '\n');
-    if (!(*map)->raw_file)
-        return (free(tmp), ft_perror("malloc", errno), 1);
-   if (parse_map(map))
-      return (free(tmp), 1);
+	(void)tmp;
+	(void)av;
+	(void)file_len;
+	(void)map;
+	if (arg_check(ac))
+		return (1);
+	if(extentions_check(av[1]))
+		 return (1);
+	tmp = get_string(&file_len, av);
+	(*map)->raw_file = ft_split(tmp, '\n');
+	if (!(*map)->raw_file)
+		return (free(tmp), ft_perror("malloc", errno), 1);
+	trim_empty_lines(&((*map)->raw_file)); // we trim the empty lines at the end of the map->raw_file 
+    printf("========================================\n");
+    for (int i = 0; (*map)->raw_file[i]; i++)
+        printf("  %s\n", (*map)->raw_file[i]);
+    printf("========================================\n");
+	
+	if (parse_map(map))
+		return (free(tmp), 1);
 
-    free(tmp);
-    return (0);
+	free(tmp);
+	return (0);
 }
 
 int init_map(t_file **map)
