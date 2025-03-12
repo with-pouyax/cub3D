@@ -1,6 +1,6 @@
 # Cub3D - 3D Raycasting Game
 
-![Cub3D Preview](https://raw.githubusercontent.com/42Paris/minilibx-linux/master/mlx.png)
+![Cub3D cover](https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExOWJ0NG92Nnh1cnBlY281djA1Njk5MG5keGV3bXl5Yzl6dHg5Nzd0eiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/dKa9QCD0n7JeRRui8o/giphy.gif)
 
 ## 🎮 Project Overview
 
