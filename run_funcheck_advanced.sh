@@ -23,6 +23,36 @@ if [ ! -f "./cub3D" ]; then
 	exit 1
 fi
 
+# Function to show usage
+show_usage() {
+	echo -e "${YELLOW}Usage:${NC}"
+	echo -e "  $0 [category]"
+	echo -e "\n${YELLOW}Available categories:${NC}"
+	echo -e "  all      - Run all tests (default)"
+	echo -e "  texture  - Run only texture tests"
+	echo -e "  color    - Run only color tests"
+	echo -e "  basic    - Run only basic tests"
+	echo -e "  good     - Run only good tests"
+	echo -e "  extension - Run only extension tests"
+	echo -e "  final    - Run only final tests"
+	echo -e "  root     - Run only root tests"
+	exit 1
+}
+
+# Parse command line arguments
+CATEGORY="all"
+if [ $# -gt 0 ]; then
+	CATEGORY="$1"
+fi
+
+# Validate category
+if [ "$CATEGORY" != "all" ] && [ "$CATEGORY" != "texture" ] && [ "$CATEGORY" != "color" ] && \
+   [ "$CATEGORY" != "basic" ] && [ "$CATEGORY" != "good" ] && [ "$CATEGORY" != "extension" ] && \
+   [ "$CATEGORY" != "final" ] && [ "$CATEGORY" != "root" ]; then
+	echo -e "${RED}Error: Invalid category '$CATEGORY'${NC}"
+	show_usage
+fi
+
 # Create results directory
 RESULTS_DIR="funcheck_results"
 mkdir -p "$RESULTS_DIR"
@@ -31,6 +61,7 @@ mkdir -p "$RESULTS_DIR"
 SUMMARY_FILE="$RESULTS_DIR/summary.txt"
 echo "Funcheck Test Summary" > "$SUMMARY_FILE"
 echo "===================" >> "$SUMMARY_FILE"
+echo "Category: $CATEGORY" >> "$SUMMARY_FILE"
 echo "" >> "$SUMMARY_FILE"
 
 # Initialize counters
@@ -115,6 +146,12 @@ check_file_type_result() {
 run_test() {
 	local map_file="$1"
 	local category=$(get_category "$map_file")
+	
+	# Skip if we're not running all categories and this isn't the target category
+	if [ "$CATEGORY" != "all" ] && [ "$CATEGORY" != "$category" ]; then
+		return
+	fi
+	
 	local relative_path="${map_file#maps/}"
 	local output_file="$RESULTS_DIR/${relative_path//\//_}.log"
 	local basename=$(basename "$map_file")
@@ -161,7 +198,7 @@ run_test() {
 }
 
 # Find all .cub files and run tests
-echo -e "${YELLOW}${BOLD}Starting funcheck tests on all .cub files...${NC}"
+echo -e "${YELLOW}${BOLD}Starting funcheck tests for category: ${CATEGORY}${NC}"
 echo ""
 
 # Process files in the main maps directory
@@ -186,7 +223,7 @@ for dir in maps/*/; do
 done
 
 # Print summary
-echo -e "\n\n${YELLOW}${BOLD}${UNDERLINE}Test Summary:${NC}"
+echo -e "\n\n${YELLOW}${BOLD}${UNDERLINE}Test Summary for ${CATEGORY}:${NC}"
 echo -e "${BLUE}Total tests: ${TOTAL}${NC}"
 echo -e "${GREEN}Passed: ${PASSED}${NC}"
 echo -e "${RED}Failed: ${FAILED}${NC}"
@@ -232,7 +269,7 @@ cat > "$HTML_REPORT" << EOF
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Funcheck Test Results</title>
+	<title>Funcheck Test Results - ${CATEGORY}</title>
 	<style>
 		body { font-family: Arial, sans-serif; margin: 20px; }
 		h1, h2 { color: #333; }
@@ -272,7 +309,7 @@ cat > "$HTML_REPORT" << EOF
 	</script>
 </head>
 <body>
-	<h1>Funcheck Test Results</h1>
+	<h1>Funcheck Test Results - ${CATEGORY}</h1>
 	
 	<div class="summary">
 		<h2>Summary</h2>
@@ -334,6 +371,12 @@ EOF
 for map_file in $(find maps -name "*.cub" | sort); do
 	if [ -f "$map_file" ]; then
 		category=$(get_category "$map_file")
+		
+		# Skip if we're not running all categories and this isn't the target category
+		if [ "$CATEGORY" != "all" ] && [ "$CATEGORY" != "$category" ]; then
+			continue
+		fi
+		
 		relative_path="${map_file#maps/}"
 		output_file="$RESULTS_DIR/${relative_path//\//_}.log"
 		log_file_name="${relative_path//\//_}.log"

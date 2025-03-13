@@ -1,8 +1,27 @@
 Funcheck Test Summary
 ===================
+Category: texture
 
-PASSED: maps/r_standard2.cub
-PASSED: maps/r_standard.cub
-FAILED: maps/basic/r_empty_end.cub - [33m──────────────────────────────[0m
-PASSED: maps/basic/w_empty.cub
-PASSED: maps/basic/w_empty_with_spaces.cub
+PASSED: maps/texture/r_extra_newlines.cub
+PASSED: maps/texture/r_multiple_spaces.cub
+PASSED: maps/texture/r_no_newlines.cub
+PASSED: maps/texture/r_whitespace_lines.cub
+PASSED: maps/texture/r_xmp.xmp.cub
+PASSED: maps/texture/w_duplicate_direction.cub
+FAILED: maps/texture/w_extension.cub - [33m──────────────────────────────[0m
+PASSED: maps/texture/w_just_extension.cub
+PASSED: maps/texture/w_missing_direction.cub
+PASSED: maps/texture/w_no_dot.cub
+PASSED: maps/texture/w_no_space.cub
+PASSED: maps/texture/w_wrong_extension.cub
+
+Summary:
+Total tests: 12
+Passed: 11
+Failed: 1
+
+Category Summary:
+texture:
+  Total: 12
+  Passed: 11 (91%)
+  Failed: 1

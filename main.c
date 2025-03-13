@@ -199,6 +199,8 @@ int no_xpm_extension(char *line)
         return(ft_perror("Texture path too short", EINVAL), 1); 
     if (len >= 4 && ft_strncmp(path + len - 4, ".xpm", 4) != 0) // if the length of the path is greater than or equal to 4 and the last 4 characters of the path are not ".xpm", then the path is not a valid texture path
         return(ft_perror("Texture file must have .xpm extension", EINVAL), 1);
+    if (len > 4 && path[len - 5] == '/')
+		return(ft_perror("Texture path must not contain a '/'", EINVAL), 1);
     return (0);
 }
     
