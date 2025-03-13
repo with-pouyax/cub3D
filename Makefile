@@ -24,6 +24,7 @@ SRCS = src/main.c \
 	src/parsing/map/map_validation.c \
 	src/parsing/map/map_char_validation.c \
 	src/parsing/map/map_copy_utils.c \
+	src/parsing/map/map_copy_utils2.c \
 	src/parsing/file/file_utils.c \
 	src/parsing/texture/path_rgb_utils.c \
 	src/parsing/texture/texture_color_utils1.c \

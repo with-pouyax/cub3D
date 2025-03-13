@@ -6,13 +6,13 @@
 /*   By: pghajard <pghajard@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 15:29:36 by pghajard          #+#    #+#             */
-/*   Updated: 2025/03/13 15:29:37 by pghajard         ###   ########.fr       */
+/*   Updated: 2025/03/13 16:29:54 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-int process_we_texture(t_file *map, char *line, t_dir_flags *dir_flags)
+int	process_we_texture(t_file *map, char *line, t_dir_flags *dir_flags)
 {
 	dir_flags->we++;
 	if (dir_flags->we > 1)
@@ -22,7 +22,7 @@ int process_we_texture(t_file *map, char *line, t_dir_flags *dir_flags)
 	return (0);
 }
 
-int process_ea_texture(t_file *map, char *line, t_dir_flags *dir_flags)
+int	process_ea_texture(t_file *map, char *line, t_dir_flags *dir_flags)
 {
 	dir_flags->ea++;
 	if (dir_flags->ea > 1)
@@ -32,12 +32,11 @@ int process_ea_texture(t_file *map, char *line, t_dir_flags *dir_flags)
 	return (0);
 }
 
-int process_texture_line(t_file *map, char *line, t_dir_flags *dir_flags)
+int	process_texture_line(t_file *map, char *line, t_dir_flags *dir_flags)
 {
-	int i;
+	int	i;
 
 	i = get_identifier_position(line);
-	
 	if (line[i] == 'N' && line[i + 1] == 'O')
 		return (process_no_texture(map, line + i, dir_flags));
 	else if (line[i] == 'S' && line[i + 1] == 'O')
@@ -49,7 +48,7 @@ int process_texture_line(t_file *map, char *line, t_dir_flags *dir_flags)
 	return (0);
 }
 
-int process_floor_color(t_file *map, char *line, t_color_flags *color_flags)
+int	process_floor_color(t_file *map, char *line, t_color_flags *color_flags)
 {
 	color_flags->floor++;
 	if (color_flags->floor > 1)
@@ -59,7 +58,7 @@ int process_floor_color(t_file *map, char *line, t_color_flags *color_flags)
 	return (0);
 }
 
-int process_ceiling_color(t_file *map, char *line, t_color_flags *color_flags)
+int	process_ceiling_color(t_file *map, char *line, t_color_flags *color_flags)
 {
 	color_flags->ceiling++;
 	if (color_flags->ceiling > 1)
@@ -67,4 +66,4 @@ int process_ceiling_color(t_file *map, char *line, t_color_flags *color_flags)
 	if (extract_rgb(line, &map->colors.ceiling))
 		return (ft_perror("invalid ceiling RGB format", EINVAL), 1);
 	return (0);
-} 
+}

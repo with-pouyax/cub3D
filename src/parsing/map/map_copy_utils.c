@@ -6,23 +6,13 @@
 /*   By: pghajard <pghajard@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 15:29:16 by pghajard          #+#    #+#             */
-/*   Updated: 2025/03/13 15:29:17 by pghajard         ###   ########.fr       */
+/*   Updated: 2025/03/13 16:59:39 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-int get_map_height(char **map, int start_index)
-{
-	int	height;
-
-	height = 0;
-	while (map[start_index + height])
-		height++;
-	return (height);
-}
-
-char *ft_strdup_map(char *str)
+char	*ft_strdup_map(char *str)
 {
 	char	*dup;
 	int		i;
@@ -30,16 +20,12 @@ char *ft_strdup_map(char *str)
 
 	if (!str)
 		return (NULL);
-	
-	// Find the length without trailing whitespace
 	len = ft_strlen(str);
 	while (len > 0 && (str[len - 1] == ' ' || str[len - 1] == '\t'))
 		len--;
-	
 	dup = malloc(sizeof(char) * (len + 1));
 	if (!dup)
 		return (ft_perror("malloc", errno), NULL);
-	
 	i = 0;
 	while (i < len)
 	{
@@ -50,7 +36,7 @@ char *ft_strdup_map(char *str)
 	return (dup);
 }
 
-void free_game_map(char **game_map, int last_index)
+void	free_game_map(char **game_map, int last_index)
 {
 	int	i;
 
@@ -60,7 +46,7 @@ void free_game_map(char **game_map, int last_index)
 	free(game_map);
 }
 
-size_t update_max_width(char **map, int i, size_t max_width)
+size_t	update_max_width(char **map, int i, size_t max_width)
 {
 	size_t	current_width;
 
@@ -70,7 +56,7 @@ size_t update_max_width(char **map, int i, size_t max_width)
 	return (max_width);
 }
 
-int copy_map_lines(t_file *map, int index, int height)
+int	copy_map_lines(t_file *map, int index, int height)
 {
 	int		i;
 	size_t	max_width;
@@ -95,7 +81,7 @@ int copy_map_lines(t_file *map, int index, int height)
 	return (0);
 }
 
-int copy_map(t_file *map, int index)
+int	copy_map(t_file *map, int index)
 {
 	int	height;
 
@@ -106,4 +92,4 @@ int copy_map(t_file *map, int index)
 	if (copy_map_lines(map, index, height))
 		return (1);
 	return (0);
-} 
+}

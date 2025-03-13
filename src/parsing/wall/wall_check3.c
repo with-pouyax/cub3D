@@ -6,7 +6,7 @@
 /*   By: pghajard <pghajard@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 15:30:19 by pghajard          #+#    #+#             */
-/*   Updated: 2025/03/13 15:30:20 by pghajard         ###   ########.fr       */
+/*   Updated: 2025/03/13 16:53:16 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,10 @@ int	check_position(char **map, char **backup, int row, int col)
 
 	if (!is_fillable(map[row][col]))
 		return (0);
-	
 	found_edge = 0;
 	flood_fill(map, row, col, &found_edge);
-	
 	if (found_edge)
 		return (1);
-	
 	restore_from_backup(map, backup);
 	return (0);
 }
@@ -67,4 +64,4 @@ int	check_walls(char **map)
 		i++;
 	}
 	return (free_backup(backup), 0);
-} 
+}

@@ -6,17 +6,17 @@
 /*   By: pghajard <pghajard@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 15:29:57 by pghajard          #+#    #+#             */
-/*   Updated: 2025/03/13 15:29:58 by pghajard         ###   ########.fr       */
+/*   Updated: 2025/03/13 16:35:11 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-int init_map(t_file **map)
+int	init_map(t_file **map)
 {
 	*map = malloc(sizeof(t_file));
 	if (!*map)
-		return(ft_perror("malloc", errno), 1);
+		return (ft_perror("malloc", errno), 1);
 	(*map)->raw_file = NULL;
 	(*map)->textures.north = NULL;
 	(*map)->textures.south = NULL;
@@ -33,7 +33,7 @@ int init_map(t_file **map)
 	return (0);
 }
 
-void clean_string_array(char ***array)
+void	clean_string_array(char ***array)
 {
 	int	i;
 
@@ -46,7 +46,7 @@ void clean_string_array(char ***array)
 	*array = NULL;
 }
 
-void clean_texture_paths(t_texture_paths *textures)
+void	clean_texture_paths(t_texture_paths *textures)
 {
 	if (!textures)
 		return ;
@@ -64,7 +64,7 @@ void clean_texture_paths(t_texture_paths *textures)
 	textures->east = NULL;
 }
 
-void cleanup(t_file **map)
+void	cleanup(t_file **map)
 {
 	if (!map || !*map)
 		return ;
@@ -73,4 +73,4 @@ void cleanup(t_file **map)
 	clean_texture_paths(&((*map)->textures));
 	free(*map);
 	*map = NULL;
-} 
+}

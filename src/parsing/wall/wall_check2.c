@@ -6,7 +6,7 @@
 /*   By: pghajard <pghajard@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 15:30:13 by pghajard          #+#    #+#             */
-/*   Updated: 2025/03/13 15:30:14 by pghajard         ###   ########.fr       */
+/*   Updated: 2025/03/13 16:52:44 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,4 +101,4 @@ void	free_backup(char **backup)
 	while (backup[i])
 		free(backup[i++]);
 	free(backup);
-} 
+}

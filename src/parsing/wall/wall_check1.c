@@ -6,7 +6,7 @@
 /*   By: pghajard <pghajard@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 15:30:09 by pghajard          #+#    #+#             */
-/*   Updated: 2025/03/13 15:30:10 by pghajard         ###   ########.fr       */
+/*   Updated: 2025/03/13 16:52:09 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,10 @@ int	is_fillable(char c)
  */
 int	is_at_edge(char **map, int row, int col)
 {
-	// Check if we're at the first or last row
 	if (row == 0 || !map[row + 1])
 		return (1);
-	
-	// Check if we're at the first or last column
 	if (col == 0 || !map[row][col + 1])
 		return (1);
-	
 	return (0);
 }
 
@@ -102,4 +98,4 @@ int	is_valid_for_fill(char **map, int row, int col, int *found_edge)
 		return (0);
 	}
 	return (1);
-} 
+}

@@ -6,13 +6,13 @@
 /*   By: pghajard <pghajard@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 15:29:46 by pghajard          #+#    #+#             */
-/*   Updated: 2025/03/13 15:29:47 by pghajard         ###   ########.fr       */
+/*   Updated: 2025/03/13 16:32:28 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-void print_whole_structure_in_order(t_file *map)
+void	print_whole_structure_in_order(t_file *map)
 {
 	int	r, g, b;
 
