@@ -1,4 +1,38 @@
 
+========================================
+            CUB3D MAP STRUCTURE         
+========================================
+
+>>> TEXTURE PATHS <<<
+  ▸ North : ./path_to_the_north_texture.xpm
+  ▸ South : ./path_to_the_south_texture.xpm
+  ▸ West  : ./path_to_the_west_texture.xpm
+  ▸ East  : ./path_to_the_east_texture.xpm
+
+>>> COLORS <<<
+  ▸ Floor  : RGB(220, 100,   0) | Hex: 0xDC6400
+  ▸ Ceiling: RGB(225,  30,   0) | Hex: 0xE11E00
+
+>>> MAP DIMENSIONS <<<
+  ▸ Width : 6
+  ▸ Height: 6
+
+>>> PLAYER INFORMATION <<<
+  ▸ Direction: N
+  ▸ Position : (2, 12)
+
+>>> GAME MAP <<<
+  111111
+  100001
+  100001
+  10N001
+  100001
+  111111
+
+========================================
+
+we are good to go
+
    [33m┌[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m┐[0m
    [33m│[0m                                 [33m│[0m
    [33m│[0m   [33mfuncheck[0m -- [1m1.1.5[0m             [33m│[0m
@@ -13,10 +47,10 @@
 [33m───────────── TTY ────────────[0m
 [33m──────────────────────────────[0m
 [46m[1m TASK [0m Testable functions fetching [42m[1m ✓ [0m
-[44m[1m INFO [0m Functions detected count: [1m19[0m
+[44m[1m INFO [0m Functions detected count: [1m31[0m
 
 
-[1mFunction tests: [32m19 passed[0m, 19 in total
-[1mTime:[0m           4 sec
+[1mFunction tests: [32m31 passed[0m, 31 in total
+[1mTime:[0m           13 sec
 [1mSuccess rate:[0m   100 %
 [0;37mAll tests ran[0m

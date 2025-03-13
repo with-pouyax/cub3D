@@ -1,4 +1,38 @@
 
+========================================
+            CUB3D MAP STRUCTURE         
+========================================
+
+>>> TEXTURE PATHS <<<
+  ▸ North : textures/wolfenstein/purple_stone.xpm
+  ▸ South : textures/wolfenstein/red_brick.xpm
+  ▸ West  : textures/wolfenstein/grey_stone.xpm
+  ▸ East  : textures/wolfenstein/wood.xpm
+
+>>> COLORS <<<
+  ▸ Floor  : RGB( 17,  38,  64) | Hex: 0x112640
+  ▸ Ceiling: RGB(218, 234, 235) | Hex: 0xDAEAEB
+
+>>> MAP DIMENSIONS <<<
+  ▸ Width : 25
+  ▸ Height: 6
+
+>>> PLAYER INFORMATION <<<
+  ▸ Direction: S
+  ▸ Position : (2, 7)
+
+>>> GAME MAP <<<
+  1111111111111111111111111
+  10S0110000100000000000001
+  1000110000000000111111001
+  1000110000000000110001001
+  1000000000100000000001001
+  1111111111111111111111111
+
+========================================
+
+we are good to go
+
    [33m┌[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m┐[0m
    [33m│[0m                                 [33m│[0m
    [33m│[0m   [33mfuncheck[0m -- [1m1.1.5[0m             [33m│[0m
@@ -6,17 +40,17 @@
    [33m│[0m   - program: [1m./cub3D[0m            [33m│[0m
    [33m│[0m                                 [33m│[0m
    [33m│[0m   - arguments:                  [33m│[0m
-   [33m│[0m       * [1mmaps/color/w_space_between_numbers.cub[0m              [33m│[0m
+   [33m│[0m       * [1mmaps/good/r_works.cub[0m   [33m│[0m
    [33m└[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m┘[0m
 
 [44m[1m INFO [0m If your program wait for stdin input, you can type here or pipe it.
 [33m───────────── TTY ────────────[0m
 [33m──────────────────────────────[0m
 [46m[1m TASK [0m Testable functions fetching [42m[1m ✓ [0m
-[44m[1m INFO [0m Functions detected count: [1m17[0m
+[44m[1m INFO [0m Functions detected count: [1m31[0m
 
 
-[1mFunction tests: [32m17 passed[0m, 17 in total
-[1mTime:[0m           4 sec
+[1mFunction tests: [32m31 passed[0m, 31 in total
+[1mTime:[0m           29 sec
 [1mSuccess rate:[0m   100 %
 [0;37mAll tests ran[0m

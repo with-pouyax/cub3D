@@ -182,24 +182,23 @@ int no_xpm_extension(char *line)
 {
     int len;
     int i;
+    char *path;
     
-    i = 2;
     if (!line)
         return(ft_perror("Error", EINVAL), 1);
+    i = 2; // we skip the NO, SO, WE, EA
     while (line[i] && (line[i] == ' ' || line[i] == '\t'))
-        i++;
-    if (line[i] == '.' && line[i + 1] == 'x' && line[i + 2] == 'p' && \
-    line[i + 3] == 'm')
-        return(1);
-    len = ft_strlen(line);
-    while (len > 0 && (line[len - 1] == ' ' || line[len - 1] == '\t'))
-        len--;
-    if (len < 5 )
-       return(ft_perror("Error", EINVAL), 1);
-    if (ft_strncmp(line + len - 4, ".xpm", 4)) // strncmp returns 0 if the strings are equal
-        return(1);
-    if (len > 4 && line[len - 5] == '/')
-        return(ft_perror("Error", EINVAL), 1);
+        i++; // i will be the index of the first character of the path after the NO, SO, WE, EA
+    path = line + i; // path will be the path of the texture
+    if (!*path)
+        return(ft_perror("Empty texture path", EINVAL), 1);
+    len = ft_strlen(path); // len will be the length of the path(without the NO, SO, WE, EA)
+    while (len > 0 && (path[len - 1] == ' ' || path[len - 1] == '\t'))
+        len--; // we remove the spaces and tabs at the end of the path
+    if (len < 5) // if the length of the path is less than 5, then the path is too short
+        return(ft_perror("Texture path too short", EINVAL), 1); 
+    if (len >= 4 && ft_strncmp(path + len - 4, ".xpm", 4) != 0) // if the length of the path is greater than or equal to 4 and the last 4 characters of the path are not ".xpm", then the path is not a valid texture path
+        return(ft_perror("Texture file must have .xpm extension", EINVAL), 1);
     return (0);
 }
     
@@ -219,6 +218,11 @@ int extract_and_assign_path(char *line, char **dest)
 	path = line + 3;
 	while (*path && (*path == ' ' || *path == '\t'))
 		path++;
+	
+	// Check if the path has .xpm extension
+	if (no_xpm_extension(line))
+		return (ft_perror("Texture file must have .xpm extension", EINVAL), 1);
+	
 	*dest = ft_strdup(path); 
 	if (!*dest)
 		return (ft_perror("malloc", errno), 1);

@@ -1,34 +1,22 @@
 
-========================================
-            CUB3D MAP STRUCTURE         
-========================================
+   [33m┌[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m┐[0m
+   [33m│[0m                                 [33m│[0m
+   [33m│[0m   [33mfuncheck[0m -- [1m1.1.5[0m             [33m│[0m
+   [33m│[0m                                 [33m│[0m
+   [33m│[0m   - program: [1m./cub3D[0m            [33m│[0m
+   [33m│[0m                                 [33m│[0m
+   [33m│[0m   - arguments:                  [33m│[0m
+   [33m│[0m       * [1mmaps/color/w_space_between_colors.cub[0m             [33m│[0m
+   [33m└[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m─[0m[33m┘[0m
 
->>> TEXTURE PATHS <<<
-  ▸ North : ./maps/texture/north.xpm
-  ▸ South : ./maps/texture/south.xpm
-  ▸ West  : ./maps/texture/west.xpm
-  ▸ East  : ./maps/texture/east.xpm
+[44m[1m INFO [0m If your program wait for stdin input, you can type here or pipe it.
+[33m───────────── TTY ────────────[0m
+[33m──────────────────────────────[0m
+[46m[1m TASK [0m Testable functions fetching [42m[1m ✓ [0m
+[44m[1m INFO [0m Functions detected count: [1m17[0m
 
->>> COLORS <<<
-  ▸ Floor  : RGB(220, 100,   0) | Hex: 0xDC6400
-  ▸ Ceiling: RGB(225,  30,   0) | Hex: 0xE11E00
 
->>> MAP DIMENSIONS <<<
-  ▸ Width : 6
-  ▸ Height: 6
-
->>> PLAYER INFORMATION <<<
-  ▸ Direction: N
-  ▸ Position : (3, 9)
-
->>> GAME MAP <<<
-  111111
-  100001
-  100N01
-  100001
-  100001
-  111111
-
-========================================
-
-we are good to go
+[1mFunction tests: [32m17 passed[0m, 17 in total
+[1mTime:[0m           4 sec
+[1mSuccess rate:[0m   100 %
+[0;37mAll tests ran[0m
