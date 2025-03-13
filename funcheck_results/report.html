@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Funcheck Test Results</title>
+	<style>
+		body { font-family: Arial, sans-serif; margin: 20px; }
+		h1, h2 { color: #333; }
+		.summary { margin-bottom: 20px; }
+		.category { margin-bottom: 30px; }
+		table { border-collapse: collapse; width: 100%; }
+		th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+		th { background-color: #f2f2f2; }
+		tr:nth-child(even) { background-color: #f9f9f9; }
+		.passed { color: green; }
+		.failed { color: red; }
+		.filter-buttons { margin-bottom: 15px; }
+		button { margin-right: 5px; padding: 5px 10px; cursor: pointer; }
+		.active { background-color: #4CAF50; color: white; }
+	</style>
+	<script>
+		function filterTests(status) {
+			var rows = document.querySelectorAll('table tr');
+			for (var i = 1; i < rows.length; i++) {
+				var row = rows[i];
+				if (status === 'all' || row.classList.contains(status)) {
+					row.style.display = '';
+				} else {
+					row.style.display = 'none';
+				}
+			}
+			
+			// Update active button
+			var buttons = document.querySelectorAll('.filter-buttons button');
+			for (var i = 0; i < buttons.length; i++) {
+				buttons[i].classList.remove('active');
+				if (buttons[i].getAttribute('data-filter') === status) {
+					buttons[i].classList.add('active');
+				}
+			}
+		}
+	</script>
+</head>
+<body>
+	<h1>Funcheck Test Results</h1>
+	
+	<div class="summary">
+		<h2>Summary</h2>
+		<p>Total tests: 47</p>
+		<p>Passed: 0</p>
+		<p>Failed: 47</p>
+	</div>
+	
+	<div class="category-summary">
+		<h2>Category Summary</h2>
+		<div class="category">
+			<h3>color</h3>
+			<p>Total: 12</p>
+			<p>Passed: 0 (0%)</p>
+			<p>Failed: 12</p>
+		</div>
+		<div class="category">
+			<h3>basic</h3>
+			<p>Total: 5</p>
+			<p>Passed: 0 (0%)</p>
+			<p>Failed: 5</p>
+		</div>
+		<div class="category">
+			<h3>texture</h3>
+			<p>Total: 10</p>
+			<p>Passed: 0 (0%)</p>
+			<p>Failed: 10</p>
+		</div>
+		<div class="category">
+			<h3>final</h3>
+			<p>Total: 1</p>
+			<p>Passed: 0 (0%)</p>
+			<p>Failed: 1</p>
+		</div>
+		<div class="category">
+			<h3>good</h3>
+			<p>Total: 17</p>
+			<p>Passed: 0 (0%)</p>
+			<p>Failed: 17</p>
+		</div>
+		<div class="category">
+			<h3>root</h3>
+			<p>Total: 2</p>
+			<p>Passed: 0 (0%)</p>
+			<p>Failed: 2</p>
+		</div>
+	</div>
+	
+	<div class="detailed-results">
+		<h2>Detailed Results</h2>
+		
+		<div class="filter-buttons">
+			<button data-filter="all" class="active" onclick="filterTests('all')">All</button>
+			<button data-filter="passed" onclick="filterTests('passed')">Passed</button>
+			<button data-filter="failed" onclick="filterTests('failed')">Failed</button>
+		</div>
+		
+		<table>
+			<tr>
+				<th>Map</th>
+				<th>Category</th>
+				<th>Status</th>
+				<th>Error Message</th>
+				<th>View Log</th>
+			</tr>
+			<tr class="failed">
+				<td>maps/basic/r_empty_end.cub</td>
+				<td>basic</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="basic_r_empty_end.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/basic/w_empty.cub</td>
+				<td>basic</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="basic_w_empty.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/basic/w_empty_with_spaces.cub</td>
+				<td>basic</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="basic_w_empty_with_spaces.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/basic/w_hight.cub</td>
+				<td>basic</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="basic_w_hight.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/basic/w_len.cub</td>
+				<td>basic</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="basic_w_len.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/color/r_limit_values.cub</td>
+				<td>color</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="color_r_limit_values.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/color/r_space_between_colors.cub</td>
+				<td>color</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="color_r_space_between_colors.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/color/r_spaces_in_rgb.cub</td>
+				<td>color</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="color_r_spaces_in_rgb.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/color/r_valid_colors.cub</td>
+				<td>color</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="color_r_valid_colors.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/color/w_duplicate_color.cub</td>
+				<td>color</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="color_w_duplicate_color.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/color/w_missing_color.cub</td>
+				<td>color</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="color_w_missing_color.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/color/w_negative_rgb.cub</td>
+				<td>color</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="color_w_negative_rgb.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/color/w_non_numeric_rgb.cub</td>
+				<td>color</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="color_w_non_numeric_rgb.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/color/w_overflow_rgb.cub</td>
+				<td>color</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="color_w_overflow_rgb.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/color/w_space_between_numbers.cub</td>
+				<td>color</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="color_w_space_between_numbers.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/color/w_very_large_rgb.cub</td>
+				<td>color</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="color_w_very_large_rgb.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/color/w_wrong_component_count.cub</td>
+				<td>color</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="color_w_wrong_component_count.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/final/w_smily.cub</td>
+				<td>final</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="final_w_smily.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/good/r_test_map_hole.cub</td>
+				<td>good</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="good_r_test_map_hole.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/good/w_cheese_maze.cub</td>
+				<td>good</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="good_w_cheese_maze.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/good/w_creepy.cub</td>
+				<td>good</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="good_w_creepy.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/good/w_dungeon.cub</td>
+				<td>good</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="good_w_dungeon.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/good/w_library.cub</td>
+				<td>good</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="good_w_library.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/good/w_matrix.cub</td>
+				<td>good</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="good_w_matrix.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/good/w_sad_face.cub</td>
+				<td>good</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="good_w_sad_face.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/good/w_square_map.cub</td>
+				<td>good</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="good_w_square_map.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/good/w_subject_map.cub</td>
+				<td>good</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="good_w_subject_map.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/good/w_test_map.cub</td>
+				<td>good</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="good_w_test_map.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/good/w_test_pos_bottom.cub</td>
+				<td>good</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="good_w_test_pos_bottom.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/good/w_test_pos_left.cub</td>
+				<td>good</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="good_w_test_pos_left.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/good/w_test_pos_right.cub</td>
+				<td>good</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="good_w_test_pos_right.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/good/w_test_pos_top.cub</td>
+				<td>good</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="good_w_test_pos_top.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/good/w_test_textures.cub</td>
+				<td>good</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="good_w_test_textures.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/good/w_test_whitespace.cub</td>
+				<td>good</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="good_w_test_whitespace.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/good/w_works.cub</td>
+				<td>good</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="good_w_works.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/r_standard2.cub</td>
+				<td>root</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="r_standard2.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/r_standard.cub</td>
+				<td>root</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="r_standard.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/texture/r_extra_newlines.cub</td>
+				<td>texture</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="texture_r_extra_newlines.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/texture/r_multiple_spaces.cub</td>
+				<td>texture</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="texture_r_multiple_spaces.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/texture/r_no_newlines.cub</td>
+				<td>texture</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="texture_r_no_newlines.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/texture/r_whitespace_lines.cub</td>
+				<td>texture</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="texture_r_whitespace_lines.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/texture/w_duplicate_direction.cub</td>
+				<td>texture</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="texture_w_duplicate_direction.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/texture/w_just_extension.cub</td>
+				<td>texture</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="texture_w_just_extension.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/texture/w_missing_direction.cub</td>
+				<td>texture</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="texture_w_missing_direction.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/texture/w_no_dot.cub</td>
+				<td>texture</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="texture_w_no_dot.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/texture/w_no_space.cub</td>
+				<td>texture</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="texture_w_no_space.cub.log" target="_blank">View Log</a></td>
+			</tr>
+			<tr class="failed">
+				<td>maps/texture/w_wrong_extension.cub</td>
+				<td>texture</td>
+				<td class="failed">FAILED</td>
+				<td>[33m──────────────────────────────[0m</td>
+				<td><a href="texture_w_wrong_extension.cub.log" target="_blank">View Log</a></td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>
