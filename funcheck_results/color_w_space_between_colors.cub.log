@@ -10,8 +10,8 @@
   ▸ East  : ./maps/texture/east.xpm
 
 >>> COLORS <<<
-  ▸ Floor  : RGB(  0,   0,   0) | Hex: 0x000000
-  ▸ Ceiling: RGB(255, 255, 255) | Hex: 0xFFFFFF
+  ▸ Floor  : RGB(220, 100,   0) | Hex: 0xDC6400
+  ▸ Ceiling: RGB(225,  30,   0) | Hex: 0xE11E00
 
 >>> MAP DIMENSIONS <<<
   ▸ Width : 6
@@ -19,7 +19,7 @@
 
 >>> PLAYER INFORMATION <<<
   ▸ Direction: N
-  ▸ Position : (3, 8)
+  ▸ Position : (3, 9)
 
 >>> GAME MAP <<<
   111111

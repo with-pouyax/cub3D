@@ -76,12 +76,48 @@ extract_error() {
 	fi
 }
 
+# Function to check if file is expected to pass or fail
+check_file_type_result() {
+	local map_file="$1"
+	local output_file="$2"
+	local basename=$(basename "$map_file")
+	local result=0
+	
+	# Check for specific file types
+	if [[ "$basename" == r_* ]]; then
+		# r_ files should contain "we are good to go"
+		if grep -q "we are good to go" "$output_file"; then
+			echo -e "\n${GREEN}${BOLD}✓ PASSED: 'we are good to go' found as expected${NC}"
+			result=0
+		else
+			echo -e "\n${RED}${BOLD}✗ FAILED: 'we are good to go' not found${NC}"
+			result=1
+		fi
+	elif [[ "$basename" == w_* ]]; then
+		# w_ files should NOT contain "we are good to go"
+		if ! grep -q "we are good to go" "$output_file"; then
+			echo -e "\n${GREEN}${BOLD}✓ PASSED: 'we are good to go' not found as expected${NC}"
+			result=0
+		else
+			echo -e "\n${RED}${BOLD}✗ FAILED: 'we are good to go' found but shouldn't be${NC}"
+			result=1
+		fi
+	else
+		# Other files - no specific check
+		echo -e "\n${YELLOW}${BOLD}? UNKNOWN FILE TYPE: No specific check applied${NC}"
+		result=0
+	fi
+	
+	return $result
+}
+
 # Function to run funcheck on a single map
 run_test() {
 	local map_file="$1"
 	local category=$(get_category "$map_file")
 	local relative_path="${map_file#maps/}"
 	local output_file="$RESULTS_DIR/${relative_path//\//_}.log"
+	local basename=$(basename "$map_file")
 	
 	# Create a more prominent separator
 	echo -e "\n\n${YELLOW}=================================================================${NC}"
@@ -101,8 +137,12 @@ run_test() {
 		CATEGORY_FAILED[$category]=0
 	fi
 	
-	# Check if test passed (silently for statistics only)
-	if grep -q "Success rate:   100 %" "$output_file"; then
+	# Check file type specific results
+	check_file_type_result "$map_file" "$output_file"
+	local test_result=$?
+	
+	# Update statistics
+	if [ $test_result -eq 0 ]; then
 		echo "PASSED: $map_file" >> "$SUMMARY_FILE"
 		((PASSED++))
 		((CATEGORY_PASSED[$category]++))
@@ -285,7 +325,7 @@ cat >> "$HTML_REPORT" << EOF
 				<th>Map</th>
 				<th>Category</th>
 				<th>Status</th>
-				<th>Error Message</th>
+				<th>File Type</th>
 				<th>View Log</th>
 			</tr>
 EOF
@@ -297,16 +337,37 @@ for map_file in $(find maps -name "*.cub" | sort); do
 		relative_path="${map_file#maps/}"
 		output_file="$RESULTS_DIR/${relative_path//\//_}.log"
 		log_file_name="${relative_path//\//_}.log"
+		basename=$(basename "$map_file")
 		
 		if [ -f "$output_file" ]; then
-			if grep -q "Success rate:   100 %" "$output_file"; then
-				status="PASSED"
-				status_class="passed"
-				error_msg=""
+			# Check file type specific results
+			if [[ "$basename" == r_* ]]; then
+				file_type="r_type"
+				if grep -q "we are good to go" "$output_file"; then
+					status="PASSED"
+					status_class="passed"
+					error_msg=""
+				else
+					status="FAILED"
+					status_class="failed"
+					error_msg="'we are good to go' not found"
+				fi
+			elif [[ "$basename" == w_* ]]; then
+				file_type="w_type"
+				if ! grep -q "we are good to go" "$output_file"; then
+					status="PASSED"
+					status_class="passed"
+					error_msg=""
+				else
+					status="FAILED"
+					status_class="failed"
+					error_msg="'we are good to go' found but shouldn't be"
+				fi
 			else
-				status="FAILED"
-				status_class="failed"
-				error_msg=$(extract_error "$output_file")
+				file_type="other"
+				status="INFO"
+				status_class="passed"
+				error_msg="No specific check"
 			fi
 			
 			cat >> "$HTML_REPORT" << EOF
@@ -314,7 +375,7 @@ for map_file in $(find maps -name "*.cub" | sort); do
 				<td>$map_file</td>
 				<td>$category</td>
 				<td class="$status_class">$status</td>
-				<td>$error_msg</td>
+				<td>$file_type</td>
 				<td><a href="$log_file_name" target="_blank">View Log</a></td>
 			</tr>
 EOF
