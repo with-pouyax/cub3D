@@ -64,7 +64,7 @@ typedef struct s_file
 	int				player_y;
 	// mlx
 	t_mlx			mlx;
-	t_img			img;
+	t_img			img_ptr;
 }	t_file;
 
 typedef struct s_dir_flags
