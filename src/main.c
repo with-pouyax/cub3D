@@ -84,9 +84,6 @@ void cleanup_mlx(t_file *map)
 		mlx_destroy_window(map->mlx.mlx, map->mlx.win);
 	if (map->img_ptr.img)
 		mlx_destroy_image(map->mlx.mlx, map->img_ptr.img);
-	if (map->img_ptr.addr)
-		mlx_destroy_image(map->mlx.mlx, map->img_ptr.addr);
-	
 }
 
 int	main(int ac, char **av)
