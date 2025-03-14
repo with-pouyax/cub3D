@@ -1,5 +1,5 @@
 # Cub3D
-
+![Cub3D cover](https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExOWJ0NG92Nnh1cnBlY281djA1Njk5MG5keGV3bXl5Yzl6dHg5Nzd0eiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/dKa9QCD0n7JeRRui8o/giphy.gif)
 A 3D game using raycasting, inspired by Wolfenstein 3D.
 
 ## Description
