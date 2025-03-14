@@ -21,14 +21,14 @@ PASSED: maps/color/w_space_between_colors.cub
 PASSED: maps/color/w_space_between_numbers.cub
 PASSED: maps/color/w_very_large_rgb.cub
 PASSED: maps/color/w_wrong_component_count.cub
-PASSED: maps/final/r_smily.cub
+FAILED: maps/final/r_smily.cub - [33m──────────────────────────────[0m
 PASSED: maps/good/r_cheese_maze.cub
 PASSED: maps/good/r_creepy.cub
 PASSED: maps/good/r_dungeon.cub
 PASSED: maps/good/r_library.cub
 PASSED: maps/good/r_matrix.cub
 PASSED: maps/good/r_sad_face.cub
-PASSED: maps/good/r_square_map.cub
+FAILED: maps/good/r_square_map.cub - [33m──────────────────────────────[0m
 PASSED: maps/good/r_subject_map.cub
 PASSED: maps/good/r_test_map.cub
 PASSED: maps/good/r_test_pos_bottom.cub
@@ -37,7 +37,7 @@ PASSED: maps/good/r_test_pos_right.cub
 PASSED: maps/good/r_test_pos_top.cub
 PASSED: maps/good/r_test_textures.cub
 PASSED: maps/good/r_test_whitespace.cub
-PASSED: maps/good/r_works.cub
+FAILED: maps/good/r_works.cub - [33m──────────────────────────────[0m
 PASSED: maps/good/w_test_map_hole.cub
 PASSED: maps/texture/r_extra_newlines.cub
 PASSED: maps/texture/r_multiple_spaces.cub
@@ -54,8 +54,8 @@ PASSED: maps/texture/w_wrong_extension.cub
 
 Summary:
 Total tests: 49
-Passed: 49
-Failed: 0
+Passed: 46
+Failed: 3
 
 Category Summary:
 color:
@@ -72,12 +72,12 @@ texture:
   Failed: 0
 final:
   Total: 1
-  Passed: 1 (100%)
-  Failed: 0
+  Passed: 0 (0%)
+  Failed: 1
 good:
   Total: 17
-  Passed: 17 (100%)
-  Failed: 0
+  Passed: 15 (88%)
+  Failed: 2
 root:
   Total: 2
   Passed: 2 (100%)
