@@ -36,6 +36,21 @@ typedef struct s_texture_paths
 	char	*east;
 }	t_texture_paths;
 
+typedef struct s_mlx
+{
+	void	*mlx;
+	void	*win;
+}	t_mlx;
+
+typedef struct s_img
+{
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}	t_img;
+
 typedef struct s_file
 {
 	char			**raw_file;
@@ -47,6 +62,9 @@ typedef struct s_file
 	char			player_dir;
 	int				player_x;
 	int				player_y;
+	// mlx
+	t_mlx			mlx;
+	t_img			img;
 }	t_file;
 
 typedef struct s_dir_flags
