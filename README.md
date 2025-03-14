@@ -153,7 +153,7 @@ make re
 
 ## Credits
 
-This project was created by [Your Name] as part of the 42 school curriculum.
+This project was created by pouya as part of the 42 school curriculum.
 
 ## License
 
