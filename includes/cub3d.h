@@ -6,7 +6,7 @@
 /*   By: pghajard <pghajard@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 17:02:35 by pghajard          #+#    #+#             */
-/*   Updated: 2025/03/13 17:06:43 by pghajard         ###   ########.fr       */
+/*   Updated: 2025/03/14 09:13:21 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@
 # include <stdlib.h>
 # include <errno.h>
 # include <fcntl.h>
+# include <math.h>
 
 # include "../libraries/libft/libft.h"
+# include "../libraries/mlx/mlx.h"
 
 typedef struct s_colors
 {

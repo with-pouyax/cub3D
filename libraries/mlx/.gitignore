@@ -1,9 +1,26 @@
+## Mlx related
+Makefile.gen
+/test/mlx-test
+
+## Editor
+.vscode/*
+*~
+\#*\#
+
+## Other
+.DS_STORE
+
+
+
+## Template from https://github.com/github/gitignore
 # Prerequisites
 *.d
 
 # Object files
 *.o
-obj/
+*.ko
+*.obj
+*.elf
 
 # Linker output
 *.ilk
@@ -19,14 +36,12 @@ obj/
 *.a
 *.la
 *.lo
-*.so
-*.dylib
-# Exception for MLX library
-!libraries/mlx/libmlx.a
-!libraries/mlx/libmlx_Linux.a
 
 # Shared objects (inc. Windows DLLs)
 *.dll
+*.so
+*.so.*
+*.dylib
 
 # Executables
 *.exe
@@ -35,7 +50,6 @@ obj/
 *.i*86
 *.x86_64
 *.hex
-cub3D
 
 # Debug files
 *.dSYM/
@@ -51,24 +65,3 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
-
-# Editor files
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# macOS files
-.DS_Store
-.AppleDouble
-.LSOverride
-
-# Dependency directories
-libraries/mlx/obj/
-libraries/mlx/test/
-libraries/mlx/makefile.gen
-libraries/mlx/test/makefile.gen
-libraries/mlx/.git/
-
-# Custom
-*.log

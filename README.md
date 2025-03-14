@@ -1,127 +1,160 @@
-# Cub3D - 3D Raycasting Game
+# Cub3D
 
-![Cub3D cover](https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExOWJ0NG92Nnh1cnBlY281djA1Njk5MG5keGV3bXl5Yzl6dHg5Nzd0eiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/dKa9QCD0n7JeRRui8o/giphy.gif)
+A 3D game using raycasting, inspired by Wolfenstein 3D.
 
-## 🎮 Project Overview
+## Description
 
-Cub3D is a first-person 3D game engine inspired by the iconic Wolfenstein 3D game, the first FPS ever. This project is part of the 42 school curriculum and focuses on raycasting techniques to create a 3D perspective in a 2D map.
+Cub3D is a first-person 3D game built using the raycasting technique. This project is part of the 42 school curriculum and aims to recreate the classic Wolfenstein 3D game mechanics.
 
-⚠️ **NOTE: This project is currently under construction and not yet finished** ⚠️
+## Features
 
-## 🚀 Features
-
-- Smooth window management
 - Textured walls with different textures for each direction (North, South, East, West)
-- Floor and ceiling colors
-- Player movement (forward, backward, left, right)
-- Camera rotation
 - Collision detection
-- Map parsing from a configuration file
+- Player movement (forward, backward, strafe left, strafe right)
+- Camera rotation (left, right)
+- Customizable map through a simple file format
 
-## 🗺️ Map Configuration
+## Prerequisites
 
-Maps are defined in `.cub` files with the following elements:
-
-```
-NO ./path_to_north_texture.xpm
-SO ./path_to_south_texture.xpm
-WE ./path_to_west_texture.xpm
-EA ./path_to_east_texture.xpm
-
-F R,G,B    # Floor RGB color
-C R,G,B    # Ceiling RGB color
-
-# Map layout (1 = wall, 0 = empty space, N/S/E/W = player starting position and orientation)
-1111111111111
-1000000000001
-1000000000001
-1000000N00001
-1000000000001
-1111111111111
-```
-
-## 🛠️ Allowed Functions
-
-This project restricts the use of external functions. Here are the allowed functions:
-
-- `open`, `close`, `read`, `write`, `printf`, `malloc`, `free`, `perror`, `strerror`, `exit`
-- All functions of the math library (`-lm` compiler option)
-- All functions of the MinilibX graphics library
-
-## 🔧 Installation and Usage
-
-### Prerequisites
 - GCC compiler
 - Make
-- X11 development libraries
-- MinilibX library
+- X11 libraries (for Linux) or AppKit/OpenGL (for macOS)
 
-### Compilation
+### Dependencies for Linux
+
+```bash
+sudo apt-get install libxext-dev libxrandr-dev libx11-dev libbsd-dev libssl-dev
+```
+
+## Installation
+
+### Quick Setup
+
+The easiest way to set up the project is to use the provided setup script:
+
+```bash
+./setup.sh
+```
+
+This script will:
+1. Install necessary dependencies based on your OS
+2. Create required directories
+3. Clone the MLX library if it doesn't exist
+4. Compile the project
+
+### Manual Setup
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/yourusername/cub3d.git
+cd cub3d
+```
+
+2. Compile the project:
+
 ```bash
 make
 ```
 
-### Running the game
+The Makefile will automatically:
+- Check if MLX is installed on your system
+- If not, it will clone and compile the MLX library from the official repository
+- Compile the Cub3D project
+
+### Testing MLX
+
+You can test if the MLX library is working correctly by running:
+
 ```bash
-./cub3D path_to_map.cub
+./cub3D --test-mlx
 ```
 
-## 🧪 Testing
+If you're running in a remote environment without a display server, you'll see a message indicating that the MLX library is linked correctly but requires a display server to use it.
 
-The project includes validation for:
-- Map integrity (closed walls)
-- File format validation
-- Texture loading
-- Color parsing
-- Memory management
+If you want to force the use of the local MLX library (even if it's installed on your system), you can run:
 
-## 📝 Project Structure
-
-```
-.
-├── includes/       # Header files
-├── libraries/      # External libraries (libft, minilibx)
-├── maps/           # Example map files
-├── src/            # Source code
-│   ├── parsing/    # Map parsing functions
-│   ├── rendering/  # Raycasting and rendering
-│   ├── utils/      # Utility functions
-│   └── main.c      # Entry point
-├── Makefile        # Build configuration
-└── README.md       # This file
+```bash
+make test-local-mlx
 ```
 
-## 🔍 Implementation Details
+This will:
+1. Clean any existing MLX library
+2. Clone the MLX library if it doesn't exist
+3. Compile the MLX library
+4. Compile the project using the local MLX library
 
-The project implements:
-1. **Map Parsing**: Reading and validating the map file
-2. **Raycasting**: Calculating wall distances and heights
-3. **Rendering**: Drawing walls, floor, and ceiling
-4. **Player Movement**: Handling keyboard inputs for movement
-5. **Collision Detection**: Preventing the player from walking through walls
+## Usage
 
-## 🚧 Current Status
+Run the program with a map file:
 
-The project is currently in development. Completed components:
-- Map parsing and validation
-- Basic structure setup
+```bash
+./cub3D maps/example.cub
+```
 
-Components under construction:
-- Raycasting implementation
-- Texture rendering
-- Player movement
-- Game loop
+### Map Format
 
-## 📚 Resources
+The map file should follow this format:
 
-- [Wolfenstein 3D](https://en.wikipedia.org/wiki/Wolfenstein_3D)
-- [Raycasting Tutorial](https://lodev.org/cgtutor/raycasting.html)
-- [MinilibX Documentation](https://harm-smits.github.io/42docs/libs/minilibx)
+```
+NO ./path/to/north_texture.xpm
+SO ./path/to/south_texture.xpm
+WE ./path/to/west_texture.xpm
+EA ./path/to/east_texture.xpm
 
-## 👥 Contributors
+F R,G,B
+C R,G,B
 
-This project is being developed as part of the 42 curriculum.
+1111111111
+1000000001
+1000N00001
+1000000001
+1111111111
+```
 
-## 📄 License
+Where:
+- `NO`, `SO`, `WE`, `EA` specify the path to the textures for each direction
+- `F` specifies the floor color in RGB format
+- `C` specifies the ceiling color in RGB format
+- The map is composed of:
+  - `0` for empty spaces
+  - `1` for walls
+  - `N`, `S`, `E`, or `W` for the player's starting position and orientation
+
+## Controls
+
+- `W`: Move forward
+- `S`: Move backward
+- `A`: Strafe left
+- `D`: Strafe right
+- `←`: Rotate camera left
+- `→`: Rotate camera right
+- `ESC`: Exit the game
+
+## Cleaning Up
+
+To remove object files:
+
+```bash
+make clean
+```
+
+To remove object files and the executable:
+
+```bash
+make fclean
+```
+
+To rebuild the project:
+
+```bash
+make re
+```
+
+## Credits
+
+This project was created by [Your Name] as part of the 42 school curriculum.
+
+## License
 
 This project is licensed under the MIT License - see the LICENSE file for details. 
