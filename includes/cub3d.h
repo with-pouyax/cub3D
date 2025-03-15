@@ -170,7 +170,12 @@ int		parse_args(int ac, char **av, t_file **map);
 int		init_map(t_file **map);
 void	clean_string_array(char ***array);
 void	clean_texture_paths(t_texture_paths *textures);
+void	cleanup_mlx(t_file *map);
 void	cleanup(t_file **map);
+
+/* Event handling functions */
+int		handle_esc_press(t_file *map);
+int		handle_x_press(int keycode, t_file *map);
 
 /* Wall checking functions */
 int		is_valid_position(char **map, int row, int col);

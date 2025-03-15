@@ -63,7 +63,35 @@ int	create_image_buffer(t_file **map)
 	return (0);
 }
 
+// Handler for X button (window close)
+int	handle_esc_press(t_file *map)
+{
+	cleanup(&map);
+	exit(0);
+	return (0);
+}
 
+// Handler for key press (ESC key)
+int	handle_x_press(int keycode, t_file *map)
+{
+	if (keycode == 65307) // ESC key code
+	{
+		cleanup(&map);
+		exit(0);
+	}
+	return (0);
+}
+
+int	set_event_hooks(t_file **map)
+{
+	// Hook for ESC key
+	mlx_key_hook((*map)->mlx.win, handle_x_press, *map);
+
+	// Hook for window close button (X)
+	mlx_hook((*map)->mlx.win, 17, 0, handle_esc_press, *map);
+
+	return (0);
+}
 
 
 int	start_game(t_file *map)
@@ -74,7 +102,8 @@ int	start_game(t_file *map)
 		return (1);
 	if (create_image_buffer(&map))
 		return (1);
-	
+	if (set_event_hooks(&map))
+		return (1);
 	return (0);
 }
 
@@ -85,6 +114,7 @@ int	main(int ac, char **av)
 	// Test MLX if requested
 	if (ac == 2 && !ft_strncmp(av[1], "--test-mlx", 10))
 		return (test_mlx());
+
 	if (init_map(&map) || init_map_mlx(&map))
 		return (1);
 	if (parse_args(ac, av, &map))
@@ -92,7 +122,6 @@ int	main(int ac, char **av)
 		cleanup(&map);
 		return (1);
 	}
-
 	if (start_game(map))
 	{
 		cleanup(&map); // Now cleanup handles MLX resources too
