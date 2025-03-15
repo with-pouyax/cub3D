@@ -78,17 +78,6 @@ int	start_game(t_file *map)
 	return (0);
 }
 
-
-void cleanup_mlx(t_file **map)
-{
-	if ((*map)->img_ptr.img)
-		mlx_destroy_image((*map)->mlx.mlx, (*map)->img_ptr.img);
-	if ((*map)->mlx.win)
-		mlx_destroy_window((*map)->mlx.mlx, (*map)->mlx.win);
-	if ((*map)->mlx.mlx)
-		mlx_destroy_display((*map)->mlx.mlx);
-}
-
 int	main(int ac, char **av)
 {
 	t_file	*map;
@@ -106,8 +95,7 @@ int	main(int ac, char **av)
 
 	if (start_game(map))
 	{
-		cleanup_mlx(&map);
-		cleanup(&map);
+		cleanup(&map); // Now cleanup handles MLX resources too
 		return (1);
 	}
 	printf("\nwe are good to go\n");

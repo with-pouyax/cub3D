@@ -64,10 +64,25 @@ void	clean_texture_paths(t_texture_paths *textures)
 	textures->east = NULL;
 }
 
+void	cleanup_mlx(t_file *map)
+{
+	if (map->img_ptr.img)
+		mlx_destroy_image(map->mlx.mlx, map->img_ptr.img);
+	if (map->mlx.win)
+		mlx_destroy_window(map->mlx.mlx, map->mlx.win);
+	if (map->mlx.mlx)
+		mlx_destroy_display(map->mlx.mlx);
+}
+
 void	cleanup(t_file **map)
 {
 	if (!map || !*map)
 		return ;
+	
+	// Clean up MLX resources first
+	cleanup_mlx(*map);
+	
+	// Then clean up other resources
 	clean_string_array(&((*map)->raw_file));
 	clean_string_array(&((*map)->game_map));
 	clean_texture_paths(&((*map)->textures));
