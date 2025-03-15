@@ -173,9 +173,18 @@ void	clean_texture_paths(t_texture_paths *textures);
 void	cleanup_mlx(t_file *map);
 void	cleanup(t_file **map);
 
+/* MLX initialization and setup functions */
+int		init_map_mlx(t_file **map);
+int		init_mlx(t_file **map);
+int		create_window(t_file **map);
+int		create_image_buffer(t_file **map);
+int		start_game(t_file **map);
+
 /* Event handling functions */
 int		handle_esc_press(t_file *map);
 int		handle_x_press(int keycode, t_file *map);
+int		set_event_hooks(t_file **map);
+int		game_loop(t_file **map);
 
 /* Wall checking functions */
 int		is_valid_position(char **map, int row, int col);
@@ -189,5 +198,21 @@ int		restore_from_backup(char **map, char **backup);
 void	free_backup(char **backup);
 int		check_position(char **map, char **backup, int row, int col);
 int		check_walls(char **map);
+
+// Function declaration from test_mlx.c
+int	test_mlx(void);
+
+// Function declarations from mlx_init.c
+int	init_map_mlx(t_file **map);
+int	init_mlx(t_file **map);
+int	create_window(t_file **map);
+int	create_image_buffer(t_file **map);
+int	start_game(t_file **map);
+
+// Function declarations from mlx_events.c
+int	handle_esc_press(t_file *map);
+int	handle_x_press(int keycode, t_file *map);
+int	set_event_hooks(t_file **map);
+int	game_loop(t_file **map);
 
 #endif

@@ -29,6 +29,8 @@ INCLUDES = -I./includes -I./libraries/libft -I./libraries/mlx
 # Source files with new directory structure
 SRCS = src/main.c \
 	src/test_mlx.c \
+	src/mlx/mlx_init.c \
+	src/mlx/mlx_events.c \
 	src/parsing/map/map_validation.c \
 	src/parsing/map/map_char_validation.c \
 	src/parsing/map/map_copy_utils.c \
