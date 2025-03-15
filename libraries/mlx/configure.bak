@@ -115,7 +115,7 @@ main(){
 		cat Makefile.mk | grep -v %%%%  	>> Makefile.gen
 	log_info 'Generate "test/makefile.gen" from template "test/makefile.mk"'
 		echo "INC=$xlib_inc"				>  test/Makefile.gen
-		cat test/Makefile.mk 2>/dev/null | grep -v %%%% >> test/Makefile.gen
+		cat test/Makefile.mk | grep -v %%%% >> test/Makefile.gen
 
 	log_info 'Execute "make all" from file "makefile.gen"'
 		${MAKE} -f Makefile.gen all

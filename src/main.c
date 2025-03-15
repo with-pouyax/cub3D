@@ -63,6 +63,9 @@ int	create_image_buffer(t_file **map)
 	return (0);
 }
 
+
+
+
 int	start_game(t_file *map)
 {
 	if (init_mlx(&map))
@@ -76,14 +79,14 @@ int	start_game(t_file *map)
 }
 
 
-void cleanup_mlx(t_file *map)
+void cleanup_mlx(t_file **map)
 {
-	if (map->mlx.mlx)
-		mlx_destroy_display(map->mlx.mlx);
-	if (map->mlx.win)
-		mlx_destroy_window(map->mlx.mlx, map->mlx.win);
-	if (map->img_ptr.img)
-		mlx_destroy_image(map->mlx.mlx, map->img_ptr.img);
+	if ((*map)->img_ptr.img)
+		mlx_destroy_image((*map)->mlx.mlx, (*map)->img_ptr.img);
+	if ((*map)->mlx.win)
+		mlx_destroy_window((*map)->mlx.mlx, (*map)->mlx.win);
+	if ((*map)->mlx.mlx)
+		mlx_destroy_display((*map)->mlx.mlx);
 }
 
 int	main(int ac, char **av)
@@ -93,10 +96,8 @@ int	main(int ac, char **av)
 	// Test MLX if requested
 	if (ac == 2 && !ft_strncmp(av[1], "--test-mlx", 10))
 		return (test_mlx());
-
 	if (init_map(&map) || init_map_mlx(&map))
 		return (1);
-
 	if (parse_args(ac, av, &map))
 	{
 		cleanup(&map);
@@ -105,7 +106,7 @@ int	main(int ac, char **av)
 
 	if (start_game(map))
 	{
-		cleanup_mlx(map);
+		cleanup_mlx(&map);
 		cleanup(&map);
 		return (1);
 	}
