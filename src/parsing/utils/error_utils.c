@@ -60,8 +60,11 @@ int	arg_check(int ac)
 	return (0);
 }
 
-void	safe_close(int fd)
+void safe_close(int fd)
 {
-	if (close(fd) < 0)
-		pexit("close", 1, 1);
+    if (fd != -1)
+    {
+        if (close(fd) < 0)
+            ft_perror("close", errno); // Report error but don't exit
+    }
 }

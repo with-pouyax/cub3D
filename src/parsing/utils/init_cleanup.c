@@ -71,7 +71,10 @@ void	cleanup_mlx(t_file *map)
 	if (map->mlx.win)
 		mlx_destroy_window(map->mlx.mlx, map->mlx.win);
 	if (map->mlx.mlx)
+	{
 		mlx_destroy_display(map->mlx.mlx);
+		free(map->mlx.mlx);
+	}
 }
 
 void	cleanup(t_file **map)
