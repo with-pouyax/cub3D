@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_char_validation.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pghajard <pghajard@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: pghajard <pghajard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 15:29:08 by pghajard          #+#    #+#             */
-/*   Updated: 2025/03/13 16:13:37 by pghajard         ###   ########.fr       */
+/*   Updated: 2025/03/18 12:59:30 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,29 @@ int	wrong_ratio(char **map)
 	return (0);
 }
 
+int	wrong_map_char(char **map)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (map[i])
+	{
+		j = 0;
+		while (map[i][j])
+		{
+			if (map[i][j] != '1' && map[i][j] != '0' \
+			&& map[i][j] != 'N' && map[i][j] != 'S' \
+			&& map[i][j] != 'E' && map[i][j] != 'W' \
+			&& map[i][j] != ' ')
+				return (ft_perror("wrong map char", EINVAL), 1);
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}
+
 int	not_map(t_file *map, int *index)
 {
 	if (basic_map_check(map, map->raw_file, index))
@@ -91,6 +114,8 @@ int	not_map(t_file *map, int *index)
 		return (ft_perror("copy map", EINVAL), 1);
 	if (wrong_ratio(map->raw_file))
 		return (ft_perror("wrong ratio", EINVAL), 1);
+	if (wrong_map_char(map->game_map))
+		return (ft_perror("wrong map char", EINVAL), 1);
 	if (check_walls(map->game_map))
 		return (ft_perror("wrong walls", EINVAL), 1);
 	return (0);
