@@ -21,7 +21,7 @@ int	not_valid_char(char c, int *player_count, t_file *map, t_coord *pos)
 		{
 			map->player_dir = c;
 			map->player_x = (*pos).j;
-			map->player_y = (*pos).i;
+			map->player_y = (*pos).i - map->map_height + 1;
 		}
 	}
 	if (*player_count > 1)
@@ -112,6 +112,7 @@ int	not_map(t_file *map, int *index)
 		return (ft_perror("basic map check", EINVAL), 1);
 	if (copy_map(map, *index))
 		return (ft_perror("copy map", EINVAL), 1);
+	map->player_y = map->player_y - *index;
 	if (wrong_ratio(map->raw_file))
 		return (ft_perror("wrong ratio", EINVAL), 1);
 	if (wrong_map_char(map->game_map))
