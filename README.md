@@ -154,7 +154,7 @@ make re
 
 ## Credits
 
-This project was created by pouya as part of the 42 school curriculum.
+This project was developed by @with-pouyax and Mina Houshmand as part of the 42 school curriculum.
 
 ## License
 
