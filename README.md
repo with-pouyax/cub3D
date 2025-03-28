@@ -152,10 +152,12 @@ To rebuild the project:
 make re
 ```
 
-## Credits
 
-This project was developed by @with-pouyax and Mina Houshmand as part of the 42 school curriculum.
 
+### Project Authors
+- **Pouya** ([GitHub Profile](https://github.com/your-github))  
+- **Mina** ([GitHub Profile](https://github.com/mina-houshmand))
+   
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details. 
