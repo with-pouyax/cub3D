@@ -22,6 +22,9 @@
 # include "../libraries/libft/libft.h"
 # include "../libraries/mlx/mlx.h"
 
+#define MOVE_SPEED 0.1
+#define ROTATE_SPEED 0.05
+
 typedef struct s_colors
 {
 	int	floor;
@@ -51,6 +54,15 @@ typedef struct s_img
 	int		endian;
 }	t_img;
 
+typedef struct s_player
+{
+    double x;       // Player's position (X coordinate)
+    double y;       // Player's position (Y coordinate)
+    double dir_x;   // Direction vector (X component)
+    double dir_y;   // Direction vector (Y component)
+    double plane_x; // Camera plane vector (X component)
+    double plane_y; // Camera plane vector (Y component)
+}	t_player;
 typedef struct s_file
 {
 	char			**raw_file;
@@ -59,12 +71,13 @@ typedef struct s_file
 	char			**game_map;
 	int				map_height;
 	int				map_width;
-	char			player_dir;
-	int				player_x;
-	int				player_y;
+	// char			player_dir;
+	// int				player_x;
+	// int				player_y;
 	// mlx
 	t_mlx			mlx;
 	t_img			img_ptr;
+	t_player        player;
 }	t_file;
 
 typedef struct s_dir_flags
@@ -168,6 +181,7 @@ int		parse_args(int ac, char **av, t_file **map);
 
 /* Initialization and cleanup functions */
 int		init_map(t_file **map);
+void	init_player(t_file *map);
 void	clean_string_array(char ***array);
 void	clean_texture_paths(t_texture_paths *textures);
 void	cleanup_mlx(t_file *map);
@@ -181,7 +195,7 @@ int		create_image_buffer(t_file **map);
 int		start_game(t_file **map);
 
 /* Event handling functions */
-int		handle_esc_press(t_file *map);
+int		handle_esc_press(t_file **map);
 int		handle_x_press(int keycode, t_file *map);
 int		set_event_hooks(t_file **map);
 int		game_loop(t_file **map);
@@ -210,9 +224,16 @@ int	create_image_buffer(t_file **map);
 int	start_game(t_file **map);
 
 // Function declarations from mlx_events.c
-int	handle_esc_press(t_file *map);
 int	handle_x_press(int keycode, t_file *map);
 int	set_event_hooks(t_file **map);
 int	game_loop(t_file **map);
+
+//movements
+void move_forward(t_file **map);
+void move_backward(t_file **map);
+void move_left(t_file **map);
+void move_right(t_file **map);
+void rotate_left(t_file **map);
+void rotate_right(t_file **map);
 
 #endif

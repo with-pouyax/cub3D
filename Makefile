@@ -31,6 +31,8 @@ SRCS = src/main.c \
 	src/test_mlx.c \
 	src/mlx/mlx_init.c \
 	src/mlx/mlx_events.c \
+	src/mlx/movement_functions.c \
+	src/mlx/movement_rotate.c \
 	src/parsing/map/map_validation.c \
 	src/parsing/map/map_char_validation.c \
 	src/parsing/map/map_copy_utils.c \
@@ -46,6 +48,7 @@ SRCS = src/main.c \
 	src/parsing/utils/error_utils.c \
 	src/parsing/utils/debug_utils.c \
 	src/parsing/utils/init_cleanup.c \
+	src/parsing/utils/init_player.c \
 	src/parsing/utils/parsing_utils.c
 
 # Object files in obj directory

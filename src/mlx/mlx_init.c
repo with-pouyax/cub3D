@@ -54,6 +54,15 @@ int	create_image_buffer(t_file **map)
 	return (0);
 }
 
+// Initialize MLX (MiniLibX), which is needed for rendering
+// Create the window where everything will be rendered
+// Create an image buffer to store and manipulate pixels before rendering
+// TODO: Implement a function to create an image where you will draw the game scene
+// Set event hooks (keyboard, mouse, etc.)
+// The game loop: This function will be called repeatedly to render frames
+// mlx_loop_hook : game loop where you perform raycasting and draw the scene
+// Start MLX loop (waits for events and continuously redraws the window)
+
 int	start_game(t_file **map)
 {
 	if (init_mlx(map))

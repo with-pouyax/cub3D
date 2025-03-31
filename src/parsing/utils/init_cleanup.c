@@ -27,9 +27,9 @@ int	init_map(t_file **map)
 	(*map)->game_map = NULL;
 	(*map)->map_height = 0;
 	(*map)->map_width = 0;
-	(*map)->player_dir = '\0';
-	(*map)->player_x = 0;
-	(*map)->player_y = 0;
+	// (*map)->player_dir = '\0';
+	// (*map)->player_x = 0;
+	// (*map)->player_y = 0;
 	return (0);
 }
 
