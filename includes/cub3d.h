@@ -71,9 +71,9 @@ typedef struct s_file
 	char			**game_map;
 	int				map_height;
 	int				map_width;
-	// char			player_dir;
-	// int				player_x;
-	// int				player_y;
+	char			player_dir;
+	int				player_x;
+	int				player_y;
 	// mlx
 	t_mlx			mlx;
 	t_img			img_ptr;
@@ -196,7 +196,7 @@ int		start_game(t_file **map);
 
 /* Event handling functions */
 int		handle_esc_press(t_file **map);
-int		handle_x_press(int keycode, t_file *map);
+int		handle_x_press(int keycode, t_file **map);
 int		set_event_hooks(t_file **map);
 int		game_loop(t_file **map);
 
@@ -224,7 +224,7 @@ int	create_image_buffer(t_file **map);
 int	start_game(t_file **map);
 
 // Function declarations from mlx_events.c
-int	handle_x_press(int keycode, t_file *map);
+int	handle_x_press(int keycode, t_file **map);
 int	set_event_hooks(t_file **map);
 int	game_loop(t_file **map);
 

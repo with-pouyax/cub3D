@@ -21,11 +21,11 @@ int	handle_esc_press(t_file **map)
 }
 
 // Handler for key press (ESC key)
-int	handle_x_press(int keycode, t_file *map)
+int	handle_x_press(int keycode, t_file **map)
 {
 	if (keycode == 65307)
 	{
-		cleanup(&map);
+		cleanup(map);
 		exit(0);
 	}
 	return (0);
@@ -36,7 +36,7 @@ int handle_keypress(int keycode, t_file **map)
 {
     if (keycode == 65307) // ESC key
         handle_esc_press(map);
-    else if (keycode == 119) // W key (Move forward)
+    if (keycode == 119) // W key (Move forward)
         move_forward(map);
     else if (keycode == 115) // S key (Move backward)
         move_backward(map);
@@ -63,12 +63,11 @@ int handle_keyrelease(int keycode, t_file **map)
 int	set_event_hooks(t_file **map)
 {
 	// Hook for ESC key
-	mlx_key_hook((*map)->mlx.win, handle_x_press, *map);
-
-	mlx_hook((*map)->mlx.win, 2, 1L<<0, handle_keypress, map); // Key press
-    mlx_hook((*map)->mlx.win, 3, 1L<<1, handle_keyrelease, map); // Key release
+	mlx_key_hook((*map)->mlx.win, handle_x_press, map);
+	mlx_hook((*map)->mlx.win, 2, 1L << 0, handle_keypress, map); // Key press
+    mlx_hook((*map)->mlx.win, 3, 1L << 1, handle_keyrelease, map); // Key release
 	// Hook for window close button (X)
-	mlx_hook((*map)->mlx.win, 17, 0, handle_esc_press, *map);
+	// mlx_hook((*map)->mlx.win, 17, 0, handle_esc_press, map); //maybe it is not neccessary
 
 	return (0);
 }
