@@ -13,11 +13,16 @@
 #ifndef CUB3D_H
 # define CUB3D_H
 
+# define WIDTH 1200
+# define HEIGHT 720
+# define COLOR_GREEN 0x00FF00
+
 # include <stdio.h>
 # include <stdlib.h>
 # include <errno.h>
 # include <fcntl.h>
 # include <math.h>
+# include <stdbool.h>
 
 # include "../libraries/libft/libft.h"
 # include "../libraries/mlx/mlx.h"
@@ -39,12 +44,6 @@ typedef struct s_texture_paths
 	char	*east;
 }	t_texture_paths;
 
-typedef struct s_mlx
-{
-	void	*mlx;
-	void	*win;
-}	t_mlx;
-
 typedef struct s_img
 {
 	void	*img;
@@ -53,6 +52,14 @@ typedef struct s_img
 	int		line_length;
 	int		endian;
 }	t_img;
+
+typedef struct s_mlx        //s_game
+{
+	void	*mlx;
+	void	*win;
+	t_img	img_ptr;
+}	t_mlx;
+
 
 typedef struct s_player
 {
@@ -74,9 +81,7 @@ typedef struct s_file
 	char			player_dir;
 	int				player_x;
 	int				player_y;
-	// mlx
 	t_mlx			mlx;
-	t_img			img_ptr;
 	t_player        player;
 }	t_file;
 
@@ -235,5 +240,7 @@ void move_left(t_file **map);
 void move_right(t_file **map);
 void rotate_left(t_file **map);
 void rotate_right(t_file **map);
+void	draw_square(int x, int y, int size, int color, t_mlx *game);
+void	put_pixel(int x, int y, int color, t_mlx *game);
 
 #endif

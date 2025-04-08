@@ -67,7 +67,7 @@ int	set_event_hooks(t_file **map)
 	mlx_hook((*map)->mlx.win, 2, 1L << 0, handle_keypress, map); // Key press
     mlx_hook((*map)->mlx.win, 3, 1L << 1, handle_keyrelease, map); // Key release
 	// Hook for window close button (X)
-	// mlx_hook((*map)->mlx.win, 17, 0, handle_esc_press, map); //maybe it is not neccessary
+	mlx_hook((*map)->mlx.win, 17, 0, handle_esc_press, map); //maybe it is not neccessary
 
 	return (0);
 }
@@ -79,6 +79,6 @@ int	game_loop(t_file **map)
 	// TODO: Implement raycasting here to draw the game scene
     
     // Display the image to the window
-    mlx_put_image_to_window((*map)->mlx.mlx, (*map)->mlx.win, (*map)->img_ptr.img, 0, 0);
+    mlx_put_image_to_window((*map)->mlx.mlx, (*map)->mlx.win, (*map)->mlx.img_ptr.img, 0, 0);
 	return(0);
 }

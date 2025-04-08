@@ -18,11 +18,11 @@ int	init_map_mlx(t_file **map)
 	(*map)->mlx.mlx = NULL;
 	(*map)->mlx.win = NULL;
 	// Initialize IMG members
-	(*map)->img_ptr.img = NULL;
-	(*map)->img_ptr.addr = NULL;
-	(*map)->img_ptr.bits_per_pixel = 0;
-	(*map)->img_ptr.line_length = 0;
-	(*map)->img_ptr.endian = 0;
+	(*map)->mlx.img_ptr.img = NULL;
+	(*map)->mlx.img_ptr.addr = NULL;
+	(*map)->mlx.img_ptr.bits_per_pixel = 0;
+	(*map)->mlx.img_ptr.line_length = 0;
+	(*map)->mlx.img_ptr.endian = 0;
 	return (0);
 }
 
@@ -36,7 +36,7 @@ int	init_mlx(t_file **map)
 
 int	create_window(t_file **map)
 {
-	(*map)->mlx.win = mlx_new_window((*map)->mlx.mlx, 1000, 1000, "Cub3D");
+	(*map)->mlx.win = mlx_new_window((*map)->mlx.mlx, WIDTH, HEIGHT, "Cub3D");
 	if (!(*map)->mlx.win)
 		return (1);
 	return (0);
@@ -44,13 +44,16 @@ int	create_window(t_file **map)
 
 int	create_image_buffer(t_file **map)
 {
-	(*map)->img_ptr.img = mlx_new_image((*map)->mlx.mlx, 1000, 1000); // mlx_new_image responsiblity is to create a new image buffer
-	if (!(*map)->img_ptr.img)
+	(*map)->mlx.img_ptr.img  = mlx_new_image((*map)->mlx.mlx, WIDTH, HEIGHT); // mlx_new_image responsiblity is to create a new image buffer
+	if (!(*map)->mlx.img_ptr.img)
 		return (1);
-	(*map)->img_ptr.addr = mlx_get_data_addr((*map)->img_ptr.img, &(*map)->img_ptr.bits_per_pixel, &(*map)->img_ptr.line_length, &(*map)->img_ptr.endian); // it is responsible for returning the address of the image buffer
-	if (!(*map)->img_ptr.addr)
+	(*map)->mlx.img_ptr.addr = mlx_get_data_addr(
+		(*map)->mlx.img_ptr.img,
+		&(*map)->mlx.img_ptr.bits_per_pixel,
+		&(*map)->mlx.img_ptr.line_length,
+		&(*map)->mlx.img_ptr.endian); // it is responsible for returning the address of the image buffer
+	if (!(*map)->mlx.img_ptr.addr)
 		return (1);
-	
 	return (0);
 }
 
@@ -73,6 +76,7 @@ int	start_game(t_file **map)
 		return (1);
 	if (set_event_hooks(map))
 		return (1);
+	draw_square(WIDTH / 2, HEIGHT / 2, 10,  0x00FF00, &(*map)->mlx);
 	mlx_loop_hook((*map)->mlx.mlx, game_loop, map);
 	mlx_loop((*map)->mlx.mlx);
 	return (0);
