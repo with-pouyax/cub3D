@@ -66,8 +66,8 @@ void	clean_texture_paths(t_texture_paths *textures)
 
 void	cleanup_mlx(t_file *map)
 {
-	if (map->img_ptr.img)
-		mlx_destroy_image(map->mlx.mlx, map->img_ptr.img);
+	if (map->mlx.img_ptr.img)
+		mlx_destroy_image(map->mlx.mlx, map->mlx.img_ptr.img);
 	if (map->mlx.win)
 		mlx_destroy_window(map->mlx.mlx, map->mlx.win);
 	if (map->mlx.mlx)

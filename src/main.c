@@ -26,9 +26,23 @@ void	put_pixel(int x, int y, int color, t_mlx *game)
 void	draw_square(int x, int y, int size, int color, t_mlx *game)
 {
 	for (int i = 0; i < size; i++)
+		put_pixel(x + i, y, color, game);
+	for (int i = 0; i < size; i++)
+		put_pixel(x, y + i, color, game);
+	for (int i = 0; i < size; i++)
+		put_pixel(x + size, y + i, color, game);
+	for (int i = 0; i < size; i++)
+		put_pixel(x + i, y + size, color, game);
+}
+
+void clean_img(t_mlx *game)
+{
+	for (int y = 0; y < HEIGHT; y++)
 	{
-		for (int j = 0; j < size; j++)
-			put_pixel(x + j, y + i, color, game);
+		for (int x = 0; x < WIDTH; x++)
+		{
+			put_pixel(x, y, 0, game);
+		}
 	}
 }
 

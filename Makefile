@@ -31,6 +31,7 @@ SRCS = src/main.c \
 	src/test_mlx.c \
 	src/mlx/mlx_init.c \
 	src/mlx/mlx_events.c \
+	src/mlx/player_movements.c \
 	src/mlx/movement_functions.c \
 	src/mlx/movement_rotate.c \
 	src/parsing/map/map_validation.c \

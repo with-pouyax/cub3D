@@ -25,12 +25,15 @@
 // Other values allow diagonal directions.
 void init_player(t_file *map)
 {
-    map->player.x = 2.0;  // Example: Start at grid position (2,2)
-    map->player.y = 2.0;
+    map->player.x = WIDTH / 2;  // Example: Start at grid position (2,2)
+    map->player.y = HEIGHT / 2;
 
-    map->player.dir_x = -1.0; // Facing left (-X direction)
-    map->player.dir_y = 0.0;  // No movement in Y direction
-
-    map->player.plane_x = 0.0;  // No tilt in X
-    map->player.plane_y = 0.66; // Camera plane for FOV (adjustable)
+    map->player.key_up = false;
+    map->player.key_down = false;
+    map->player.key_left = false;
+    map->player.key_right = false;
+    map->player.left_rotate = false;
+    map->player.right_rotate = false;
+    map->player.speed = 3;
+    map->player.angle_speed = 0.03;
 }

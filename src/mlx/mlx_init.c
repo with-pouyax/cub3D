@@ -76,7 +76,6 @@ int	start_game(t_file **map)
 		return (1);
 	if (set_event_hooks(map))
 		return (1);
-	draw_square(WIDTH / 2, HEIGHT / 2, 10,  0x00FF00, &(*map)->mlx);
 	mlx_loop_hook((*map)->mlx.mlx, game_loop, map);
 	mlx_loop((*map)->mlx.mlx);
 	return (0);

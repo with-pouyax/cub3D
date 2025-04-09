@@ -27,9 +27,19 @@
 # include "../libraries/libft/libft.h"
 # include "../libraries/mlx/mlx.h"
 
-#define MOVE_SPEED 0.1
+#define MOVE_SPEED 5
 #define ROTATE_SPEED 0.05
 
+#define W 119
+#define A 97
+#define S 115
+#define D 100
+#define ESP 65307
+#define LEFT 65361
+#define RIGHT 65363
+
+
+#define PI 3.14159265359
 typedef struct s_colors
 {
 	int	floor;
@@ -53,23 +63,28 @@ typedef struct s_img
 	int		endian;
 }	t_img;
 
-typedef struct s_mlx        //s_game
+typedef struct s_mlx
 {
 	void	*mlx;
 	void	*win;
 	t_img	img_ptr;
 }	t_mlx;
 
-
 typedef struct s_player
 {
-    double x;       // Player's position (X coordinate)
-    double y;       // Player's position (Y coordinate)
-    double dir_x;   // Direction vector (X component)
-    double dir_y;   // Direction vector (Y component)
-    double plane_x; // Camera plane vector (X component)
-    double plane_y; // Camera plane vector (Y component)
+    float x;
+    float y;
+    float angle;
+	bool	key_up;
+	bool	key_down;
+	bool	key_left;
+	bool	key_right;
+	bool 	left_rotate;
+    bool 	right_rotate;
+	int 	speed;        // Player movement speed
+    float 	angle_speed; // Rotation speed
 }	t_player;
+
 typedef struct s_file
 {
 	char			**raw_file;
@@ -234,13 +249,11 @@ int	set_event_hooks(t_file **map);
 int	game_loop(t_file **map);
 
 //movements
-void move_forward(t_file **map);
-void move_backward(t_file **map);
-void move_left(t_file **map);
-void move_right(t_file **map);
-void rotate_left(t_file **map);
-void rotate_right(t_file **map);
 void	draw_square(int x, int y, int size, int color, t_mlx *game);
 void	put_pixel(int x, int y, int color, t_mlx *game);
+void clean_img(t_mlx *game);
+void update_player_state(t_player *player);
+void perform_move(t_player *player);
+void perform_rotation(t_player *player);
 
 #endif

@@ -12,28 +12,27 @@
 
 #include "../../includes/cub3d.h"
 
-// Movement functions
-void move_forward(t_file **map)
-{
-    (*map)->player.x += (*map)->player.dir_x * MOVE_SPEED;
-    (*map)->player.y += (*map)->player.dir_y * MOVE_SPEED;
-}
+// // Movement functions
+// void move_forward(t_file **map)
+// {
+//     (*map)->player.y -= MOVE_SPEED;
+    
+// }
 
-void move_backward(t_file **map)
-{
-    (*map)->player.x -= (*map)->player.dir_x * MOVE_SPEED;
-    (*map)->player.y -= (*map)->player.dir_y * MOVE_SPEED;
-}
+// void move_backward(t_file **map)
+// {
+//     (*map)->player.y += MOVE_SPEED;
+    
+// }
 
-void move_left(t_file **map)
-{
-    (*map)->player.x -= (*map)->player.dir_y * MOVE_SPEED;
-    (*map)->player.y += (*map)->player.dir_x * MOVE_SPEED;
-}
+// void move_left(t_file **map)
+// {
+//     (*map)->player.x -= MOVE_SPEED;
+    
+// }
 
-void move_right(t_file **map)
-{
-    (*map)->player.x += (*map)->player.dir_y * MOVE_SPEED;
-    (*map)->player.y -= (*map)->player.dir_x * MOVE_SPEED;
-}
+// void move_right(t_file **map)
+// {
+//     (*map)->player.x += MOVE_SPEED;
+// }
 
