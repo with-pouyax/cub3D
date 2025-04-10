@@ -12,22 +12,12 @@
 
 #include "../../includes/cub3d.h"
 
-//Direction (dir_x, dir_y) → Controls movement direction:
-
-// (-1,0) → Facing left
-
-// (1,0) → Facing right
-
-// (0,-1) → Facing up
-
-// (0,1) → Facing down
-
-// Other values allow diagonal directions.
+// Example: Start at grid position (2,2)
 void init_player(t_file *map)
 {
-    map->player.x = WIDTH / 2;  // Example: Start at grid position (2,2)
+    map->player.x = WIDTH / 2;
     map->player.y = HEIGHT / 2;
-
+    map->player.angle = PI / 2;
     map->player.key_up = false;
     map->player.key_down = false;
     map->player.key_left = false;

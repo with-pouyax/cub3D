@@ -12,39 +12,6 @@
 
 #include "../includes/cub3d.h"
 
-//first we put pixel in to the buffer and next we gonna display it
-void	put_pixel(int x, int y, int color, t_mlx *game)
-{
-	if (x >= WIDTH || y >= HEIGHT || x < 0 || y < 0)
-		return ;
-	int i = y * game->img_ptr.line_length + x * game->img_ptr.bits_per_pixel / 8;
-	game->img_ptr.addr[i] = color &  0xFF;
-	game->img_ptr.addr[i + 1] = (color >> 8) &  0xFF;
-	game->img_ptr.addr[i + 2] = (color >> 16) &  0xFF;
-	
-}
-void	draw_square(int x, int y, int size, int color, t_mlx *game)
-{
-	for (int i = 0; i < size; i++)
-		put_pixel(x + i, y, color, game);
-	for (int i = 0; i < size; i++)
-		put_pixel(x, y + i, color, game);
-	for (int i = 0; i < size; i++)
-		put_pixel(x + size, y + i, color, game);
-	for (int i = 0; i < size; i++)
-		put_pixel(x + i, y + size, color, game);
-}
-
-void clean_img(t_mlx *game)
-{
-	for (int y = 0; y < HEIGHT; y++)
-	{
-		for (int x = 0; x < WIDTH; x++)
-		{
-			put_pixel(x, y, 0, game);
-		}
-	}
-}
 
 int	main(int ac, char **av)
 {
@@ -53,7 +20,6 @@ int	main(int ac, char **av)
 	// Test MLX if requested
 	if (ac == 2 && !ft_strncmp(av[1], "--test-mlx", 10))
 		return (test_mlx());
-
 	if (init_map(&map) || init_map_mlx(&map))
 		return (1);
 	init_player(map);

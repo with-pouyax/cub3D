@@ -30,9 +30,11 @@ void perform_rotation(t_player *player)
 void perform_move(t_player *player)
 {
     // Calculate the cosine and sine of the player's angle for movement
-    float cos_angle = cos(player->angle);
-    float sin_angle = sin(player->angle);
+    float cos_angle;
+    float sin_angle;
 
+    cos_angle  = cos(player->angle);
+    sin_angle  = sin(player->angle);
     if (player->key_up)
     {
         player->x += cos_angle * player->speed;

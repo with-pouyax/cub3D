@@ -101,21 +101,28 @@ int	set_event_hooks(t_file **map)
 	mlx_hook((*map)->mlx.win, 2, 1L << 0, handle_keypress, map);
     mlx_hook((*map)->mlx.win, 3, 1L << 1, handle_keyrelease, map);
 	mlx_hook((*map)->mlx.win, 17, 0, handle_esc_press, map);
-    mlx_loop((*map)->mlx.mlx);
+    // mlx_loop((*map)->mlx.mlx);
 	return (0);
 }
+// 1 - Updates the player's position and angle based on input.
+// It must be done first so the next frame reflects the latest position.
+// 2 -Clears the screen from the previous frame.
+// 3 -probably draws the player as a dot on the minimap.
+// 4 - draws the minimap grid.
+// 5 - 
+// last_step : Pushes the full image to the screen.
 
 int	game_loop(t_file **map)
 {
-    t_player    *player = &(*map)->player;
-    
-    update_player_state(player);
-    mlx_clear_window((*map)->mlx.mlx, (*map)->mlx.win);
-    clean_img(&(*map)->mlx); 
-	draw_square(WIDTH / 2, HEIGHT / 2, 10,  0x00FF00, &(*map)->mlx);
+    t_player    *player;
+    t_file      *game;
 
-	// TODO: Implement raycasting here to draw the game scene
-    // Display the image to the window
+    game = *map;
+    player = &(*map)->player;
+    update_player_state(player);
+    clean_img(&(*map)->mlx); 
+    draw_player(&game->player, game);
+    draw_map(game);
     mlx_put_image_to_window((*map)->mlx.mlx, (*map)->mlx.win, (*map)->mlx.img_ptr.img, 0, 0);
 	return(0);
 }

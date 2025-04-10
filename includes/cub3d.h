@@ -38,7 +38,7 @@
 #define LEFT 65361
 #define RIGHT 65363
 
-
+# define BLOCK 10 // size of one square in the minimap
 #define PI 3.14159265359
 typedef struct s_colors
 {
@@ -72,9 +72,9 @@ typedef struct s_mlx
 
 typedef struct s_player
 {
-    float x;
-    float y;
-    float angle;
+    float 	x;
+    float 	y;
+    float 	angle;
 	bool	key_up;
 	bool	key_down;
 	bool	key_left;
@@ -82,7 +82,7 @@ typedef struct s_player
 	bool 	left_rotate;
     bool 	right_rotate;
 	int 	speed;        // Player movement speed
-    float 	angle_speed; // Rotation speed
+    float 	angle_speed;  // Rotation speed
 }	t_player;
 
 typedef struct s_file
@@ -249,11 +249,14 @@ int	set_event_hooks(t_file **map);
 int	game_loop(t_file **map);
 
 //movements
-void	draw_square(int x, int y, int size, int color, t_mlx *game);
 void	put_pixel(int x, int y, int color, t_mlx *game);
 void clean_img(t_mlx *game);
 void update_player_state(t_player *player);
 void perform_move(t_player *player);
 void perform_rotation(t_player *player);
+// Minimap rendering
+void	draw_map(t_file *game);
+void	draw_tile(int x, int y, int size, int color, t_file *game);
+void	draw_player(t_player *player, t_file *game);
 
 #endif

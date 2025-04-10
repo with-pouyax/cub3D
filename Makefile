@@ -29,6 +29,7 @@ INCLUDES = -I./includes -I./libraries/libft -I./libraries/mlx
 # Source files with new directory structure
 SRCS = src/main.c \
 	src/test_mlx.c \
+	src/drawings/drawings.c \
 	src/mlx/mlx_init.c \
 	src/mlx/mlx_events.c \
 	src/mlx/player_movements.c \
