@@ -104,6 +104,76 @@ int	set_event_hooks(t_file **map)
     // mlx_loop((*map)->mlx.mlx);
 	return (0);
 }
+// bool touch(float px, float py, t_file *game)
+// {
+//     int x = px / BLOCK;
+//     int y = py / BLOCK;
+//     if (game->game_map[y][x] == '1') // Assuming '1' represents a wall
+//         return true;
+//     return false;
+// }
+
+
+bool touch(float px, float py, t_file *game)
+{
+    int x = px / BLOCK;
+    int y = py / BLOCK;
+
+    printf("x = %d\n", x);
+    printf("y = %d\n", y);
+    // Check if the tile is a wall
+    if (game->game_map[y][x] == '1') {
+        return true;
+    }
+    return false;
+}
+
+// distance calculation functions
+float distance(float x, float y){
+    return sqrt(x * x + y * y);
+}
+
+float fixed_dist(float x1, float y1, float x2, float y2, t_file *game)
+{
+    float delta_x = x2 - x1;
+    float delta_y = y2 - y1;
+    float angle = atan2(delta_y, delta_x) - game->player.angle;
+    float fix_dist = distance(delta_x, delta_y) * cos(angle);
+    return fix_dist;
+}
+
+
+// raycasting functions
+// Change the type of the 'game' parameter in draw_line to 't_file *'
+void draw_line(t_player *player, t_file *game, float start_x, int i)
+{
+    float cos_angle = cos(start_x);
+    float sin_angle = sin(start_x);
+    float ray_x = player->x;
+    float ray_y = player->y;
+
+    while (!touch(ray_x, ray_y, game))  // Pass game (t_file *) here
+    {
+        if (DEBUG)
+            put_pixel(ray_x, ray_y, 0xFF0000, &game->mlx);  // Pass game (t_file *) here
+        ray_x += cos_angle;
+        ray_y += sin_angle;
+    }
+
+    if (!DEBUG)
+    {
+        float dist = fixed_dist(player->x, player->y, ray_x, ray_y, game);  // Pass game (t_file *) here
+        float height = (BLOCK / dist) * (WIDTH / 2);
+        int start_y = (HEIGHT - height) / 2;
+        int end = start_y + height;
+        while (start_y < end)
+        {
+            put_pixel(i, start_y, 255, &game->mlx);  // Pass game (t_file *) here
+            start_y++;
+        }
+    }
+}
+
 // 1 - Updates the player's position and angle based on input.
 // It must be done first so the next frame reflects the latest position.
 // 2 -Clears the screen from the previous frame.
@@ -116,13 +186,32 @@ int	game_loop(t_file **map)
 {
     t_player    *player;
     t_file      *game;
+    float       fraction;
+    float       start_angle;
+    int         i;
 
     game = *map;
     player = &(*map)->player;
     update_player_state(player);
-    clean_img(&(*map)->mlx); 
-    draw_player(&game->player, game);
-    draw_map(game);
-    mlx_put_image_to_window((*map)->mlx.mlx, (*map)->mlx.win, (*map)->mlx.img_ptr.img, 0, 0);
-	return(0);
+    clean_img(&(*map)->mlx);
+    // draw_map(game);
+    // draw_player(&game->player, game);
+    // === Core raycasting logic ===
+    fraction = PI / 3 / WIDTH;                  // FOV is 60 degrees (PI/3), divide by screen width
+    start_angle = player->angle - (PI / 6);     // Start from left-most ray (FOV / 2 to the left)
+    i = 0;
+    while (i < WIDTH)
+    {
+        draw_line(player, game, start_angle, i);  // Cast a ray and draw vertical slice
+        start_angle += fraction;                  // Increment the angle for the next ray
+        i++;
+    }
+    // Final step: Put the rendered image to the window
+    mlx_put_image_to_window(
+        (*map)->mlx.mlx,
+        (*map)->mlx.win,
+        (*map)->mlx.img_ptr.img,
+        0, 0
+    );
+    return(0);
 }

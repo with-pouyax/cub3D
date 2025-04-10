@@ -1,27 +1,25 @@
 {
-    //new_json
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch GDB Debugger",
+            "name": "(gdb) Launch cub3D",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/cub3d",
-            "args": ["maps/r_standard.cub"],
-            "stopAtEntry": true,
-            "cwd": "${workspaceFolder}",
-            "externalConsole": false,
-            "MIMode": "gdb",
-  
+            "program": "${workspaceFolder}/cub3D",  // Path to the cub3d executable
+            "args": ["maps/r_standard.cub"],         // Arguments for your cub3d program (the map file)
+            "stopAtEntry": true,                     // Stop at the entry point of the program
+            "cwd": "${workspaceFolder}",             // Set current working directory to the workspace folder
+            "externalConsole": false,                // Use the internal terminal for debugging
+            "MIMode": "gdb",                         // Use gdb as the debugger
             "setupCommands": [
                 {
-                "description": "Set follow-fork-mode to child",
-                "text": "set follow-fork-mode child",
-                "ignoreFailures": true
-                  },
-                  {
                     "description": "Enable pretty-printing for gdb",
                     "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
                     "ignoreFailures": true
                 },
                 {
@@ -43,10 +41,18 @@
                     "description": "Enable pretty-printing of structures",
                     "text": "set print pretty on",
                     "ignoreFailures": true
+                },
+                {
+                    "description": "Set follow-fork-mode to child",
+                    "text": "set follow-fork-mode child",
+                    "ignoreFailures": true
                 }
-            ]
+            ],
+            "miDebuggerPath": "/usr/bin/gdb",  // Path to your gdb executable
+            "miDebuggerArgs": "",
+            "logging": {
+                "engineLogging": true
+            }
         }
     ]
-  }
-  //gdb command for minishell; set follow-fork-mode child. 
-  //or set follow-fork-mode parent (default)
+}

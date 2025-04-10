@@ -56,11 +56,13 @@ void draw_tile(int x, int y, int size, int color, t_file *game)
 	}
 }
 
-
 void draw_player(t_player *player, t_file *game)
 {
-	int px = player->x * BLOCK;
-	int py = player->y * BLOCK;
+	int px;
+	int py;
+
+    px = player->x * BLOCK;
+    py = player->y * BLOCK;
 	draw_tile(px, py, BLOCK / 2, COLOR_GREEN, game); // small green dot
 }
 void draw_map(t_file *game)
@@ -77,7 +79,7 @@ void draw_map(t_file *game)
 				color = 0x3333FF; // wall
 			else if (tile == '0')
 				color = 0xFFFFFF; // floor
-			else if (tile == 'P')
+			else if (tile == 'N')
 				color = COLOR_GREEN; // initial player position (optional)
 			else
 				color = 0xFF00FF; // unknown/debug

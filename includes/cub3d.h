@@ -37,8 +37,15 @@
 #define ESP 65307
 #define LEFT 65361
 #define RIGHT 65363
+# define DEBUG 0
 
-# define BLOCK 10 // size of one square in the minimap
+
+#include <stdio.h>
+
+#define BLOCK 32 // Define the size of a block (adjust this based on your map)
+#define MAP_WIDTH 24  // Adjust this based on the number of columns in your map
+#define MAP_HEIGHT 24 // Adjust this based on the number of rows in your map
+
 #define PI 3.14159265359
 typedef struct s_colors
 {
@@ -258,5 +265,6 @@ void perform_rotation(t_player *player);
 void	draw_map(t_file *game);
 void	draw_tile(int x, int y, int size, int color, t_file *game);
 void	draw_player(t_player *player, t_file *game);
+void draw_line(t_player *player, t_file *game, float start_x, int i);
 
 #endif
