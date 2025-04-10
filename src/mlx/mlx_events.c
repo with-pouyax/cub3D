@@ -168,7 +168,7 @@ void draw_line(t_player *player, t_file *game, float start_x, int i)
         int end = start_y + height;
         while (start_y < end)
         {
-            put_pixel(i, start_y, 255, &game->mlx);  // Pass game (t_file *) here
+            put_pixel(i, start_y, 0x008000, &game->mlx);  // Pass game (t_file *) here
             start_y++;
         }
     }
