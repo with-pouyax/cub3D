@@ -18,12 +18,10 @@ void perform_rotation(t_player *player)
         player->angle -= player->angle_speed;
     if (player->right_rotate)
         player->angle += player->angle_speed;
-
-    // Normalize angle to stay within 0 and 2*PI
-    if (player->angle >= 2 * PI)
-        player->angle -= 2 * PI;
+    if (player->angle > 2 * PI)
+        player->angle = 0;
     if (player->angle < 0)
-        player->angle += 2 * PI;
+        player->angle = 2 * PI;
 }
 
 // Function to move the player in the desired direction

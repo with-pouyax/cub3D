@@ -59,9 +59,9 @@ int handle_keypress(int keycode, t_file **map)
     else if (keycode == D)
         (*map)->player.key_right = true;
 	else if (keycode == LEFT)
-        (*map)->player.key_left = true;
+        (*map)->player.left_rotate = true;
     else if (keycode == RIGHT)
-        (*map)->player.key_right = true;
+        (*map)->player.right_rotate = true;
     return (0);
 }
 
@@ -77,9 +77,9 @@ int handle_keyrelease(int keycode, t_file **map)
     else if (keycode == D)
         (*map)->player.key_right = false;
     else if (keycode == LEFT)
-        (*map)->player.key_left = false;
+        (*map)->player.left_rotate = false;
     else if (keycode == RIGHT)
-        (*map)->player.key_right = false;
+        (*map)->player.right_rotate = false;
     return (0);
 }
 
@@ -194,8 +194,11 @@ int	game_loop(t_file **map)
     player = &(*map)->player;
     update_player_state(player);
     clean_img(&(*map)->mlx);
-    // draw_map(game);
-    // draw_player(&game->player, game);
+    if (DEBUG)
+    {
+        draw_map(game);
+        draw_player(&game->player, game);
+    }
     // === Core raycasting logic ===
     fraction = PI / 3 / WIDTH;                  // FOV is 60 degrees (PI/3), divide by screen width
     start_angle = player->angle - (PI / 6);     // Start from left-most ray (FOV / 2 to the left)
