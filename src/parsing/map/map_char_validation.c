@@ -21,7 +21,7 @@ int	not_valid_char(char c, int *player_count, t_file *map, t_coord *pos)
 		{
 			map->player_dir = c;
 			map->player_x = (*pos).j;
-			map->player_y = (*pos).i - map->map_height + 1;
+			map->player_y = (*pos).i - map->map_height;
 		}
 	}
 	if (*player_count > 1)
