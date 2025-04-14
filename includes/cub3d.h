@@ -15,7 +15,11 @@
 
 # define WIDTH 1200
 # define HEIGHT 720
-# define COLOR_GREEN 0x00FF00
+# define COLOR_BLUE    0x3333FF
+# define COLOR_WHITE   0xFFFFFF
+# define COLOR_GREEN   0x00FF00
+# define COLOR_MAGENTA 0xFF00FF
+# define COLOR_BLACK   0x0000FF
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -37,12 +41,12 @@
 #define ESP 65307
 #define LEFT 65361
 #define RIGHT 65363
-# define DEBUG 0
+# define DEBUG 1
 
 
 #include <stdio.h>
 
-#define BLOCK 32 // Define the size of a block (adjust this based on your map)
+#define BLOCK 40 // Define the size of a block (adjust this based on your map)
 #define MAP_WIDTH 24  // Adjust this based on the number of columns in your map
 #define MAP_HEIGHT 24 // Adjust this based on the number of rows in your map
 
@@ -256,15 +260,16 @@ int	set_event_hooks(t_file **map);
 int	game_loop(t_file **map);
 
 //movements
-void	put_pixel(int x, int y, int color, t_mlx *game);
+// void	put_pixel(int x, int y, int color, t_mlx *game);
 void clean_img(t_mlx *game);
 void update_player_state(t_player *player);
 void perform_move(t_player *player);
 void perform_rotation(t_player *player);
 // Minimap rendering
 void	draw_map(t_file *game);
-void	draw_tile(int x, int y, int size, int color, t_file *game);
-void	draw_player(t_player *player, t_file *game);
+// void	draw_tile(int x, int y, int size, int color, t_file *game);
+// void	draw_player(t_player *player, t_file *game);
 void draw_line(t_player *player, t_file *game, float start_x, int i);
-
+void put_pixel(int x, int y, int color, t_mlx *game);
+void draw_square(int x, int y, int size, int color, t_file *game);
 #endif

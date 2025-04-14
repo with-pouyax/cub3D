@@ -119,8 +119,8 @@ bool touch(float px, float py, t_file *game)
     int x = px / BLOCK;
     int y = py / BLOCK;
 
-    printf("x = %d\n", x);
-    printf("y = %d\n", y);
+    // printf("x = %d\n", x);
+    // printf("y = %d\n", y);
     // Check if the tile is a wall
     if (game->game_map[y][x] == '1') {
         return true;
@@ -196,8 +196,8 @@ int	game_loop(t_file **map)
     clean_img(&(*map)->mlx);
     if (DEBUG)
     {
+        draw_square(player->x, player->y, 10, 0x00FF00, game);
         draw_map(game);
-        draw_player(&game->player, game);
     }
     // === Core raycasting logic ===
     fraction = PI / 3 / WIDTH;                  // FOV is 60 degrees (PI/3), divide by screen width

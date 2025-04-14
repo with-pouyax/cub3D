@@ -13,16 +13,16 @@
 #include "../../includes/cub3d.h"
 
 //first we put pixel in to the buffer and next we gonna display it
-void	put_pixel(int x, int y, int color, t_mlx *game)
-{
-	if (x >= WIDTH || y >= HEIGHT || x < 0 || y < 0)
-		return ;
-	int i = y * game->img_ptr.line_length + x * game->img_ptr.bits_per_pixel / 8;
-	game->img_ptr.addr[i] = color &  0xFF;
-	game->img_ptr.addr[i + 1] = (color >> 8) &  0xFF;
-	game->img_ptr.addr[i + 2] = (color >> 16) &  0xFF;
+// void	put_pixel(int x, int y, int color, t_mlx *game)
+// {
+// 	if (x >= WIDTH || y >= HEIGHT || x < 0 || y < 0)
+// 		return ;
+// 	int i = y * game->img_ptr.line_length + x * game->img_ptr.bits_per_pixel / 8;
+// 	game->img_ptr.addr[i] = color &  0xFF;
+// 	game->img_ptr.addr[i + 1] = (color >> 8) &  0xFF;
+// 	game->img_ptr.addr[i + 2] = (color >> 16) &  0xFF;
 	
-}
+// }
 
 
 // void	draw_player(int x, int y, int size, int color, t_mlx *game)
@@ -37,34 +37,57 @@ void	put_pixel(int x, int y, int color, t_mlx *game)
 // 		put_pixel(x + i, y + size, color, game);
 // }
 
-void draw_tile(int x, int y, int size, int color, t_file *game)
+// void draw_tile(int x, int y, int size, int color, t_file *game)
+// {
+// 	for (int dy = 0; dy < size; dy++)
+//     {
+//         for (int dx = 0; dx < size; dx++)
+//         {
+//             int px = x + dx;
+//             int py = y + dy;
+
+//             if (px >= 0 && px < WIDTH && py >= 0 && py < HEIGHT)
+//             {
+//                 char *pixel = game->mlx.img_ptr.addr + (py * game->mlx.img_ptr.line_length + px * game->mlx.img_ptr.bits_per_pixel / 8);
+//                 *(unsigned int *)pixel = color;
+//             }
+//         }
+//     }
+// }
+
+// void draw_player(t_player *player, t_file *game)
+// {
+// 	int px;
+// 	int py;
+
+//     px = player->x * BLOCK;
+//     py = player->y * BLOCK;
+// 	draw_tile(px, py, BLOCK / 2, COLOR_GREEN, game); // small green dot
+// }
+
+void put_pixel(int x, int y, int color, t_mlx *game)
 {
-	for (int dy = 0; dy < size; dy++)
-	{
-		for (int dx = 0; dx < size; dx++)
-		{
-			int px = x + dx;
-			int py = y + dy;
-			if (px >= 0 && px < WIDTH && py >= 0 && py < HEIGHT)
-			{
-				int offset = py * game->mlx.img_ptr.line_length + px * (game->mlx.img_ptr.bits_per_pixel / 8);
-				game->mlx.img_ptr.addr[offset] = color & 0xFF;
-				game->mlx.img_ptr.addr[offset + 1] = (color >> 8) & 0xFF;
-				game->mlx.img_ptr.addr[offset + 2] = (color >> 16) & 0xFF;
-			}
-		}
-	}
+    if(x >= WIDTH || y >= HEIGHT || x < 0 || y < 0)
+        return;
+    
+    int index = y * game->img_ptr.line_length + x * game->img_ptr.bits_per_pixel / 8;
+    game->img_ptr.addr [index] = color & 0xFF;
+    game->img_ptr.addr [index + 1] = (color >> 8) & 0xFF;
+    game->img_ptr.addr [index + 2] = (color >> 16) & 0xFF;
 }
 
-void draw_player(t_player *player, t_file *game)
+void draw_square(int x, int y, int size, int color, t_file *game)
 {
-	int px;
-	int py;
-
-    px = player->x * BLOCK;
-    py = player->y * BLOCK;
-	draw_tile(px, py, BLOCK / 2, COLOR_GREEN, game); // small green dot
+    for(int i = 0; i < size; i++)
+        put_pixel(x + i, y, color, &game->mlx);
+    for(int i = 0; i < size; i++)
+        put_pixel(x, y + i, color, &game->mlx);
+    for(int i = 0; i < size; i++)
+        put_pixel(x + size, y + i, color, &game->mlx);
+    for(int i = 0; i < size; i++)
+        put_pixel(x + i, y + size, color, &game->mlx);
 }
+
 void draw_map(t_file *game)
 {
 	char **map = game->game_map;
@@ -72,19 +95,8 @@ void draw_map(t_file *game)
 	{
 		for (int x = 0; map[y][x]; x++)
 		{
-			char tile = map[y][x];
-			int color;
-
-			if (tile == '1')
-				color = 0x3333FF; // wall
-			else if (tile == '0')
-				color = 0xFFFFFF; // floor
-			else if (tile == 'N')
-				color = COLOR_GREEN; // initial player position (optional)
-			else
-				color = 0xFF00FF; // unknown/debug
-
-			draw_tile(x * BLOCK, y * BLOCK, BLOCK, color, game);
+			if(map[y][x] == '1')
+				draw_square(x * BLOCK, y * BLOCK, BLOCK, COLOR_BLACK, game);
 		}
 	}
 }
