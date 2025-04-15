@@ -57,6 +57,30 @@ int	create_image_buffer(t_file **map)
 	return (0);
 }
 
+void	init_game_state(t_file **map)
+{
+	if ((*map)->player_dir == 'N')
+	{
+		(*map)->plane_x = 0.55;
+		(*map)->plane_y = 0;
+	}
+	else if ((*map)->player_dir == 'S')
+	{
+		(*map)->plane_x = -0.55;
+		(*map)->plane_y = 0;
+	}
+	else if ((*map)->player_dir == 'W')
+	{
+		(*map)->plane_x = 0;
+		(*map)->plane_y = 0.55;
+	}
+	else if ((*map)->player_dir == 'E')
+	{
+		(*map)->plane_x = 0;
+		(*map)->plane_y = -0.55;
+	}
+}
+
 // Initialize MLX (MiniLibX), which is needed for rendering
 // Create the window where everything will be rendered
 // Create an image buffer to store and manipulate pixels before rendering
@@ -68,6 +92,7 @@ int	create_image_buffer(t_file **map)
 
 int	start_game(t_file **map)
 {
+	init_game_state(map);
 	if (init_mlx(map))
 		return (1);
 	if (create_window(map))
@@ -75,6 +100,8 @@ int	start_game(t_file **map)
 	if (create_image_buffer(map))
 		return (1);
 	if (set_event_hooks(map))
+		return (1);
+	if (init_minimap(map))
 		return (1);
 	mlx_loop_hook((*map)->mlx.mlx, game_loop, map);
 	mlx_loop((*map)->mlx.mlx);

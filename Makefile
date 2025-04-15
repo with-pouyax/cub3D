@@ -30,6 +30,9 @@ INCLUDES = -I./includes -I./libraries/libft -I./libraries/mlx
 SRCS = src/main.c \
 	src/test_mlx.c \
 	src/drawings/drawings.c \
+	src/drawings/mini_map.c \
+	src/drawings/draw_minimap.c \
+	src/drawings/recasting.c \
 	src/mlx/mlx_init.c \
 	src/mlx/mlx_events.c \
 	src/mlx/player_movements.c \

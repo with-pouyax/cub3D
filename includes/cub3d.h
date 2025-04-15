@@ -13,8 +13,8 @@
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# define WIDTH 1200
-# define HEIGHT 720
+# define WIDTH 1940
+# define HEIGHT 1280
 # define COLOR_BLUE    0x3333FF
 # define COLOR_WHITE   0xFFFFFF
 # define COLOR_GREEN   0x00FF00
@@ -31,8 +31,8 @@
 # include "../libraries/libft/libft.h"
 # include "../libraries/mlx/mlx.h"
 
-#define MOVE_SPEED 5
-#define ROTATE_SPEED 0.05
+#define MOVE_SPEED 0.09
+#define ROTATE_SPEED 0.09
 
 #define W 119
 #define A 97
@@ -46,7 +46,7 @@
 
 #include <stdio.h>
 
-#define BLOCK 40 // Define the size of a block (adjust this based on your map)
+#define TILE_SCALE 40 // Define the size of a block (adjust this based on your map)
 #define MAP_WIDTH 24  // Adjust this based on the number of columns in your map
 #define MAP_HEIGHT 24 // Adjust this based on the number of rows in your map
 
@@ -105,10 +105,30 @@ typedef struct s_file
 	int				map_height;
 	int				map_width;
 	char			player_dir;
+	double			dir_x_face;
+	double			dir_y_face;
+	double			ray_screen_pos;
+	double			ray_dir_x;
+	double			ray_dir_y;
+	double			distance_to_x;
+	double			distance_to_y;
+	double			dist_from_next_wall_x;
+	double			dist_from_next_wall_y;
+	double			perpendicular_wall_distance;
+	int				ray_travel_x;
+	int				ray_travel_y;
+	int				hit_vertical_wall;
+	int				hit_horizontal_wall;
+	
 	int				player_x;
 	int				player_y;
+	int				map_tile_x;  //refers to the current tile
+	int				map_tile_y;
+	double			plane_x;
+	double			plane_y;
 	t_mlx			mlx;
 	t_player        player;
+	t_img			minimap_img; // 🆕 Add this for minimap
 }	t_file;
 
 typedef struct s_dir_flags
@@ -266,10 +286,20 @@ void update_player_state(t_player *player);
 void perform_move(t_player *player);
 void perform_rotation(t_player *player);
 // Minimap rendering
-void	draw_map(t_file *game);
+// void	draw_map(t_file *game);
 // void	draw_tile(int x, int y, int size, int color, t_file *game);
 // void	draw_player(t_player *player, t_file *game);
-void draw_line(t_player *player, t_file *game, float start_x, int i);
-void put_pixel(int x, int y, int color, t_mlx *game);
-void draw_square(int x, int y, int size, int color, t_file *game);
+// void draw_line(t_player *player, t_file *game, float start_x, int i);
+// void put_pixel(int x, int y, int color, t_mlx *game);
+// void draw_square(int x, int y, int size, int color, t_file *game);
+int    	init_minimap(t_file **map);
+void    draw_square(t_file *map, int col, int row, int color);
+void    draw_wall(t_file *map, int col, int row);
+void    draw_floor(t_file *map, int col, int row);
+void    draw_player(t_file *map, int col, int row);
+void    draw_unknown(t_file *map, int col, int row);
+void    put_pixel_minimap(t_file *map, int x, int y, int color);
+int    recasting(t_file **map);
+
+
 #endif

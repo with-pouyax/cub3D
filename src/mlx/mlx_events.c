@@ -114,107 +114,131 @@ int	set_event_hooks(t_file **map)
 // }
 
 
-bool touch(float px, float py, t_file *game)
-{
-    int x = px / BLOCK;
-    int y = py / BLOCK;
+// bool touch(float px, float py, t_file *game)
+// {
+//     int x = px / BLOCK;
+//     int y = py / BLOCK;
 
-    // printf("x = %d\n", x);
-    // printf("y = %d\n", y);
-    // Check if the tile is a wall
-    if (game->game_map[y][x] == '1') {
-        return true;
-    }
-    return false;
-}
+//     // printf("x = %d\n", x);
+//     // printf("y = %d\n", y);
+//     // Check if the tile is a wall
+//     if (game->game_map[y][x] == '1') {
+//         return true;
+//     }
+//     return false;
+// }
 
 // distance calculation functions
-float distance(float x, float y){
-    return sqrt(x * x + y * y);
-}
+// float distance(float x, float y){
+//     return sqrt(x * x + y * y);
+// }
 
-float fixed_dist(float x1, float y1, float x2, float y2, t_file *game)
-{
-    float delta_x = x2 - x1;
-    float delta_y = y2 - y1;
-    float angle = atan2(delta_y, delta_x) - game->player.angle;
-    float fix_dist = distance(delta_x, delta_y) * cos(angle);
-    return fix_dist;
-}
+// float fixed_dist(float x1, float y1, float x2, float y2, t_file *game)
+// {
+//     float delta_x = x2 - x1;
+//     float delta_y = y2 - y1;
+//     float angle = atan2(delta_y, delta_x) - game->player.angle;
+//     float fix_dist = distance(delta_x, delta_y) * cos(angle);
+//     return fix_dist;
+// }
 
 
 // raycasting functions
 // Change the type of the 'game' parameter in draw_line to 't_file *'
-void draw_line(t_player *player, t_file *game, float start_x, int i)
+// void draw_line(t_player *player, t_file *game, float start_x, int i)
+// {
+//     float cos_angle = cos(start_x);
+//     float sin_angle = sin(start_x);
+//     float ray_x = player->x;
+//     float ray_y = player->y;
+
+//     while (!touch(ray_x, ray_y, game))  // Pass game (t_file *) here
+//     {
+//         if (DEBUG)
+//             put_pixel(ray_x, ray_y, 0xFF0000, &game->mlx);  // Pass game (t_file *) here
+//         ray_x += cos_angle;
+//         ray_y += sin_angle;
+//     }
+
+//     if (!DEBUG)
+//     {
+//         float dist = fixed_dist(player->x, player->y, ray_x, ray_y, game);  // Pass game (t_file *) here
+//         float height = (BLOCK / dist) * (WIDTH / 2);
+//         int start_y = (HEIGHT - height) / 2;
+//         int end = start_y + height;
+//         while (start_y < end)
+//         {
+//             put_pixel(i, start_y, 0x008000, &game->mlx);  // Pass game (t_file *) here
+//             start_y++;
+//         }
+//     }
+// }
+
+void	img_pix_put(t_file *map, int x, int y, int color)
 {
-    float cos_angle = cos(start_x);
-    float sin_angle = sin(start_x);
-    float ray_x = player->x;
-    float ray_y = player->y;
+    char	*pixel;
 
-    while (!touch(ray_x, ray_y, game))  // Pass game (t_file *) here
-    {
-        if (DEBUG)
-            put_pixel(ray_x, ray_y, 0xFF0000, &game->mlx);  // Pass game (t_file *) here
-        ray_x += cos_angle;
-        ray_y += sin_angle;
-    }
+    if (y < 0 || y >= map->map_height * TILE_SCALE
+		|| x < 0 || x >= map->map_width * TILE_SCALE)
+		return ;
+    pixel = map->mlx.img_ptr.addr 
+        + (y * map->mlx.img_ptr.line_length + x * (map->mlx.img_ptr.bits_per_pixel / 8));
+	*(int *)pixel = color;
+}
 
-    if (!DEBUG)
+void    draw_sky_3d(t_file **map, int x, int y)
+{
+    img_pix_put(*map, x, y, (*map)->colors.ceiling);
+}
+
+void    draw_floor_3d(t_file **map, int x, int y)
+{
+    img_pix_put(*map, x, y, (*map)->colors.floor);
+}
+
+//while (x ...)  --> This goes from the left to right side of the screen.
+// while (y ...) --> This ensures every pixel on the screen is visited once.
+// hight / 2 --> The screen is split in half horizontally:
+// - If the pixel is in the top half, it is part of the sky.
+// - Else, it is part of the floor.
+
+void    render_sky_floor(t_file **map)
+{
+    int x;
+    int y;
+    int middle_of_screen;
+
+    x = 0;
+    middle_of_screen = (*map)->map_height / 2;
+    while (x < (*map)->map_width)
     {
-        float dist = fixed_dist(player->x, player->y, ray_x, ray_y, game);  // Pass game (t_file *) here
-        float height = (BLOCK / dist) * (WIDTH / 2);
-        int start_y = (HEIGHT - height) / 2;
-        int end = start_y + height;
-        while (start_y < end)
+        y = 0;
+        while (y < (*map)->map_height)
         {
-            put_pixel(i, start_y, 0x008000, &game->mlx);  // Pass game (t_file *) here
-            start_y++;
+            if(y < middle_of_screen)
+                draw_sky_3d(map, x, y);
+            else
+                draw_floor_3d(map, x, y);
+            y++;
         }
+        x++;
     }
 }
 
-// 1 - Updates the player's position and angle based on input.
-// It must be done first so the next frame reflects the latest position.
-// 2 -Clears the screen from the previous frame.
-// 3 -probably draws the player as a dot on the minimap.
-// 4 - draws the minimap grid.
-// 5 - 
-// last_step : Pushes the full image to the screen.
-
 int	game_loop(t_file **map)
 {
-    t_player    *player;
-    t_file      *game;
-    float       fraction;
-    float       start_angle;
-    int         i;
-
-    game = *map;
-    player = &(*map)->player;
-    update_player_state(player);
-    clean_img(&(*map)->mlx);
-    if (DEBUG)
-    {
-        draw_square(player->x, player->y, 10, 0x00FF00, game);
-        draw_map(game);
-    }
-    // === Core raycasting logic ===
-    fraction = PI / 3 / WIDTH;                  // FOV is 60 degrees (PI/3), divide by screen width
-    start_angle = player->angle - (PI / 6);     // Start from left-most ray (FOV / 2 to the left)
-    i = 0;
-    while (i < WIDTH)
-    {
-        draw_line(player, game, start_angle, i);  // Cast a ray and draw vertical slice
-        start_angle += fraction;                  // Increment the angle for the next ray
-        i++;
-    }
-    // Final step: Put the rendered image to the window
+    render_sky_floor(map);
+    if (!recasting(map))
+        return (1);
     mlx_put_image_to_window(
         (*map)->mlx.mlx,
         (*map)->mlx.win,
         (*map)->mlx.img_ptr.img,
-        0, 0
-    );
+        0, 0);
+    mlx_put_image_to_window(
+        (*map)->mlx.mlx,
+        (*map)->mlx.win,
+        (*map)->minimap_img.img,
+        10, 10);
     return(0);
 }
