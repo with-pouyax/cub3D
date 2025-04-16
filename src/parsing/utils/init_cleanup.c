@@ -12,25 +12,57 @@
 
 #include "../../includes/cub3d.h"
 
-int	init_map(t_file **map)
+int init_map(t_file **map)
 {
-	*map = malloc(sizeof(t_file));
-	if (!*map)
-		return (ft_perror("malloc", errno), 1);
-	(*map)->raw_file = NULL;
-	(*map)->textures.north = NULL;
-	(*map)->textures.south = NULL;
-	(*map)->textures.west = NULL;
-	(*map)->textures.east = NULL;
-	(*map)->colors.floor = 0;
-	(*map)->colors.ceiling = 0;
-	(*map)->game_map = NULL;
-	(*map)->map_height = 0;
-	(*map)->map_width = 0;
-	(*map)->player_dir = '\0';
-	(*map)->player_x = 0;
-	(*map)->player_y = 0;
-	return (0);
+    *map = malloc(sizeof(t_file));
+    if (!*map)
+        return (ft_perror("malloc", errno), 1);
+    (*map)->raw_file = NULL;
+    (*map)->textures.north = NULL;
+    (*map)->textures.south = NULL;
+    (*map)->textures.west = NULL;
+    (*map)->textures.east = NULL;
+    (*map)->colors.floor = 0;
+    (*map)->colors.ceiling = 0;
+    (*map)->game_map = NULL;
+    (*map)->map_height = 0;
+    (*map)->map_width = 0;
+    (*map)->player_dir = '\0';
+    (*map)->player_x = 0;
+    (*map)->player_y = 0;
+    (*map)->dir_x_face = 0.0;
+    (*map)->dir_y_face = 0.0;
+    (*map)->ray_screen_pos = 0.0;
+    (*map)->ray_dir_x = 0.0;
+    (*map)->ray_dir_y = 0.0;
+    (*map)->distance_to_x = 0.0;
+    (*map)->distance_to_y = 0.0;
+    (*map)->dist_from_next_wall_x = 0.0;
+    (*map)->dist_from_next_wall_y = 0.0;
+    (*map)->perpendicular_wall_distance = 0.0;
+    (*map)->ray_travel_x = 0;
+    (*map)->ray_travel_y = 0;
+    (*map)->hit_vertical_wall = 0;
+    (*map)->hit_horizontal_wall = 0;
+    (*map)->map_tile_x = 0;
+    (*map)->map_tile_y = 0;
+    (*map)->plane_x = 0.0;
+    (*map)->plane_y = 0.0;
+    (*map)->mlx.mlx = NULL;
+    (*map)->mlx.win = NULL;
+    (*map)->mlx.img_ptr.img = NULL;
+    (*map)->player.x = 0.0;
+    (*map)->player.y = 0.0;
+    (*map)->player.angle = 0.0;
+    (*map)->player.key_up = false;
+    (*map)->player.key_down = false;
+    (*map)->player.key_left = false;
+    (*map)->player.key_right = false;
+    (*map)->player.left_rotate = false;
+    (*map)->player.right_rotate = false;
+    (*map)->player.speed = 0;
+    (*map)->player.angle_speed = 0.0;
+    return (0);
 }
 
 void	clean_string_array(char ***array)
@@ -81,7 +113,7 @@ void	cleanup(t_file **map)
 {
 	if (!map || !*map)
 		return ;
-	
+
 	// Clean up MLX resources first
 	cleanup_mlx(*map);
 	

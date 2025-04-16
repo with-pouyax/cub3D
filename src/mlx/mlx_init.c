@@ -44,6 +44,7 @@ int	create_window(t_file **map)
 
 int	create_image_buffer(t_file **map)
 {
+	
 	(*map)->mlx.img_ptr.img  = mlx_new_image((*map)->mlx.mlx, WIDTH, HEIGHT); // mlx_new_image responsiblity is to create a new image buffer
 	if (!(*map)->mlx.img_ptr.img)
 		return (1);
@@ -61,25 +62,29 @@ void	init_game_state(t_file **map)
 {
 	if ((*map)->player_dir == 'N')
 	{
-		(*map)->plane_x = 0.55;
+		(*map)->plane_x = 0.66;
 		(*map)->plane_y = 0;
 	}
 	else if ((*map)->player_dir == 'S')
 	{
-		(*map)->plane_x = -0.55;
+		(*map)->plane_x = -0.66;
 		(*map)->plane_y = 0;
 	}
 	else if ((*map)->player_dir == 'W')
 	{
 		(*map)->plane_x = 0;
-		(*map)->plane_y = 0.55;
+		(*map)->plane_y = 0.66;
 	}
 	else if ((*map)->player_dir == 'E')
 	{
 		(*map)->plane_x = 0;
-		(*map)->plane_y = -0.55;
+		(*map)->plane_y = -0.66;
 	}
 }
+
+
+
+
 
 // Initialize MLX (MiniLibX), which is needed for rendering
 // Create the window where everything will be rendered
@@ -92,18 +97,45 @@ void	init_game_state(t_file **map)
 
 int	start_game(t_file **map)
 {
-	init_game_state(map);
-	if (init_mlx(map))
-		return (1);
-	if (create_window(map))
-		return (1);
-	if (create_image_buffer(map))
-		return (1);
-	if (set_event_hooks(map))
-		return (1);
-	if (init_minimap(map))
-		return (1);
-	mlx_loop_hook((*map)->mlx.mlx, game_loop, map);
-	mlx_loop((*map)->mlx.mlx);
-	return (0);
-} 
+    printf("[DEBUG] Initializing game state...\n");
+    init_game_state(map);
+
+    printf("[DEBUG] Initializing MLX...\n");
+    if (init_mlx(map))
+    {
+        printf("[ERROR] Failed to initialize MLX.\n");
+        return (1);
+    }
+
+    printf("[DEBUG] Creating window...\n");
+    if (create_window(map))
+    {
+        printf("[ERROR] Failed to create window.\n");
+        return (1);
+    }
+    printf("[DEBUG] Creating image buffer...\n");
+    if (create_image_buffer(map))
+    {
+        printf("[ERROR] Failed to create image buffer.\n");
+        return (1);
+    }
+    printf("[DEBUG] Setting event hooks...\n");
+    if (set_event_hooks(map))
+    {
+        printf("[ERROR] Failed to set event hooks.\n");
+        return (1);
+    }
+
+    printf("[DEBUG] Initializing minimap...\n");
+    if (init_minimap(map))
+    {
+        printf("[ERROR] Failed to initialize minimap.\n");
+        return (1);
+    }
+
+    printf("[DEBUG] Starting game loop...\n");
+    mlx_loop_hook((*map)->mlx.mlx, game_loop, map);
+    mlx_loop((*map)->mlx.mlx);
+
+    return (0);
+}

@@ -12,6 +12,105 @@
 
 #include "../../includes/cub3d.h"
 
+int	get_color(t_file *map, int i)
+{
+    int x;
+    int y;
+
+    x = map->texture_cordinat_x;
+    y = map->texture_cordinat_y;
+	return (*(int *)(map->wall_textures[i].addr
+		+ (y * map->wall_textures[i].line_length
+            + x * (map->wall_textures[i].bits_per_pixel / 8))));}
+// rendering the texture of the wall (or other objects) onto the screen
+void	draw(t_file *map, int x, int texture)
+{
+	int	color;
+
+	color = get_color(map, texture);
+	img_pix_put(map, x, map->start_wall, color);
+}
+
+void draw_column_pixels(t_file *map, int x)
+{
+    while (map->start_wall < map->end_wall)
+    {
+        map->texture_cordinat_y = (int)map->tex_position & (128 - 1);  // Calculate texture y-coordinate
+        map->tex_position += map->step;  // Move along the texture
+
+        // Determine which side of the wall the ray hit and draw accordingly
+        if (map->hit_vertical_wall == 1 && map->ray_dir_y < 0)
+            draw(map, x, SOUTH);  // South side
+        else if (map->hit_vertical_wall == 1 && map->ray_dir_y > 0)
+            draw(map, x, NORTH);  // North side
+        else if (map->hit_vertical_wall == 0 && map->ray_dir_x < 0)
+            draw(map, x, WEST);   // West side
+        else if (map->hit_vertical_wall == 0 && map->ray_dir_x > 0)
+            draw(map, x, EAST);   // East side
+
+        map->start_wall++;  // Move to the next pixel in the column
+    }
+}
+
+double get_fractional_part(double wall_pos)
+{
+    return (wall_pos - floor(wall_pos));
+}
+//  // Maps fractional position to texture width
+int map_hit_to_texture_x(double wall_x)
+{
+    return (int)(wall_x * 128);  // Maps fractional position to texture width
+}
+
+int flip_texture_if_needed(t_file *map, int tex_x)
+{
+    if (map->hit_vertical_wall == 1 && map->ray_dir_x > 0)
+        tex_x = 128 - tex_x - 1;  // Flip for East-facing walls
+    else if (map->hit_vertical_wall == 1 && map->ray_dir_y < 0)
+        tex_x = 128 - tex_x - 1;  // Flip for North-facing walls
+    return (tex_x);
+}
+//is the exact position (decimal) where the ray hit the wall on the face of 
+// the wall tile, from 0.0 to 1.0.
+
+void    texture_definition(t_file *map, int wall_hight)
+{
+    if(map->hit_vertical_wall == 1)
+        map->pos_hit_wall_x = map->plane_y + map->perpendicular_wall_distance * map->ray_dir_y;
+    else if (map->hit_vertical_wall == 1)
+        map->pos_hit_wall_x = map->plane_x + map->perpendicular_wall_distance * map->ray_dir_x;
+    map->pos_hit_wall_x = get_fractional_part(map->pos_hit_wall_x);
+    map->texture_cordinat_x = map_hit_to_texture_x(map->pos_hit_wall_x);
+    map->texture_cordinat_x = flip_texture_if_needed(map, map->texture_cordinat_x);
+    map->step = 1.0 * 128 / wall_hight;
+    map->texture_cordinat_x = (map->start_wall - map->map_height / 2 + wall_hight / 2) * map->step;
+
+}
+
+void    calculate_wall_hight(t_file *map, int *wall_height)
+{
+    *wall_height = map->map_height / map->perpendicular_wall_distance;
+    map->start_wall = -*wall_height / 2 + map->map_height / 2;
+    if (map->start_wall < 0)
+        map->start_wall = 0;
+    map->end_wall = *wall_height / 2 + map->map_height / 2;
+    if (map->end_wall >= map->map_height)
+        map->end_wall = map->map_height - 1;
+}
+
+//calculate_wall_hight : calculates how tall the wall slice should appear on screen
+//figuring out which part of the wall texture to draw.
+//Draw each pixel of the column
+//Choose correct wall texture
+void    draw_col(t_file *map, int x)
+{
+    int wall_height;
+
+    calculate_wall_hight(map, &wall_height);
+    texture_definition(map, wall_height);
+    draw_column_pixels(map, x);
+}
+
 void calculate_perpwalldist(t_file **map)
 {
     if ((*map)->hit_vertical_wall == 1)
@@ -133,17 +232,22 @@ Determining what that ray hits (a wall, usually).
 Calculating how far the wall is.
 Drawing the wall column on screen based on that distance.
 */
-int    recasting(t_file **map)
+int recasting(t_file **map)
 {
     int col;
 
     col = 0;
     while (col < (*map)->map_width)
     {
+        printf("[DEBUG] Processing column: %d\n", col);
         setup_ray(map, col);
+        printf("[DEBUG] Ray direction: (x: %f, y: %f)\n", (*map)->ray_dir_x, (*map)->ray_dir_y);
         get_distance_to_next_cell(map);
         DDA_implimentation(map);
-        draw_col(map, col);
+        printf("[DEBUG] Wall hit at tile: (x: %d, y: %d)\n", (*map)->map_tile_x, (*map)->map_tile_y);
+        printf("[DEBUG] Perpendicular wall distance: %f\n", (*map)->perpendicular_wall_distance);
+        draw_col(*map, col);
+        printf("[DEBUG] Finished drawing column: %d\n", col);
         col++;
     }
     return (0);

@@ -13,7 +13,7 @@
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# define WIDTH 1940
+# define WIDTH 1920
 # define HEIGHT 1280
 # define COLOR_BLUE    0x3333FF
 # define COLOR_WHITE   0xFFFFFF
@@ -51,6 +51,15 @@
 #define MAP_HEIGHT 24 // Adjust this based on the number of rows in your map
 
 #define PI 3.14159265359
+
+enum	e_directions
+{
+	NORTH = 0,
+	SOUTH = 1,
+	EAST = 2,
+	WEST = 3
+};
+
 typedef struct s_colors
 {
 	int	floor;
@@ -101,6 +110,7 @@ typedef struct s_file
 	char			**raw_file;
 	t_texture_paths	textures;
 	t_colors		colors;
+	t_img 			wall_textures[4];
 	char			**game_map;
 	int				map_height;
 	int				map_width;
@@ -119,7 +129,13 @@ typedef struct s_file
 	int				ray_travel_y;
 	int				hit_vertical_wall;
 	int				hit_horizontal_wall;
-	
+	int				start_wall;
+	int				end_wall;
+	int				texture_cordinat_x;
+	int				texture_cordinat_y;
+	double			pos_hit_wall_x;
+	double			step;
+	double			tex_position;
 	int				player_x;
 	int				player_y;
 	int				map_tile_x;  //refers to the current tile
@@ -300,6 +316,6 @@ void    draw_player(t_file *map, int col, int row);
 void    draw_unknown(t_file *map, int col, int row);
 void    put_pixel_minimap(t_file *map, int x, int y, int color);
 int    recasting(t_file **map);
-
+void	img_pix_put(t_file *map, int x, int y, int color);
 
 #endif

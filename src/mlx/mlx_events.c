@@ -225,20 +225,31 @@ void    render_sky_floor(t_file **map)
     }
 }
 
-int	game_loop(t_file **map)
+int game_loop(t_file **map)
 {
-    render_sky_floor(map);
-    if (!recasting(map))
-        return (1);
-    mlx_put_image_to_window(
-        (*map)->mlx.mlx,
-        (*map)->mlx.win,
-        (*map)->mlx.img_ptr.img,
-        0, 0);
+    // printf("[DEBUG] Rendering sky and floor...\n");
+    // render_sky_floor(map);
+
+    // printf("[DEBUG] Performing raycasting...\n");
+    // if (!recasting(map))
+    // {
+    //     printf("[ERROR] Raycasting failed.\n");
+    //     return (1);
+    // }
+
+    // printf("[DEBUG] Putting main image to window...\n");
+    // mlx_put_image_to_window(
+    //     (*map)->mlx.mlx,
+    //     (*map)->mlx.win,
+    //     (*map)->mlx.img_ptr.img,
+    //     0, 0);
+
+    // printf("[DEBUG] Putting minimap image to window...\n");
     mlx_put_image_to_window(
         (*map)->mlx.mlx,
         (*map)->mlx.win,
         (*map)->minimap_img.img,
         10, 10);
-    return(0);
+
+    return (0);
 }
