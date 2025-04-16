@@ -41,20 +41,53 @@ int	create_window(t_file **map)
 		return (1);
 	return (0);
 }
+#include <unistd.h> // for getcwd
 
 int	create_image_buffer(t_file **map)
 {
-	
-	(*map)->mlx.img_ptr.img  = mlx_new_image((*map)->mlx.mlx, WIDTH, HEIGHT); // mlx_new_image responsiblity is to create a new image buffer
-	if (!(*map)->mlx.img_ptr.img)
+	int	i;
+
+	i = 0;
+	while (i < 4)
+	{
+	// Debugging the arguments before calling mlx_xpm_file_to_image
+	printf("[DEBUG] Loading texture image %d\n", i);
+	printf("[DEBUG] MLX Pointer: %p\n", (*map)->mlx.mlx);
+	printf("[DEBUG] Texture Path: %s\n", (*map)->image[i].path);
+	printf("[DEBUG] Width Pointer: %p\n", &(*map)->image[i].w);
+	printf("[DEBUG] Height Pointer: %p\n", &(*map)->image[i].h);
+	(*map)->image[i].img = mlx_xpm_file_to_image((*map)->mlx.mlx, 
+					(*map)->image[i].path, &(*map)->image[i].w,  &(*map)->image[i].h);
+		if(!(*map)->image[i].img)
+		{
+			printf("❌ Failed to load image %d from path: %s\n", i, (*map)->image[i].path);
+			return (1);
+		}
+		i++;
+	}
+	(*map)->image[4].img = mlx_new_image((*map)->mlx.mlx, WIDTH, HEIGHT);
+	if (!(*map)->image[4].img)
 		return (1);
-	(*map)->mlx.img_ptr.addr = mlx_get_data_addr(
-		(*map)->mlx.img_ptr.img,
-		&(*map)->mlx.img_ptr.bits_per_pixel,
-		&(*map)->mlx.img_ptr.line_length,
-		&(*map)->mlx.img_ptr.endian); // it is responsible for returning the address of the image buffer
-	if (!(*map)->mlx.img_ptr.addr)
-		return (1);
+	i = 0;
+	while (i < 5)
+	{
+		(*map)->image[i].addr = mlx_get_data_addr((*map)->image[i].img,
+						&(*map)->image[i].bits_per_pixel, &(*map)->image[i].line_length,
+						&(*map)->image[i].endian);
+		if (!(*map)->image[i].addr)
+			return (1);
+		i++;
+	}
+	// (*map)->mlx.img_ptr.img  = mlx_new_image((*map)->mlx.mlx, WIDTH, HEIGHT); // mlx_new_image responsiblity is to create a new image buffer
+	// if (!(*map)->mlx.img_ptr.img)
+	// 	return (1);
+	// (*map)->mlx.img_ptr.addr = mlx_get_data_addr(
+	// 	(*map)->mlx.img_ptr.img,
+	// 	&(*map)->mlx.img_ptr.bits_per_pixel,
+	// 	&(*map)->mlx.img_ptr.line_length,
+	// 	&(*map)->mlx.img_ptr.endian); // it is responsible for returning the address of the image buffer
+	// if (!(*map)->mlx.img_ptr.addr)
+	// 	return (1);
 	return (0);
 }
 
@@ -83,6 +116,33 @@ void	init_game_state(t_file **map)
 }
 
 
+int	assign_texture_paths_to_images(t_file *map)
+{
+	if (!map->textures.north || !map->textures.south ||
+		!map->textures.west || !map->textures.east)
+	{
+		printf("❌ One or more texture paths are missing.\n");
+		return (1);
+	}
+
+	map->image[0].path = ft_strdup(map->textures.north);
+	map->image[1].path = ft_strdup(map->textures.south);
+	map->image[2].path = ft_strdup(map->textures.west);
+	map->image[3].path = ft_strdup(map->textures.east);
+	if (!map->image[0].path || !map->image[1].path ||
+		!map->image[2].path || !map->image[3].path)
+	{
+		printf("❌ Failed to duplicate one or more texture paths.\n");
+		return (1);
+	}
+	// Print the texture paths to debug
+    printf("[DEBUG] Texture path for north: %s\n", map->image[0].path);
+    printf("[DEBUG] Texture path for south: %s\n", map->image[1].path);
+    printf("[DEBUG] Texture path for west: %s\n", map->image[2].path);
+    printf("[DEBUG] Texture path for east: %s\n", map->image[3].path);
+
+	return (0);
+}
 
 
 
@@ -113,6 +173,9 @@ int	start_game(t_file **map)
         printf("[ERROR] Failed to create window.\n");
         return (1);
     }
+	printf("[DEBUG] assign_path_texture...\n");
+	if (assign_texture_paths_to_images(*map) != 0)
+		return (1);
     printf("[DEBUG] Creating image buffer...\n");
     if (create_image_buffer(map))
     {

@@ -19,9 +19,9 @@ int	get_color(t_file *map, int i)
 
     x = map->texture_cordinat_x;
     y = map->texture_cordinat_y;
-	return (*(int *)(map->wall_textures[i].addr
-		+ (y * map->wall_textures[i].line_length
-            + x * (map->wall_textures[i].bits_per_pixel / 8))));}
+	return (*(int *)(map->image[i].addr
+        + (y * map->image[i].line_length + x * (map->image[i].bits_per_pixel / 8))));
+}
 // rendering the texture of the wall (or other objects) onto the screen
 void	draw(t_file *map, int x, int texture)
 {

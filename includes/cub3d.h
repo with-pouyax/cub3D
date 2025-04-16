@@ -77,10 +77,13 @@ typedef struct s_texture_paths
 typedef struct s_img
 {
 	void	*img;
+	char	*path;
 	char	*addr;
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
+	int		w;
+	int		h;
 }	t_img;
 
 typedef struct s_mlx
@@ -110,7 +113,7 @@ typedef struct s_file
 	char			**raw_file;
 	t_texture_paths	textures;
 	t_colors		colors;
-	t_img 			wall_textures[4];
+	t_img 			image[5];
 	char			**game_map;
 	int				map_height;
 	int				map_width;
@@ -317,5 +320,7 @@ void    draw_unknown(t_file *map, int col, int row);
 void    put_pixel_minimap(t_file *map, int x, int y, int color);
 int    recasting(t_file **map);
 void	img_pix_put(t_file *map, int x, int y, int color);
+int	assign_texture_paths_to_images(t_file *map);
+
 
 #endif

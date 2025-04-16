@@ -14,6 +14,8 @@
 
 int init_map(t_file **map)
 {
+    int i;
+
     *map = malloc(sizeof(t_file));
     if (!*map)
         return (ft_perror("malloc", errno), 1);
@@ -62,6 +64,14 @@ int init_map(t_file **map)
     (*map)->player.right_rotate = false;
     (*map)->player.speed = 0;
     (*map)->player.angle_speed = 0.0;
+    i = 0;
+    while (i < 5)
+    {
+        (*map)->image[i].img = NULL;
+        (*map)->image[i].path = NULL;
+        i++;
+    }
+    (*map)->minimap_img.img = NULL;
     return (0);
 }
 
