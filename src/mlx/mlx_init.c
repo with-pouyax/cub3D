@@ -30,7 +30,10 @@ int	init_mlx(t_file **map)
 {
 	(*map)->mlx.mlx = mlx_init(); // in failure, mlx_init returns NULL
 	if (!(*map)->mlx.mlx)
+	{
+		printf("[ERROR] Failed to initialize MiniLibX.\n");
 		return (1);
+	}
 	return (0);
 }
 
@@ -38,7 +41,10 @@ int	create_window(t_file **map)
 {
 	(*map)->mlx.win = mlx_new_window((*map)->mlx.mlx, WIDTH, HEIGHT, "Cub3D");
 	if (!(*map)->mlx.win)
+	{
+		printf("[ERROR] Failed to create main image buffer.\n");
 		return (1);
+	}
 	return (0);
 }
 #include <unistd.h> // for getcwd
@@ -50,24 +56,6 @@ int	create_image_buffer(t_file **map)
 	i = 0;
 	while (i < 4)
 	{
-        // Debugging the arguments before calling mlx_xpm_file_to_image
-        // printf("[DEBUG] Loading texture image %d\n", i);
-        // printf("[DEBUG] MLX Pointer: %p\n", (*map)->mlx.mlx);
-        // printf("[DEBUG] Texture Path: %s\n", (*map)->image[i].path);
-        // printf("[DEBUG] Width Pointer: %p\n", &(*map)->image[i].w);
-        // printf("[DEBUG] Height Pointer: %p\n", &(*map)->image[i].h);
-
-        // Check if the file exists and is readable
-        if (access((*map)->image[i].path, F_OK) != 0)
-        {
-            printf("❌ File does not exist: %s\n", (*map)->image[i].path);
-            return (1);
-        }
-        if (access((*map)->image[i].path, R_OK) != 0)
-        {
-            printf("❌ File is not readable: %s\n", (*map)->image[i].path);
-            return (1);
-        }
 		(*map)->image[i].img = mlx_xpm_file_to_image((*map)->mlx.mlx, 
 					(*map)->image[i].path, &(*map)->image[i].w,  &(*map)->image[i].h);
 		if(!(*map)->image[i].img)
@@ -87,7 +75,10 @@ int	create_image_buffer(t_file **map)
 						&(*map)->image[i].bits_per_pixel, &(*map)->image[i].line_length,
 						&(*map)->image[i].endian);
 		if (!(*map)->image[i].addr)
+		{
+			printf("[ERROR] Failed to get main image buffer address.\n");
 			return (1);
+		}
 		i++;
 	}
 	// (*map)->mlx.img_ptr.img  = mlx_new_image((*map)->mlx.mlx, WIDTH, HEIGHT); // mlx_new_image responsiblity is to create a new image buffer
@@ -188,20 +179,19 @@ int	start_game(t_file **map)
 	// printf("[DEBUG] assign_path_texture...\n");
 	if (assign_texture_paths_to_images(*map) != 0)
 		return (1);
-    printf("[DEBUG] Creating image buffer...\n");
+    // printf("[DEBUG] Creating image buffer...\n");
     if (create_image_buffer(map))
     {
         printf("[ERROR] Failed to create image buffer.\n");
         return (1);
     }
-    printf("[DEBUG] Setting event hooks...\n");
+    // printf("[DEBUG] Setting event hooks...\n");
     if (set_event_hooks(map))
     {
         printf("[ERROR] Failed to set event hooks.\n");
         return (1);
     }
-
-    printf("[DEBUG] Initializing minimap...\n");
+    // printf("[DEBUG] Initializing minimap...\n");
     if (init_minimap(map))
     {
         printf("[ERROR] Failed to initialize minimap.\n");

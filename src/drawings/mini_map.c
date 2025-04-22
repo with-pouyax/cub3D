@@ -64,7 +64,7 @@ int    init_minimap(t_file **map)
 
     width = (*map)->map_width * TILE_SCALE;
     height = (*map)->map_height * TILE_SCALE;
-    printf("[DEBUG] Minimap dimensions: width=%d, height=%d\n", width, height);
+    // printf("[DEBUG] Minimap dimensions: width=%d, height=%d\n", width, height);
     (*map)->minimap_img.img = mlx_new_image((*map)->mlx.mlx, width, height);
     if (!(*map)->minimap_img.img)
         return (1);

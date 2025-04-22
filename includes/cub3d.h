@@ -15,6 +15,7 @@
 
 # define WIDTH 1920
 # define HEIGHT 1280
+
 # define COLOR_BLUE    0x3333FF
 # define COLOR_WHITE   0xFFFFFF
 # define COLOR_GREEN   0x00FF00

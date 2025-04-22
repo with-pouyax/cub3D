@@ -174,16 +174,19 @@ int	set_event_hooks(t_file **map)
 //     }
 // }
 
-void	img_pix_put(t_file *map, int x, int y, int color)
+void img_pix_put(t_file *map, int x, int y, int color)
 {
-    char	*pixel;
+    char *pixel;
 
-    if (y < 0 || y >= map->map_height * TILE_SCALE
-		|| x < 0 || x >= map->map_width * TILE_SCALE)
-		return ;
-    pixel = map->mlx.img_ptr.addr 
+    if (y < 0 || y >= map->map_height * TILE_SCALE || x < 0 || x >= map->map_width * TILE_SCALE)
+    {
+        printf("[DEBUG] img_pix_put: Out of bounds (x=%d, y=%d)\n", x, y);
+        return ;
+    }
+    // Calculate the pixel address
+    pixel = map->image[4].addr
         + (y * map->mlx.img_ptr.line_length + x * (map->mlx.img_ptr.bits_per_pixel / 8));
-	*(int *)pixel = color;
+    *(int *)pixel = color;
 }
 
 void    draw_sky_3d(t_file **map, int x, int y)
@@ -202,11 +205,12 @@ void    draw_floor_3d(t_file **map, int x, int y)
 // - If the pixel is in the top half, it is part of the sky.
 // - Else, it is part of the floor.
 
-void    render_sky_floor(t_file **map)
+void render_sky_floor(t_file **map)
 {
     int x;
     int y;
     int middle_of_screen;
+
 
     x = 0;
     middle_of_screen = (*map)->map_height / 2;
@@ -215,10 +219,14 @@ void    render_sky_floor(t_file **map)
         y = 0;
         while (y < (*map)->map_height)
         {
-            if(y < middle_of_screen)
+            if (y < middle_of_screen)
+            {
                 draw_sky_3d(map, x, y);
+            }
             else
+            {
                 draw_floor_3d(map, x, y);
+            }
             y++;
         }
         x++;
@@ -227,24 +235,19 @@ void    render_sky_floor(t_file **map)
 
 int game_loop(t_file **map)
 {
-    // printf("[DEBUG] Rendering sky and floor...\n");
-    // render_sky_floor(map);
+    render_sky_floor(map);
 
-    // printf("[DEBUG] Performing raycasting...\n");
-    // if (!recasting(map))
-    // {
-    //     printf("[ERROR] Raycasting failed.\n");
-    //     return (1);
-    // }
+    if (recasting(map) != 0)
+    {
+        printf("[ERROR] Raycasting failed.\n");
+        return (1);
+    }
+    mlx_put_image_to_window(
+        (*map)->mlx.mlx,
+        (*map)->mlx.win,
+        (*map)->image[4].img,
+        0, 0);
 
-    // printf("[DEBUG] Putting main image to window...\n");
-    // mlx_put_image_to_window(
-    //     (*map)->mlx.mlx,
-    //     (*map)->mlx.win,
-    //     (*map)->mlx.img_ptr.img,
-    //     0, 0);
-
-    // printf("[DEBUG] Putting minimap image to window...\n");
     mlx_put_image_to_window(
         (*map)->mlx.mlx,
         (*map)->mlx.win,
