@@ -46,7 +46,7 @@
 
 #include <stdio.h>
 
-#define TILE_SCALE 40 // Define the size of a block (adjust this based on your map)
+#define TILE_SCALE 10 // Define the size of a block (adjust this based on your map)
 #define MAP_WIDTH 24  // Adjust this based on the number of columns in your map
 #define MAP_HEIGHT 24 // Adjust this based on the number of rows in your map
 

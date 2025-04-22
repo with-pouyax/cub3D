@@ -21,9 +21,8 @@ void    put_pixel_minimap(t_file *map, int x, int y, int color)
 {
     char    *pixel;
 
-    if (y < 0 || y >= map->map_height
-        || x < 0 || x >= map->map_width)
-        return ;
+    if (y < 0 || y >= map->map_height * TILE_SCALE || x < 0 || x >= map->map_width * TILE_SCALE)
+        return;
     pixel = (map->minimap_img.addr + (y * map->minimap_img.line_length 
     + x * (map->minimap_img.bits_per_pixel / 8)));
     *(int *)pixel = color;
@@ -65,6 +64,7 @@ int    init_minimap(t_file **map)
 
     width = (*map)->map_width * TILE_SCALE;
     height = (*map)->map_height * TILE_SCALE;
+    printf("[DEBUG] Minimap dimensions: width=%d, height=%d\n", width, height);
     (*map)->minimap_img.img = mlx_new_image((*map)->mlx.mlx, width, height);
     if (!(*map)->minimap_img.img)
         return (1);

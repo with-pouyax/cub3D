@@ -50,13 +50,25 @@ int	create_image_buffer(t_file **map)
 	i = 0;
 	while (i < 4)
 	{
-	// Debugging the arguments before calling mlx_xpm_file_to_image
-	printf("[DEBUG] Loading texture image %d\n", i);
-	printf("[DEBUG] MLX Pointer: %p\n", (*map)->mlx.mlx);
-	printf("[DEBUG] Texture Path: %s\n", (*map)->image[i].path);
-	printf("[DEBUG] Width Pointer: %p\n", &(*map)->image[i].w);
-	printf("[DEBUG] Height Pointer: %p\n", &(*map)->image[i].h);
-	(*map)->image[i].img = mlx_xpm_file_to_image((*map)->mlx.mlx, 
+        // Debugging the arguments before calling mlx_xpm_file_to_image
+        // printf("[DEBUG] Loading texture image %d\n", i);
+        // printf("[DEBUG] MLX Pointer: %p\n", (*map)->mlx.mlx);
+        // printf("[DEBUG] Texture Path: %s\n", (*map)->image[i].path);
+        // printf("[DEBUG] Width Pointer: %p\n", &(*map)->image[i].w);
+        // printf("[DEBUG] Height Pointer: %p\n", &(*map)->image[i].h);
+
+        // Check if the file exists and is readable
+        if (access((*map)->image[i].path, F_OK) != 0)
+        {
+            printf("❌ File does not exist: %s\n", (*map)->image[i].path);
+            return (1);
+        }
+        if (access((*map)->image[i].path, R_OK) != 0)
+        {
+            printf("❌ File is not readable: %s\n", (*map)->image[i].path);
+            return (1);
+        }
+		(*map)->image[i].img = mlx_xpm_file_to_image((*map)->mlx.mlx, 
 					(*map)->image[i].path, &(*map)->image[i].w,  &(*map)->image[i].h);
 		if(!(*map)->image[i].img)
 		{
@@ -136,10 +148,10 @@ int	assign_texture_paths_to_images(t_file *map)
 		return (1);
 	}
 	// Print the texture paths to debug
-    printf("[DEBUG] Texture path for north: %s\n", map->image[0].path);
-    printf("[DEBUG] Texture path for south: %s\n", map->image[1].path);
-    printf("[DEBUG] Texture path for west: %s\n", map->image[2].path);
-    printf("[DEBUG] Texture path for east: %s\n", map->image[3].path);
+    // printf("[DEBUG] Texture path for north: %s\n", map->image[0].path);
+    // printf("[DEBUG] Texture path for south: %s\n", map->image[1].path);
+    // printf("[DEBUG] Texture path for west: %s\n", map->image[2].path);
+    // printf("[DEBUG] Texture path for east: %s\n", map->image[3].path);
 
 	return (0);
 }
@@ -157,23 +169,23 @@ int	assign_texture_paths_to_images(t_file *map)
 
 int	start_game(t_file **map)
 {
-    printf("[DEBUG] Initializing game state...\n");
+    // printf("[DEBUG] Initializing game state...\n");
     init_game_state(map);
 
-    printf("[DEBUG] Initializing MLX...\n");
+    // printf("[DEBUG] Initializing MLX...\n");
     if (init_mlx(map))
     {
         printf("[ERROR] Failed to initialize MLX.\n");
         return (1);
     }
 
-    printf("[DEBUG] Creating window...\n");
+    // printf("[DEBUG] Creating window...\n");
     if (create_window(map))
     {
         printf("[ERROR] Failed to create window.\n");
         return (1);
     }
-	printf("[DEBUG] assign_path_texture...\n");
+	// printf("[DEBUG] assign_path_texture...\n");
 	if (assign_texture_paths_to_images(*map) != 0)
 		return (1);
     printf("[DEBUG] Creating image buffer...\n");

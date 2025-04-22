@@ -22,23 +22,20 @@
 
 void    draw_square(t_file *map, int col, int row, int color)
 {
-    int i;
-    int j;
-    int x;
-    int y;
+    int x, y;
+    int start_x = col * TILE_SCALE;
+    int start_y = row * TILE_SCALE;
 
-    i = 0;
-    j = 0;
-    x = col * TILE_SCALE + j;
-    y = row *TILE_SCALE + i;
-    while (i < TILE_SCALE)
+    y = start_y;
+    while (y < start_y + TILE_SCALE)
     {
-        while (j < TILE_SCALE)
+        x = start_x;
+        while (x < start_x + TILE_SCALE)
         {
-            put_pixel_minimap(map, x, y, color);
-            j++;
+            put_pixel_minimap(map, x, y, color); // White for walls
+            x++;
         }
-        i++;
+        y++;
     }
 }
 
@@ -49,7 +46,7 @@ void    draw_wall(t_file *map, int col, int row)
 
 void    draw_floor(t_file *map, int col, int row)
 {
-    draw_square(map, col, row, COLOR_BLUE);
+    draw_square(map, col, row, COLOR_WHITE);
 }
 
 void    draw_player(t_file *map, int col, int row)
