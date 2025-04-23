@@ -12,6 +12,15 @@
 
 #include "../../includes/cub3d.h"
 
+void    update_minimap(t_file *map, double old_x, double old_y)
+{
+    draw_square(map, (int)map->player_x, (int)map->player_y, COLOR_GREEN);
+    if ((int)map->player_x != old_x)
+        draw_square(map, old_x, old_y, COLOR_WHITE);
+    if ((int)map->player_y != old_y)
+        draw_square(map, old_x, old_y, COLOR_WHITE);
+}
+
 void    move_up_down(t_file *map, t_direction direction)
 {
     double  old_x;
@@ -19,10 +28,14 @@ void    move_up_down(t_file *map, t_direction direction)
     double  new_x;
     double  new_y;
 
+
     old_x = (int)map->player_x;
     old_y = (int)map->player_y;
     new_x = map->dir_x_face * MOVE_SPEED;
     new_y = map->dir_y_face * MOVE_SPEED;
+    printf("Initial Position: pos_x = %f, pos_y = %f\n",map->player_x,map->player_y);
+    printf("Movement: next_x = %f, next_y = %f\n", new_x, new_y);
+
     if (direction == FORWARD)
     {
         if (map->game_map[(int)map->player_y][(int)(map->player_x + new_x)] != '1')
@@ -33,11 +46,13 @@ void    move_up_down(t_file *map, t_direction direction)
     else if (direction == BACKWARD)
     {
         if (map->game_map[(int)map->player_y][(int)(map->player_x - new_x)] != '1')
-            map->player_x -= new_x;
+            map->player_y += new_y;
         if (map->game_map[(int)(map->player_y - new_y)][(int)map->player_x] != '1')
             map->player_y -= new_y;
     }
-
+    printf("Updated Position: pos_x = %f, pos_y = %f\n", map->player_x, map->player_y);
+    if (old_x != map->map_tile_x || old_y != map->map_tile_y)
+        update_minimap(map, old_x, old_y);
 }
 
 void    move_right_left(t_file *map, t_direction direction)

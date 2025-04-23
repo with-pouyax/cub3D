@@ -139,6 +139,7 @@ int game_loop(t_file **map)
     //     printf("[ERROR] Raycasting failed.\n");
     //     return (1);
     // }
+
     mlx_put_image_to_window(
         (*map)->mlx.mlx,
         (*map)->mlx.win,

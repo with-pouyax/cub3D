@@ -35,23 +35,19 @@
 #define MOVE_SPEED 0.09
 #define ROTATE_SPEED 0.09
 
-#define W 119
-#define A 97
-#define S 115
-#define D 100
-#define ESP 65307
-#define LEFT 65361
-#define RIGHT 65363
-# define DEBUG 1
+# define W 		119
+# define A 		97
+# define S 		115
+# define D 		100
+# define ESP 	65307
+# define LEFT 	65361
+# define RIGHT 	65363
 
+# define TILE_SCALE 10 // Define the size of a block (adjust this based on your map)
+# define MAP_WIDTH 24  // Adjust this based on the number of columns in your map
+# define MAP_HEIGHT 24 // Adjust this based on the number of rows in your map
 
-#include <stdio.h>
-
-#define TILE_SCALE 10 // Define the size of a block (adjust this based on your map)
-#define MAP_WIDTH 24  // Adjust this based on the number of columns in your map
-#define MAP_HEIGHT 24 // Adjust this based on the number of rows in your map
-
-#define PI 3.14159265359
+# define PI 3.14159265359
 
 typedef enum e_direction
 {
@@ -148,8 +144,8 @@ typedef struct s_file
 	double			pos_hit_wall_x;
 	double			step;
 	double			tex_position;
-	int				player_x;
-	int				player_y;
+	double			player_x;
+	double			player_y;
 	int				map_tile_x;  //refers to the current tile
 	int				map_tile_y;
 	double			plane_x;

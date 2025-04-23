@@ -48,7 +48,7 @@ void	print_whole_structure_in_order(t_file *map)
 	// Player info
 	printf(">>> PLAYER INFORMATION <<<\n");
 	printf("  ▸ Direction: %c\n", map->player_dir);
-	printf("  ▸ Position : (%d, %d)\n\n", map->player_x, map->player_y);
+	printf("  ▸ Position : (%f, %f)\n\n", map->player_x, map->player_y);
 
 	// Game map
 	printf(">>> GAME MAP <<<\n");
