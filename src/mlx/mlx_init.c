@@ -14,10 +14,8 @@
 
 int	init_map_mlx(t_file **map)
 {
-	// Initialize MLX members
 	(*map)->mlx.mlx = NULL;
 	(*map)->mlx.win = NULL;
-	// Initialize IMG members
 	(*map)->mlx.img_ptr.img = NULL;
 	(*map)->mlx.img_ptr.addr = NULL;
 	(*map)->mlx.img_ptr.bits_per_pixel = 0;
@@ -28,7 +26,7 @@ int	init_map_mlx(t_file **map)
 
 int	init_mlx(t_file **map)
 {
-	(*map)->mlx.mlx = mlx_init(); // in failure, mlx_init returns NULL
+	(*map)->mlx.mlx = mlx_init();
 	if (!(*map)->mlx.mlx)
 	{
 		printf("[ERROR] Failed to initialize MiniLibX.\n");
@@ -47,7 +45,6 @@ int	create_window(t_file **map)
 	}
 	return (0);
 }
-#include <unistd.h> // for getcwd
 
 int	create_image_buffer(t_file **map)
 {
@@ -81,16 +78,6 @@ int	create_image_buffer(t_file **map)
 		}
 		i++;
 	}
-	// (*map)->mlx.img_ptr.img  = mlx_new_image((*map)->mlx.mlx, WIDTH, HEIGHT); // mlx_new_image responsiblity is to create a new image buffer
-	// if (!(*map)->mlx.img_ptr.img)
-	// 	return (1);
-	// (*map)->mlx.img_ptr.addr = mlx_get_data_addr(
-	// 	(*map)->mlx.img_ptr.img,
-	// 	&(*map)->mlx.img_ptr.bits_per_pixel,
-	// 	&(*map)->mlx.img_ptr.line_length,
-	// 	&(*map)->mlx.img_ptr.endian); // it is responsible for returning the address of the image buffer
-	// if (!(*map)->mlx.img_ptr.addr)
-	// 	return (1);
 	return (0);
 }
 
@@ -118,7 +105,6 @@ void	init_game_state(t_file **map)
 	}
 }
 
-
 int	assign_texture_paths_to_images(t_file *map)
 {
 	if (!map->textures.north || !map->textures.south ||
@@ -127,7 +113,6 @@ int	assign_texture_paths_to_images(t_file *map)
 		printf("❌ One or more texture paths are missing.\n");
 		return (1);
 	}
-
 	map->image[0].path = ft_strdup(map->textures.north);
 	map->image[1].path = ft_strdup(map->textures.south);
 	map->image[2].path = ft_strdup(map->textures.west);
@@ -138,16 +123,8 @@ int	assign_texture_paths_to_images(t_file *map)
 		printf("❌ Failed to duplicate one or more texture paths.\n");
 		return (1);
 	}
-	// Print the texture paths to debug
-    // printf("[DEBUG] Texture path for north: %s\n", map->image[0].path);
-    // printf("[DEBUG] Texture path for south: %s\n", map->image[1].path);
-    // printf("[DEBUG] Texture path for west: %s\n", map->image[2].path);
-    // printf("[DEBUG] Texture path for east: %s\n", map->image[3].path);
-
 	return (0);
 }
-
-
 
 // Initialize MLX (MiniLibX), which is needed for rendering
 // Create the window where everything will be rendered
@@ -160,47 +137,35 @@ int	assign_texture_paths_to_images(t_file *map)
 
 int	start_game(t_file **map)
 {
-    // printf("[DEBUG] Initializing game state...\n");
     init_game_state(map);
-
-    // printf("[DEBUG] Initializing MLX...\n");
     if (init_mlx(map))
     {
         printf("[ERROR] Failed to initialize MLX.\n");
         return (1);
     }
-
-    // printf("[DEBUG] Creating window...\n");
     if (create_window(map))
     {
         printf("[ERROR] Failed to create window.\n");
         return (1);
     }
-	// printf("[DEBUG] assign_path_texture...\n");
 	if (assign_texture_paths_to_images(*map) != 0)
 		return (1);
-    // printf("[DEBUG] Creating image buffer...\n");
     if (create_image_buffer(map))
     {
         printf("[ERROR] Failed to create image buffer.\n");
         return (1);
     }
-    // printf("[DEBUG] Setting event hooks...\n");
-    if (set_event_hooks(map))
-    {
-        printf("[ERROR] Failed to set event hooks.\n");
-        return (1);
-    }
-    // printf("[DEBUG] Initializing minimap...\n");
     if (init_minimap(map))
     {
         printf("[ERROR] Failed to initialize minimap.\n");
         return (1);
     }
-
-    printf("[DEBUG] Starting game loop...\n");
     mlx_loop_hook((*map)->mlx.mlx, game_loop, map);
+	if (set_event_hooks(map))
+    {
+        printf("[ERROR] Failed to set event hooks.\n");
+        return (1);
+    }
     mlx_loop((*map)->mlx.mlx);
-
     return (0);
 }

@@ -55,15 +55,15 @@ int init_map(t_file **map)
     (*map)->mlx.img_ptr.img = NULL;
     (*map)->player.x = 0.0;
     (*map)->player.y = 0.0;
-    (*map)->player.angle = 0.0;
-    (*map)->player.key_up = false;
-    (*map)->player.key_down = false;
-    (*map)->player.key_left = false;
-    (*map)->player.key_right = false;
-    (*map)->player.left_rotate = false;
-    (*map)->player.right_rotate = false;
-    (*map)->player.speed = 0;
-    (*map)->player.angle_speed = 0.0;
+    // (*map)->player.angle = 0.0;
+    // (*map)->player.key_up = false;
+    // (*map)->player.key_down = false;
+    // (*map)->player.key_left = false;
+    // (*map)->player.key_right = false;
+    // (*map)->player.left_rotate = false;
+    // (*map)->player.right_rotate = false;
+    // (*map)->player.speed = 0;
+    // (*map)->player.angle_speed = 0.0;
     i = 0;
     while (i < 5)
     {

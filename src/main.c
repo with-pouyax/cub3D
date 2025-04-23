@@ -21,7 +21,7 @@ int	main(int ac, char **av)
 		return (test_mlx());
 	if (init_map(&map) || init_map_mlx(&map))
 		return (1);
-	init_player(map);
+	// init_player(map);
 	if (parse_args(ac, av, &map))
 	{
 		cleanup(&map);

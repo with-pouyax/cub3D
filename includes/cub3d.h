@@ -53,6 +53,14 @@
 
 #define PI 3.14159265359
 
+typedef enum e_direction
+{
+    FORWARD,
+    BACKWARD,
+    LEFTWARD,
+    RIGHTWARD
+}   t_direction;
+
 enum	e_directions
 {
 	NORTH = 0,
@@ -98,15 +106,15 @@ typedef struct s_player
 {
     float 	x;
     float 	y;
-    float 	angle;
-	bool	key_up;
-	bool	key_down;
-	bool	key_left;
-	bool	key_right;
-	bool 	left_rotate;
-    bool 	right_rotate;
-	int 	speed;        // Player movement speed
-    float 	angle_speed;  // Rotation speed
+    // float 	angle;
+	// bool	key_up;
+	// bool	key_down;
+	// bool	key_left;
+	// bool	key_right;
+	// bool 	left_rotate;
+    // bool 	right_rotate;
+	// int 	speed;        // Player movement speed
+    // float 	angle_speed;  // Rotation speed
 }	t_player;
 
 typedef struct s_file
@@ -148,7 +156,7 @@ typedef struct s_file
 	double			plane_y;
 	t_mlx			mlx;
 	t_player        player;
-	t_img			minimap_img; // 🆕 Add this for minimap
+	t_img			minimap_img;
 }	t_file;
 
 typedef struct s_dir_flags
@@ -300,18 +308,10 @@ int	set_event_hooks(t_file **map);
 int	game_loop(t_file **map);
 
 //movements
-// void	put_pixel(int x, int y, int color, t_mlx *game);
 void clean_img(t_mlx *game);
-void update_player_state(t_player *player);
-void perform_move(t_player *player);
-void perform_rotation(t_player *player);
-// Minimap rendering
-// void	draw_map(t_file *game);
-// void	draw_tile(int x, int y, int size, int color, t_file *game);
-// void	draw_player(t_player *player, t_file *game);
-// void draw_line(t_player *player, t_file *game, float start_x, int i);
-// void put_pixel(int x, int y, int color, t_mlx *game);
-// void draw_square(int x, int y, int size, int color, t_file *game);
+// void update_player_state(t_player *player);
+// void perform_move(t_player *player);
+// void perform_rotation(t_player *player);
 int    	init_minimap(t_file **map);
 void    draw_square(t_file *map, int col, int row, int color);
 void    draw_wall(t_file *map, int col, int row);
@@ -319,9 +319,17 @@ void    draw_floor(t_file *map, int col, int row);
 void    draw_player(t_file *map, int col, int row);
 void    draw_unknown(t_file *map, int col, int row);
 void    put_pixel_minimap(t_file *map, int x, int y, int color);
-int    recasting(t_file **map);
+int    	recasting(t_file **map);
 void	img_pix_put(t_file *map, int x, int y, int color);
 int	assign_texture_paths_to_images(t_file *map);
 
-
+//move key words
+void    move_up_down(t_file *map, t_direction direction);
+void    move_right_left(t_file *map, t_direction direction);
+void 	move_forward(t_file *map);
+void 	move_backward(t_file *map);
+void 	move_leftward(t_file *map);
+void 	move_rightward(t_file *map);
+void 	rotate_left(t_file *map);
+void 	rotate_right(t_file *map);
 #endif

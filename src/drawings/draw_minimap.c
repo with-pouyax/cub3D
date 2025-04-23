@@ -56,5 +56,5 @@ void    draw_player(t_file *map, int col, int row)
 
 void    draw_unknown(t_file *map, int col, int row)
 {
-    draw_square(map, col, row, COLOR_WHITE);
+    draw_square(map, col, row, COLOR_BLACK);
 }
