@@ -205,7 +205,7 @@ void    setup_ray(t_file **map, int col)
 {
     (*map)->map_tile_x = (*map)->player_x;
     (*map)->map_tile_y = (*map)->player_y;
-    (*map)->ray_screen_pos = 2 * col / (double)(*map)->map_width - 1;
+    (*map)->ray_screen_pos = 2 * col / (double)WIDTH - 1;
     (*map)->ray_dir_x = (*map)->dir_x_face  + (*map)->plane_x * (*map)->ray_screen_pos;
     (*map)->ray_dir_y = (*map)->dir_y_face  + (*map)->plane_y * (*map)->ray_screen_pos;
     // printf("[DEBUG] setup_ray: col=%d, ray_screen_pos=%f, ray_dir_x=%f, ray_dir_y=%f\n",
