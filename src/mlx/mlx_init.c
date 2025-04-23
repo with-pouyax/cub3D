@@ -83,7 +83,9 @@ int	create_image_buffer(t_file **map)
 
 void	init_game_state(t_file **map)
 {
-	if ((*map)->player_dir == 'N')
+	// (*map)->map_width = 1940;
+	// (*map)->map_height = 1280;
+		if ((*map)->player_dir == 'N')
 	{
 		(*map)->plane_x = 0.66;
 		(*map)->plane_y = 0;

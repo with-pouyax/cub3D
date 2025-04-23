@@ -13,7 +13,7 @@
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# define WIDTH 1920
+# define WIDTH 1940
 # define HEIGHT 1280
 
 # define COLOR_BLUE    0x3333FF
@@ -43,7 +43,7 @@
 # define LEFT 	65361
 # define RIGHT 	65363
 
-# define TILE_SCALE 10 // Define the size of a block (adjust this based on your map)
+# define TILE_SCALE 7 // Define the size of a block (adjust this based on your map)
 # define MAP_WIDTH 24  // Adjust this based on the number of columns in your map
 # define MAP_HEIGHT 24 // Adjust this based on the number of rows in your map
 

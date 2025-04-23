@@ -33,8 +33,8 @@ void    move_up_down(t_file *map, t_direction direction)
     old_y = (int)map->player_y;
     new_x = map->dir_x_face * MOVE_SPEED;
     new_y = map->dir_y_face * MOVE_SPEED;
-    printf("Initial Position: pos_x = %f, pos_y = %f\n",map->player_x,map->player_y);
-    printf("Movement: next_x = %f, next_y = %f\n", new_x, new_y);
+    // printf("Initial Position: pos_x = %f, pos_y = %f\n",map->player_x,map->player_y);
+    // printf("Movement: next_x = %f, next_y = %f\n", new_x, new_y);
 
     if (direction == FORWARD)
     {
@@ -50,7 +50,7 @@ void    move_up_down(t_file *map, t_direction direction)
         if (map->game_map[(int)(map->player_y - new_y)][(int)map->player_x] != '1')
             map->player_y -= new_y;
     }
-    printf("Updated Position: pos_x = %f, pos_y = %f\n", map->player_x, map->player_y);
+    // printf("Updated Position: pos_x = %f, pos_y = %f\n", map->player_x, map->player_y);
     if (old_x != map->map_tile_x || old_y != map->map_tile_y)
         update_minimap(map, old_x, old_y);
 }
