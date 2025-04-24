@@ -31,19 +31,6 @@ int	handle_x_press(int keycode, t_file **map)
 	return (0);
 }
 
-//If you want smooth movement like this:
-// Hold down W → move continuously forward
-
-// Hold A + D → strafe
-
-// Rotate while moving
-
-// to reach this we set a flag (like key_up = true) during the key press...
-// Then in the draw loop, which runs every frame (around 60 times per second), 
-// we check those flags and move the player continuously if they're true.
-
-// If we moved the player directly on key_press(), they would only move once per key tap,
-
 
 // Handle key press events
 int handle_keypress(int keycode, t_file **map)
@@ -77,36 +64,21 @@ void img_pix_put(t_file *map, int x, int y, int color)
 {
     char *pixel;
 
-    if (y < 0 || y >= HEIGHT * TILE_SCALE || x < 0 || x >= WIDTH * TILE_SCALE)
-    {
-        // printf("[DEBUG] img_pix_put: Out of bounds (x=%d, y=%d)\n", x, y);
+    if (x < 0 || x >= WIDTH - 1 || y < 0 || y >= HEIGHT - 1)
         return ;
-    }
-
-    // // Debugging the color being set
-    // printf("[DEBUG] img_pix_put: Setting pixel at (x=%d, y=%d) to color=0x%X\n", x, y, color);
-
     pixel = map->image[4].addr
-        + (y * map->mlx.img_ptr.line_length + x * (map->mlx.img_ptr.bits_per_pixel / 8));
+        + (y * map->image[4].line_length + x * (map->image[4].bits_per_pixel / 8));
     *(int *)pixel = color;
 }
 
 void draw_sky_3d(t_file **map, int x, int y)
 {
-    // Debugging the ceiling color being passed
-    // printf("[DEBUG] draw_sky_3d: Drawing pixel at (x=%d, y=%d) with ceiling color=0x%06X\n", x, y, (*map)->colors.ceiling);
-
-    // img_pix_put(*map, x, y, (*map)->colors.ceiling);
-    img_pix_put(*map, x, y, COLOR_GREEN);
+    img_pix_put(*map, x, y, (*map)->colors.ceiling);
 }
 
 void draw_floor_3d(t_file **map, int x, int y)
 {
-    // Debugging the floor color being passed
-    // printf("[DEBUG] draw_floor_3d: Drawing pixel at (x=%d, y=%d) with floor color=0x%06X\n", x, y, (*map)->colors.floor);
-
-    // img_pix_put(*map, x, y, (*map)->colors.floor);
-    img_pix_put(*map, x, y, COLOR_MAGENTA);
+    img_pix_put(*map, x, y, (*map)->colors.floor);
 }
 
 //while (x ...)  --> This goes from the left to right side of the screen.
@@ -122,11 +94,11 @@ void render_sky_floor(t_file **map)
     int middle_of_screen;
 
     x = 0;
-    middle_of_screen = (*map)->map_height / 2;
+    middle_of_screen = HEIGHT / 2;
     while (x < WIDTH)
     {
         y = 0;
-        while (y < (*map)->map_height)
+        while (y < HEIGHT)
         {
             if (y < middle_of_screen)
             {
@@ -145,15 +117,7 @@ void render_sky_floor(t_file **map)
 int game_loop(t_file **map)
 {
     render_sky_floor(map);
-    // if (recasting(map) != 0)
-    // {
-    //     printf("[ERROR] Raycasting failed.\n");
-    //     return (1);
-    // }
-    if (!(*map)->image[4].addr) {
-        printf("[ERROR] Image buffer not initialized.\n");
-        return 1;
-    }
+    recasting(map);
     mlx_put_image_to_window(
         (*map)->mlx.mlx,
         (*map)->mlx.win,

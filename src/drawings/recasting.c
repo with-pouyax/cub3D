@@ -61,11 +61,8 @@ void texture_definition(t_file *map, int wall_hight)
         map->pos_hit_wall_x = map->player_y + map->perpendicular_wall_distance * map->ray_dir_y;
     else
         map->pos_hit_wall_x = map->player_x + map->perpendicular_wall_distance * map->ray_dir_x;
-
     map->pos_hit_wall_x -= floor(map->pos_hit_wall_x);
     map->texture_cordinat_x = map->pos_hit_wall_x * 128;
-    printf("[DEBUG] pos_hit_wall_x raw: %f\n", map->pos_hit_wall_x);
-
     // Optional: flip for correct orientation
     if ((map->hit_vertical_wall == 1 && map->ray_dir_x > 0))
         map->texture_cordinat_x = 128 - map->texture_cordinat_x - 1;
@@ -73,17 +70,17 @@ void texture_definition(t_file *map, int wall_hight)
         map->texture_cordinat_x = 128 - map->texture_cordinat_x - 1;
 
     map->step = 1.0 * 128 / wall_hight;
-    map->tex_position = (map->start_wall - (map->map_height / 2 - wall_hight / 2)) * map->step;    printf("[DEBUG] Texture X: %d, Step: %f, Tex Position: %f\n", map->texture_cordinat_x, map->step, map->tex_position);
+    map->tex_position = (map->start_wall - (map->map_height / 2 - wall_hight / 2)) * map->step;
 }
 void    calculate_wall_hight(t_file *map, int *wall_height)
 {
-    *wall_height = map->map_height / map->perpendicular_wall_distance;
-    map->start_wall = -*wall_height / 2 + map->map_height / 2;
+    *wall_height = HEIGHT / map->perpendicular_wall_distance;
+    map->start_wall = -*wall_height / 2 + HEIGHT / 2;
     if (map->start_wall < 0)
         map->start_wall = 0;
-    map->end_wall = *wall_height / 2 + map->map_height / 2;
-    if (map->end_wall >= map->map_height)
-        map->end_wall = map->map_height - 1;
+    map->end_wall = *wall_height / 2 + HEIGHT / 2;
+    if (map->end_wall >= HEIGHT)
+        map->end_wall = HEIGHT - 1;
 }
 
 //calculate_wall_hight : calculates how tall the wall slice should appear on screen
@@ -208,8 +205,6 @@ void    setup_ray(t_file **map, int col)
     (*map)->ray_screen_pos = 2 * col / (double)WIDTH - 1;
     (*map)->ray_dir_x = (*map)->dir_x_face  + (*map)->plane_x * (*map)->ray_screen_pos;
     (*map)->ray_dir_y = (*map)->dir_y_face  + (*map)->plane_y * (*map)->ray_screen_pos;
-    // printf("[DEBUG] setup_ray: col=%d, ray_screen_pos=%f, ray_dir_x=%f, ray_dir_y=%f\n",
-    //        col, (*map)->ray_screen_pos, (*map)->ray_dir_x, (*map)->ray_dir_y);
 }
 /*
 loop over each column of pixels on the screen
