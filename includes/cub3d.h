@@ -329,4 +329,9 @@ void 	move_leftward(t_file *map);
 void 	move_rightward(t_file *map);
 void 	rotate_left(t_file *map);
 void 	rotate_right(t_file *map);
+
+int load_image(t_file **map, int index);
+int get_image_address(t_file **map, int index);
+
+
 #endif

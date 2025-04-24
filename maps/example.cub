@@ -1,7 +1,7 @@
-NO ./textures/north.xpm
-SO ./textures/south.xpm
-WE ./textures/west.xpm
-EA ./textures/east.xpm
+NO ./textures/img/MARBFAC2.xpm
+SO ./textures/img/SKULWALL.xpm
+WE ./textures/img/MARBFACE.xpm
+EA ./textures/img/SKULWAL3.xpm
 
 F 255,0,0
 C 0,0,255

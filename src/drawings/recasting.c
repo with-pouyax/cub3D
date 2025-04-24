@@ -16,11 +16,31 @@ int	get_color(t_file *map, int i)
 {
     int x;
     int y;
+    int color;
+    char *pixel_address;
 
     x = map->texture_cordinat_x;
     y = map->texture_cordinat_y;
-	return (*(int *)(map->image[i].addr
-        + (y * map->image[i].line_length + x * (map->image[i].bits_per_pixel / 8))));
+    // Calculate the memory address of the pixel in the texture
+    pixel_address = map->image[i].addr 
+        + (y * map->image[i].line_length) 
+        + (x * (map->image[i].bits_per_pixel / 8));
+            // Debug: Check if pixel_address is valid
+    if (!map->image[i].addr)
+    {
+        printf("[ERROR] Texture %d not loaded properly. Address is NULL.\n", i);
+        return 0; // Return black color
+    }
+    if (!pixel_address)
+    {
+        printf("[ERROR] Invalid pixel address for texture %d\n", i);
+        return 0; // Return black color if address is invalid
+    }
+    // Dereference the address to get the color value
+    color = *(int *)pixel_address;
+    // Debug: Print the color value
+    // printf("[DEBUG] Color: 0x%X\n", color);
+    return (color);
 }
 // rendering the texture of the wall (or other objects) onto the screen
 void	draw(t_file *map, int x, int texture)
@@ -40,14 +60,13 @@ void draw_column_pixels(t_file *map, int x)
 
         // Determine which side of the wall the ray hit and draw accordingly
         if (map->hit_vertical_wall == 1 && map->ray_dir_y < 0)
-            draw(map, x, SOUTH);  // South side
+            draw(map, x, SOUTH);
         else if (map->hit_vertical_wall == 1 && map->ray_dir_y > 0)
-            draw(map, x, NORTH);  // North side
+            draw(map, x, NORTH);
         else if (map->hit_vertical_wall == 0 && map->ray_dir_x < 0)
-            draw(map, x, WEST);   // West side
+            draw(map, x, WEST);
         else if (map->hit_vertical_wall == 0 && map->ray_dir_x > 0)
-            draw(map, x, EAST);   // East side
-
+            draw(map, x, EAST);
         map->start_wall++;  // Move to the next pixel in the column
     }
 }
