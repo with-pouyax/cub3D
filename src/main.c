@@ -16,12 +16,10 @@ int	main(int ac, char **av)
 {
 	t_file	*map;
 
-	// Test MLX if requested
 	if (ac == 2 && !ft_strncmp(av[1], "--test-mlx", 10))
 		return (test_mlx());
 	if (init_map(&map) || init_map_mlx(&map))
 		return (1);
-	// init_player(map);
 	if (parse_args(ac, av, &map))
 	{
 		cleanup(&map);
@@ -29,11 +27,9 @@ int	main(int ac, char **av)
 	}
 	if (start_game(&map))
 	{
-		cleanup(&map); // Now cleanup handles MLX resources too
+		cleanup(&map);
 		return (1);
 	}
-	printf("\nwe are good to go\n");
-	
 	cleanup(&map);
 	return (0);
 }

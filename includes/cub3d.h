@@ -257,7 +257,6 @@ int		parse_args(int ac, char **av, t_file **map);
 
 /* Initialization and cleanup functions */
 int		init_map(t_file **map);
-void	init_player(t_file *map);
 void	clean_string_array(char ***array);
 void	clean_texture_paths(t_texture_paths *textures);
 void	cleanup_mlx(t_file *map);
@@ -340,7 +339,7 @@ int		handle_x_press(int keycode, t_file **map);
 int 	handle_keypress(int keycode, t_file **map);
 int		set_event_hooks(t_file **map);
 
-void    DDA_implimentation(t_file **map);
+void    dda_implimentation(t_file **map);
 void calculate_perpwalldist(t_file **map);
 void    draw_col(t_file *map, int x);
 void    calculate_wall_hight(t_file *map, int *wall_height);
@@ -348,5 +347,8 @@ void texture_definition(t_file *map, int wall_hight);
 void draw_column_pixels(t_file *map, int x);
 void	draw(t_file *map, int x, int texture);
 int	get_color(t_file *map, int i);
+
+void    cleanup(t_file **map);
+void    cleanup_mlx(t_file *map);
 
 #endif

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw_minimap.c                                      :+:      :+:    :+:   */
+/*   draw_minimap.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pghajard <pghajard@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -19,42 +19,44 @@
 // then row + i increase ---> to the right
 // and col + j increase --> to the down
 // to draw the square for each pixel
-
-void    draw_square(t_file *map, int col, int row, int color)
+void	draw_square(t_file *map, int col, int row, int color)
 {
-    int x, y;
-    int start_x = col * TILE_SCALE;
-    int start_y = row * TILE_SCALE;
+	int	x;
+	int	y;
+	int	start_x;
+	int	start_y;
 
-    y = start_y;
-    while (y < start_y + TILE_SCALE)
-    {
-        x = start_x;
-        while (x < start_x + TILE_SCALE)
-        {
-            put_pixel_minimap(map, x, y, color); // White for walls
-            x++;
-        }
-        y++;
-    }
+	start_x = col * TILE_SCALE;
+	start_y = row * TILE_SCALE;
+	y = start_y;
+	while (y < start_y + TILE_SCALE)
+	{
+		x = start_x;
+		while (x < start_x + TILE_SCALE)
+		{
+			put_pixel_minimap(map, x, y, color);
+			x++;
+		}
+		y++;
+	}
 }
 
-void    draw_wall(t_file *map, int col, int row)
+void	draw_wall(t_file *map, int col, int row)
 {
-    draw_square(map, col, row, COLOR_BLUE);
+	draw_square(map, col, row, COLOR_BLUE);
 }
 
-void    draw_floor(t_file *map, int col, int row)
+void	draw_floor(t_file *map, int col, int row)
 {
-    draw_square(map, col, row, COLOR_WHITE);
+	draw_square(map, col, row, COLOR_WHITE);
 }
 
-void    draw_player(t_file *map, int col, int row)
+void	draw_player(t_file *map, int col, int row)
 {
-    draw_square(map, col, row, COLOR_RED);
+	draw_square(map, col, row, COLOR_RED);
 }
 
-void    draw_unknown(t_file *map, int col, int row)
+void	draw_unknown(t_file *map, int col, int row)
 {
-    draw_square(map, col, row, COLOR_BLACK);
+	draw_square(map, col, row, COLOR_BLACK);
 }
