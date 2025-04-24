@@ -330,8 +330,23 @@ void 	move_rightward(t_file *map);
 void 	rotate_left(t_file *map);
 void 	rotate_right(t_file *map);
 
-int load_image(t_file **map, int index);
-int get_image_address(t_file **map, int index);
+int 	load_image(t_file **map, int index);
+int 	get_image_address(t_file **map, int index);
+void 	draw_floor_3d(t_file **map, int x, int y);
+void 	draw_sky_3d(t_file **map, int x, int y);
+void 	img_pix_put(t_file *map, int x, int y, int color);
+int		handle_esc_press(t_file **map);
+int		handle_x_press(int keycode, t_file **map);
+int 	handle_keypress(int keycode, t_file **map);
+int		set_event_hooks(t_file **map);
 
+void    DDA_implimentation(t_file **map);
+void calculate_perpwalldist(t_file **map);
+void    draw_col(t_file *map, int x);
+void    calculate_wall_hight(t_file *map, int *wall_height);
+void texture_definition(t_file *map, int wall_hight);
+void draw_column_pixels(t_file *map, int x);
+void	draw(t_file *map, int x, int texture);
+int	get_color(t_file *map, int i);
 
 #endif

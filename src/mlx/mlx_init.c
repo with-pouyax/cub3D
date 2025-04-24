@@ -35,8 +35,6 @@ int	init_mlx(t_file **map)
 	return (0);
 }
 
-
-
 int	create_window(t_file **map)
 {
 	(*map)->mlx.win = mlx_new_window((*map)->mlx.mlx, WIDTH, HEIGHT, "Cub3D");
@@ -55,8 +53,8 @@ int	create_image_buffer(t_file **map)
 	i = 0;
 	while (i < 4)
 	{
-        if (load_image(map, i))
-            return (1);
+		if (load_image(map, i))
+			return (1);
 		i++;
 	}
 	(*map)->image[4].img = mlx_new_image((*map)->mlx.mlx, WIDTH, HEIGHT);
@@ -65,8 +63,8 @@ int	create_image_buffer(t_file **map)
 	i = 0;
 	while (i < 5)
 	{
-        if (get_image_address(map, i))
-            return (1);
+		if (get_image_address(map, i))
+			return (1);
 		i++;
 	}
 	return (0);

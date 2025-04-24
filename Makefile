@@ -32,10 +32,14 @@ SRCS = src/main.c \
 	src/drawings/drawings.c \
 	src/drawings/mini_map.c \
 	src/drawings/draw_minimap.c \
-	src/drawings/recasting.c \
+	src/drawings/recasting1.c \
+	src/drawings/recasting2.c \
 	src/mlx/mlx_init.c \
 	src/mlx/mlx_events.c \
-	src/mlx/player_movements.c \
+	src/mlx/draw.c \
+	src/mlx/event_hooks.c \
+	src/mlx/player_movements1.c \
+	src/mlx/player_movements2.c \
 	src/mlx/movement_functions.c \
 	src/mlx/start_game.c \
 	src/parsing/map/map_validation.c \
