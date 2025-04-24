@@ -12,6 +12,30 @@
 
 #include "../../includes/cub3d.h"
 
+void	init_dir_face(t_file *map, char c)
+{
+	if (c == 'N')
+	{
+		map->dir_x_face = 0;
+		map->dir_y_face = -1;
+	}
+	else if (c == 'S')
+	{
+		map->dir_x_face = 0;
+		map->dir_y_face = 1;
+	}
+	else if (c == 'W')
+	{
+		map->dir_x_face = -1;
+		map->dir_y_face = 0;
+	}
+	else if (c == 'E')
+	{
+		map->dir_x_face = 1;
+		map->dir_y_face = 0;
+	}
+}
+
 int	not_valid_char(char c, int *player_count, t_file *map, t_coord *pos)
 {
 	if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
@@ -20,8 +44,9 @@ int	not_valid_char(char c, int *player_count, t_file *map, t_coord *pos)
 		if (*player_count == 1)
 		{
 			map->player_dir = c;
+			init_dir_face(map, c);
 			map->player_x = (*pos).j;
-			map->player_y = (*pos).i - map->map_height + 1;
+			map->player_y = (*pos).i - map->map_height;
 		}
 	}
 	if (*player_count > 1)

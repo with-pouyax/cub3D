@@ -12,83 +12,71 @@
 
 #include "../../includes/cub3d.h"
 
-int	init_map(t_file **map)
+void	init_textures(t_texture_paths *textures)
 {
-	*map = malloc(sizeof(t_file));
-	if (!*map)
-		return (ft_perror("malloc", errno), 1);
-	(*map)->raw_file = NULL;
-	(*map)->textures.north = NULL;
-	(*map)->textures.south = NULL;
-	(*map)->textures.west = NULL;
-	(*map)->textures.east = NULL;
-	(*map)->colors.floor = 0;
-	(*map)->colors.ceiling = 0;
-	(*map)->game_map = NULL;
-	(*map)->map_height = 0;
-	(*map)->map_width = 0;
-	(*map)->player_dir = '\0';
-	(*map)->player_x = 0;
-	(*map)->player_y = 0;
-	return (0);
-}
-
-void	clean_string_array(char ***array)
-{
-	int	i;
-
-	if (!array || !*array)
-		return ;
-	i = 0;
-	while ((*array)[i])
-		free((*array)[i++]);
-	free(*array);
-	*array = NULL;
-}
-
-void	clean_texture_paths(t_texture_paths *textures)
-{
-	if (!textures)
-		return ;
-	if (textures->north)
-		free(textures->north);
-	if (textures->south)
-		free(textures->south);
-	if (textures->west)
-		free(textures->west);
-	if (textures->east)
-		free(textures->east);
 	textures->north = NULL;
 	textures->south = NULL;
 	textures->west = NULL;
 	textures->east = NULL;
 }
 
-void	cleanup_mlx(t_file *map)
+void	init_player_and_raycasting(t_file *map)
 {
-	if (map->img_ptr.img)
-		mlx_destroy_image(map->mlx.mlx, map->img_ptr.img);
-	if (map->mlx.win)
-		mlx_destroy_window(map->mlx.mlx, map->mlx.win);
-	if (map->mlx.mlx)
-	{
-		mlx_destroy_display(map->mlx.mlx);
-		free(map->mlx.mlx);
-	}
+	map->player_dir = '\0';
+	map->player_x = 0;
+	map->player_y = 0;
+	map->dir_x_face = 0.0;
+	map->dir_y_face = 0.0;
+	map->ray_screen_pos = 0.0;
+	map->ray_dir_x = 0.0;
+	map->ray_dir_y = 0.0;
+	map->distance_to_x = 0.0;
+	map->distance_to_y = 0.0;
+	map->dist_from_next_wall_x = 0.0;
+	map->dist_from_next_wall_y = 0.0;
+	map->perpendicular_wall_distance = 0.0;
+	map->ray_travel_x = 0;
+	map->ray_travel_y = 0;
+	map->hit_vertical_wall = 0;
+	map->hit_horizontal_wall = 0;
+	map->map_tile_x = 0;
+	map->map_tile_y = 0;
+	map->plane_x = 0.0;
+	map->plane_y = 0.0;
 }
 
-void	cleanup(t_file **map)
+void	init_images(t_file *map)
 {
-	if (!map || !*map)
-		return ;
-	
-	// Clean up MLX resources first
-	cleanup_mlx(*map);
-	
-	// Then clean up other resources
-	clean_string_array(&((*map)->raw_file));
-	clean_string_array(&((*map)->game_map));
-	clean_texture_paths(&((*map)->textures));
-	free(*map);
-	*map = NULL;
+	int	i;
+
+	i = 0;
+	while (i < 5)
+	{
+		map->image[i].img = NULL;
+		map->image[i].path = NULL;
+		i++;
+	}
+	map->minimap_img.img = NULL;
+}
+
+int	init_map(t_file **map)
+{
+	*map = malloc(sizeof(t_file));
+	if (!*map)
+		return (ft_perror("malloc", errno), 1);
+	(*map)->raw_file = NULL;
+	init_textures(&(*map)->textures);
+	(*map)->colors.floor = 0;
+	(*map)->colors.ceiling = 0;
+	(*map)->game_map = NULL;
+	(*map)->map_height = 0;
+	(*map)->map_width = 0;
+	init_player_and_raycasting(*map);
+	init_images(*map);
+	(*map)->mlx.mlx = NULL;
+	(*map)->mlx.win = NULL;
+	(*map)->mlx.img_ptr.img = NULL;
+	(*map)->player.x = 0.0;
+	(*map)->player.y = 0.0;
+	return (0);
 }
