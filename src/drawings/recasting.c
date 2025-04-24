@@ -224,7 +224,7 @@ int recasting(t_file **map)
     int col;
 
     col = 0;
-    while (col < (*map)->map_width)
+    while (col < WIDTH)
     {
         setup_ray(map, col);
         get_distance_to_next_cell(map);

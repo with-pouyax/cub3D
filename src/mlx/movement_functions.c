@@ -46,7 +46,7 @@ void    move_up_down(t_file *map, t_direction direction)
     else if (direction == BACKWARD)
     {
         if (map->game_map[(int)map->player_y][(int)(map->player_x - new_x)] != '1')
-            map->player_y += new_y;
+            map->player_x -= new_x;
         if (map->game_map[(int)(map->player_y - new_y)][(int)map->player_x] != '1')
             map->player_y -= new_y;
     }
@@ -80,7 +80,8 @@ void    move_right_left(t_file *map, t_direction direction)
         if (map->game_map[(int)(map->player_y - new_y)][(int)map->player_x] != '1')
             map->player_y -= new_y;
     }
-
+    if (old_x != map->map_tile_x || old_y != map->map_tile_y)
+        update_minimap(map, old_x, old_y);
 }
 
 void move_forward(t_file *map)

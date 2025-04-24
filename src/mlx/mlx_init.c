@@ -141,33 +141,18 @@ int	start_game(t_file **map)
 {
     init_game_state(map);
     if (init_mlx(map))
-    {
-        printf("[ERROR] Failed to initialize MLX.\n");
         return (1);
-    }
     if (create_window(map))
-    {
-        printf("[ERROR] Failed to create window.\n");
         return (1);
-    }
-	if (assign_texture_paths_to_images(*map) != 0)
-		return (1);
+    if (assign_texture_paths_to_images(*map) != 0)
+        return (1);
     if (create_image_buffer(map))
-    {
-        printf("[ERROR] Failed to create image buffer.\n");
         return (1);
-    }
     if (init_minimap(map))
-    {
-        printf("[ERROR] Failed to initialize minimap.\n");
         return (1);
-    }
     mlx_loop_hook((*map)->mlx.mlx, game_loop, map);
-	if (set_event_hooks(map))
-    {
-        printf("[ERROR] Failed to set event hooks.\n");
+    if (set_event_hooks(map))
         return (1);
-    }
     mlx_loop((*map)->mlx.mlx);
     return (0);
 }
