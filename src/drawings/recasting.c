@@ -63,12 +63,10 @@ void texture_definition(t_file *map, int wall_hight)
         map->pos_hit_wall_x = map->player_x + map->perpendicular_wall_distance * map->ray_dir_x;
     map->pos_hit_wall_x -= floor(map->pos_hit_wall_x);
     map->texture_cordinat_x = map->pos_hit_wall_x * 128;
-    // Optional: flip for correct orientation
     if ((map->hit_vertical_wall == 1 && map->ray_dir_x > 0))
         map->texture_cordinat_x = 128 - map->texture_cordinat_x - 1;
     if (map->hit_horizontal_wall == 1 && map->ray_dir_y < 0)
         map->texture_cordinat_x = 128 - map->texture_cordinat_x - 1;
-
     map->step = 1.0 * 128 / wall_hight;
     map->tex_position = (map->start_wall - (map->map_height / 2 - wall_hight / 2)) * map->step;
 }

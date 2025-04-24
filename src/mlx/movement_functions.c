@@ -14,7 +14,7 @@
 
 void    update_minimap(t_file *map, double old_x, double old_y)
 {
-    draw_square(map, (int)map->player_x, (int)map->player_y, COLOR_GREEN);
+    draw_square(map, (int)map->player_x, (int)map->player_y, COLOR_RED);
     if ((int)map->player_x != old_x)
         draw_square(map, old_x, old_y, COLOR_WHITE);
     if ((int)map->player_y != old_y)

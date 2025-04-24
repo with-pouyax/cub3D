@@ -41,7 +41,7 @@ void    draw_square(t_file *map, int col, int row, int color)
 
 void    draw_wall(t_file *map, int col, int row)
 {
-    draw_square(map, col, row, COLOR_BLACK);
+    draw_square(map, col, row, COLOR_BLUE);
 }
 
 void    draw_floor(t_file *map, int col, int row)
@@ -51,7 +51,7 @@ void    draw_floor(t_file *map, int col, int row)
 
 void    draw_player(t_file *map, int col, int row)
 {
-    draw_square(map, col, row, COLOR_GREEN);
+    draw_square(map, col, row, COLOR_RED);
 }
 
 void    draw_unknown(t_file *map, int col, int row)

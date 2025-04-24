@@ -150,9 +150,9 @@ int	start_game(t_file **map)
         return (1);
     if (init_minimap(map))
         return (1);
-    mlx_loop_hook((*map)->mlx.mlx, game_loop, map);
     if (set_event_hooks(map))
         return (1);
+    mlx_loop_hook((*map)->mlx.mlx, game_loop, map);
     mlx_loop((*map)->mlx.mlx);
     return (0);
 }
