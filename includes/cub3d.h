@@ -104,12 +104,12 @@ typedef struct s_player
     float 	x;
     float 	y;
     // float 	angle;
-	// bool	key_up;
-	// bool	key_down;
-	// bool	key_left;
-	// bool	key_right;
-	// bool 	left_rotate;
-    // bool 	right_rotate;
+	bool	key_up;
+	bool	key_down;
+	bool	key_left;
+	bool	key_right;
+	bool 	left_rotate;
+    bool 	right_rotate;
 	// int 	speed;        // Player movement speed
     // float 	angle_speed;  // Rotation speed
 }	t_player;

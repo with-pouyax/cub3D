@@ -44,8 +44,28 @@ void	render_sky_floor(t_file **map)
 	}
 }
 
+void	update_player_state(t_player *player, t_file *map)
+{
+	if (player->key_up)
+		move_forward(map);
+	if (player->key_down)
+		move_backward(map);
+	if (player->key_left)
+		move_leftward(map);
+	if (player->key_right)
+		move_rightward(map);
+	if (player->left_rotate)
+		rotate_left(map);
+	if (player->right_rotate)
+		rotate_right(map);
+}
+
 int	game_loop(t_file **map)
 {
+	t_player    *player;
+
+	player = &(*map)->player;
+	update_player_state(player, *map);
 	render_sky_floor(map);
 	recasting(map);
 	mlx_put_image_to_window(
