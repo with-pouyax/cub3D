@@ -53,13 +53,13 @@ void	draw_column_pixels(t_file *map, int x)
 	{
 		map->texture_cordinat_y = (int)map->tex_position & (128 - 1);
 		map->tex_position += map->step;
-		if (map->hit_vertical_wall == 1 && map->ray_dir_y < 0)
+		if (map->hit_horizontal_wall == 1 && map->ray_dir_y < 0)
 			draw(map, x, SOUTH);
-		else if (map->hit_vertical_wall == 1 && map->ray_dir_y > 0)
+		else if (map->hit_horizontal_wall == 1 && map->ray_dir_y > 0)
 			draw(map, x, NORTH);
-		else if (map->hit_vertical_wall == 0 && map->ray_dir_x < 0)
+		else if (map->hit_vertical_wall == 1 && map->ray_dir_x < 0)
 			draw(map, x, WEST);
-		else if (map->hit_vertical_wall == 0 && map->ray_dir_x > 0)
+		else if (map->hit_vertical_wall == 1 && map->ray_dir_x > 0)
 			draw(map, x, EAST);
 		map->start_wall++;
 	}

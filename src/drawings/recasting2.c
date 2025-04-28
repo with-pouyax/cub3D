@@ -62,7 +62,7 @@ void	calculate_perpwalldist(t_file **map)
 	if ((*map)->hit_vertical_wall == 1)
 		(*map)->perpendicular_wall_distance
 			= ((*map)->dist_from_next_wall_x - (*map)->distance_to_x);
-	else
+	else if ((*map)->hit_horizontal_wall == 1)
 		(*map)->perpendicular_wall_distance
 			= ((*map)->dist_from_next_wall_y - (*map)->distance_to_y);
 }
