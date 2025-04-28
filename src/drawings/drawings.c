@@ -38,12 +38,15 @@ int	get_color(t_file *map, int i)
 	return (color);
 }
 
-// rendering the texture of the wall (or other objects) onto the screen
 void	draw(t_file *map, int x, int texture)
 {
 	int	color;
 
 	color = get_color(map, texture);
+	if (color == 0)
+	{
+		color = 0x00000000;
+	}
 	img_pix_put(map, x, map->start_wall, color);
 }
 
@@ -54,13 +57,13 @@ void	draw_column_pixels(t_file *map, int x)
 		map->texture_cordinat_y = (int)map->tex_position & (128 - 1);
 		map->tex_position += map->step;
 		if (map->hit_horizontal_wall == 1 && map->ray_dir_y < 0)
-			draw(map, x, SOUTH);
-		else if (map->hit_horizontal_wall == 1 && map->ray_dir_y > 0)
 			draw(map, x, NORTH);
+		else if (map->hit_horizontal_wall == 1 && map->ray_dir_y > 0)
+			draw(map, x, SOUTH);
 		else if (map->hit_vertical_wall == 1 && map->ray_dir_x < 0)
-			draw(map, x, WEST);
-		else if (map->hit_vertical_wall == 1 && map->ray_dir_x > 0)
 			draw(map, x, EAST);
+		else if (map->hit_vertical_wall == 1 && map->ray_dir_x > 0)
+			draw(map, x, WEST);
 		map->start_wall++;
 	}
 }

@@ -18,7 +18,7 @@ void	texture_definition(t_file *map, int wall_hight)
 	if (map->hit_vertical_wall == 1)
 		map->pos_hit_wall_x = map->player_y
 			+ map->perpendicular_wall_distance * map->ray_dir_y;
-	else
+	else if (map->hit_horizontal_wall == 1)
 		map->pos_hit_wall_x = map->player_x
 			+ map->perpendicular_wall_distance * map->ray_dir_x;
 	map->pos_hit_wall_x -= floor(map->pos_hit_wall_x);
@@ -29,7 +29,7 @@ void	texture_definition(t_file *map, int wall_hight)
 		map->texture_cordinat_x = 128 - map->texture_cordinat_x - 1;
 	map->step = 1.0 * 128 / wall_hight;
 	map->tex_position = (map->start_wall
-			- (map->map_height / 2 - wall_hight / 2)) * map->step;
+			- (HEIGHT / 2 - wall_hight / 2)) * map->step;
 }
 
 void	calculate_wall_hight(t_file *map, int *wall_height)
