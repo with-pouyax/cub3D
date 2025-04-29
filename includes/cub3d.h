@@ -182,6 +182,20 @@ typedef struct s_parse_data
 	int				*found_map_start;
 }	t_parse_data;
 
+//mapcheck
+typedef struct s_mapcheck
+{
+	int i;
+	int north;
+	int south;
+	int west;
+	int east;
+	int floor;
+	int ceiling;
+	int header_done;
+	int map_started;
+}	t_mapcheck;
+
 /* Error handling functions */
 void	ft_perror(char *msg, int err);
 void	pexit(char *msg, int err, int exit_code);
