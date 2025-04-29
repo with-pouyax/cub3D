@@ -14,6 +14,15 @@
 
 void	cleanup_mlx(t_file *map)
 {
+	int	i;
+
+	i = 0;
+	while (i < 5)
+	{
+		if (map->image[i].img)
+			mlx_destroy_image(map->mlx.mlx, map->image[i].img);
+		i++;
+	}	
 	if (map->mlx.img_ptr.img)
 		mlx_destroy_image(map->mlx.mlx, map->mlx.img_ptr.img);
 	if (map->mlx.win)
@@ -25,14 +34,35 @@ void	cleanup_mlx(t_file *map)
 	}
 }
 
+void	cleanup_path(t_file *map)
+{
+	int	i;
+
+	i = 0;
+	while (i < 5)
+	{
+		if (map->image[i].path)
+			free(map->image[i].path);
+		i++;
+	}	
+}
+
+void	cleanup_minimap(t_file *map)
+{
+	if (map->minimap_img.img)
+		mlx_destroy_image(map->mlx.mlx, map->minimap_img.img);	
+}
+
 void	cleanup(t_file **map)
 {
 	if (!map || !*map)
 		return ;
+	cleanup_minimap(*map);
 	cleanup_mlx(*map);
 	clean_string_array(&((*map)->raw_file));
 	clean_string_array(&((*map)->game_map));
 	clean_texture_paths(&((*map)->textures));
+	cleanup_path(*map);
 	free(*map);
 	*map = NULL;
 }

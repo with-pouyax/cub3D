@@ -65,6 +65,9 @@ void	init_game_state(t_file **map)
 
 int	assign_texture_paths_to_images(t_file *map)
 {
+	int	i;
+
+	i = 0;
 	if (!map->textures.north || !map->textures.south
 		|| !map->textures.west || !map->textures.east)
 	{
@@ -79,6 +82,15 @@ int	assign_texture_paths_to_images(t_file *map)
 		|| !map->image[2].path || !map->image[3].path)
 	{
 		printf("❌ Failed to duplicate one or more texture paths.\n");
+		while (i < 4)
+		{
+			if (map->image[i].path)
+            {
+                free(map->image[i].path);
+                map->image[i].path = NULL;
+            }
+			i++;
+		}
 		return (1);
 	}
 	return (0);
