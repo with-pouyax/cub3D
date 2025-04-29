@@ -45,8 +45,8 @@ int	not_valid_char(char c, int *player_count, t_file *map, t_coord *pos)
 		{
 			map->player_dir = c;
 			init_dir_face(map, c);
-			map->player_x = (*pos).j;
-			map->player_y = (*pos).i - map->map_height;
+			map->player_x = (*pos).j + 0.5;
+			map->player_y = (*pos).i - map->map_height + 0.5;
 		}
 	}
 	if (*player_count > 1)

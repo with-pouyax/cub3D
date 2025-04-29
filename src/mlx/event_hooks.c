@@ -69,8 +69,6 @@ int handle_keyrelease(int keycode, t_file **map)
 
 int	set_event_hooks(t_file **map)
 {
-	printf("handle hooks before");
-
 	mlx_key_hook((*map)->mlx.win, handle_x_press, map);
 	mlx_hook((*map)->mlx.win, 2, 1L << 0, handle_keypress, map);
 	mlx_hook((*map)->mlx.win, 3, 1L << 1, handle_keyrelease, map);

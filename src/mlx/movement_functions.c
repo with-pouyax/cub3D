@@ -24,12 +24,24 @@ int	is_wall(char **map, double x, double y)
 {
     int ix = (int)(x + PLAYER_WALL_BUFFER);
     int iy = (int)(y + PLAYER_WALL_BUFFER);
-    if (map[iy][ix] == '1')
+
+    // Check for out-of-bounds
+    if (iy < 0 || ix < 0 || !map[iy] || ix >= (int)ft_strlen(map[iy]))
+        return (1); // Treat out-of-bounds as wall
+
+    // Check for wall or space
+    if (map[iy][ix] == '1' || map[iy][ix] == ' ')
         return (1);
+
     ix = (int)(x - PLAYER_WALL_BUFFER);
     iy = (int)(y - PLAYER_WALL_BUFFER);
-    if (map[iy][ix] == '1')
+
+    if (iy < 0 || ix < 0 || !map[iy] || ix >= (int)ft_strlen(map[iy]))
         return (1);
+
+    if (map[iy][ix] == '1' || map[iy][ix] == ' ')
+        return (1);
+
     return (0);
 }
 
@@ -57,7 +69,7 @@ void	move_player_opposite(t_file *map, double new_x, double new_y)
 	if (!is_wall(map->game_map, next_x, map->player_y))
         map->player_x = next_x;
     if (!is_wall(map->game_map, map->player_x, next_y))
-        map->player_y = next_y;
+		map->player_y = next_y;
 }
 
 void	move_up_down(t_file *map, t_direction direction)

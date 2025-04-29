@@ -25,6 +25,7 @@ void	draw_square(t_file *map, int col, int row, int color)
 	int	y;
 	int	start_x;
 	int	start_y;
+	
 
 	start_x = col * TILE_SCALE;
 	start_y = row * TILE_SCALE;
