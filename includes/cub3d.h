@@ -33,8 +33,10 @@
 # include "../libraries/libft/libft.h"
 # include "../libraries/mlx/mlx.h"
 
-#define MOVE_SPEED 0.09
-#define ROTATE_SPEED 0.09
+# define MOVE_SPEED 0.09
+# define ROTATE_SPEED 0.09
+# define PLAYER_WALL_BUFFER 0.02
+
 
 # define W 		119
 # define A 		97
@@ -44,7 +46,7 @@
 # define LEFT 	65361
 # define RIGHT 	65363
 
-# define TILE_SCALE 7 // Define the size of a block (adjust this based on your map)
+# define TILE_SCALE 14 // Define the size of a block (adjust this based on your map)
 # define MAP_WIDTH 24  // Adjust this based on the number of columns in your map
 # define MAP_HEIGHT 24 // Adjust this based on the number of rows in your map
 
@@ -103,15 +105,12 @@ typedef struct s_player
 {
     float 	x;
     float 	y;
-    // float 	angle;
 	bool	key_up;
 	bool	key_down;
 	bool	key_left;
 	bool	key_right;
 	bool 	left_rotate;
     bool 	right_rotate;
-	// int 	speed;        // Player movement speed
-    // float 	angle_speed;  // Rotation speed
 }	t_player;
 
 typedef struct s_file

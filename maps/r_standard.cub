@@ -1,9 +1,9 @@
 NO ./textures/pouyax/North.xpm
-SO ./textures/pouyax/N.xpm
+SO ./textures/pouyax/S.xpm
 WE ./textures/pouyax/West.xpm
 EA ./textures/pouyax/East.xpm
 
-F 226,100,0
+F 22,100,0
 C 225,30,0
 
 111111
@@ -20,4 +20,4 @@ C 225,30,0
 110111
 110111
 110111
-111111
+111 11

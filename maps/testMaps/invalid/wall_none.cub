@@ -1,0 +1,21 @@
+NO ./textures/test/N.xpm
+SO ./textures/test/S.xpm
+WE ./textures/test/W.xpm
+EA ./textures/test/E.xpm
+
+F 20,20,20
+C 200,200,200
+
+00000
+00000
+00S00
+00000
+00000
+00000
+00000
+00000
+00000
+00000
+00000
+00000
+00000

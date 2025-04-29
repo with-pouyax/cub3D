@@ -22,6 +22,19 @@ int	load_image(t_file **map, int index)
 		printf("❌ Failed to load image\n");
 		return (1);
 	}
+	    // Check image size
+    if ((*map)->image[index].w < 32 || (*map)->image[index].h < 32)
+    {
+        printf("❌ Image at %s is too small (%dx%d)\n",
+            (*map)->image[index].path, (*map)->image[index].w, (*map)->image[index].h);
+        return (1);
+    }
+    if ((*map)->image[index].w > 1024 || (*map)->image[index].h > 1024)
+    {
+        printf("❌ Image at %s is too large (%dx%d)\n",
+            (*map)->image[index].path, (*map)->image[index].w, (*map)->image[index].h);
+        return (1);
+    }
 	return (0);
 }
 
