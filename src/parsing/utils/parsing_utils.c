@@ -119,9 +119,6 @@ int	check_map_newlines(char *tmp)
 	return (0);
 }
 
-
-
-
 int	parse_args(int ac, char **av, t_file **map)
 {
 	int		file_len;
@@ -136,6 +133,8 @@ int	parse_args(int ac, char **av, t_file **map)
 	if (extentions_check(av[1]))
 		return (1);
 	tmp = get_string(&file_len, av);
+	if (!tmp)
+		return (ft_perror("failed to read map file", errno), 1);
 	if (check_map_newlines(tmp))
 		return (free(tmp), ft_perror("newline between map lines", EINVAL), 1);
 	(*map)->raw_file = ft_split(tmp, '\n');
