@@ -94,8 +94,8 @@ int	wrong_ratio(char **map)
 	size_t		max_height;
 	size_t		max_width;
 
-	max_height = 50;
-	max_width = 50;
+	max_height = 100;
+	max_width = 251;
 	i = 0;
 	while (map[i])
 	{
