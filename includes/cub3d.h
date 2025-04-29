@@ -33,8 +33,10 @@
 # include "../libraries/libft/libft.h"
 # include "../libraries/mlx/mlx.h"
 
-#define MOVE_SPEED 0.09
-#define ROTATE_SPEED 0.09
+# define MOVE_SPEED 0.09
+# define ROTATE_SPEED 0.09
+# define PLAYER_WALL_BUFFER 0.2
+
 
 # define W 		119
 # define A 		97
