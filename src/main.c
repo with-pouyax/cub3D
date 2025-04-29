@@ -12,6 +12,16 @@
 
 #include "../includes/cub3d.h"
 
+void init_player(t_file *map)
+{
+    map->player.key_up = false;
+    map->player.key_down = false;
+    map->player.key_left = false;
+    map->player.key_right = false;
+    map->player.left_rotate = false;
+    map->player.right_rotate = false;
+}
+
 int	main(int ac, char **av)
 {
 	t_file	*map;
@@ -20,6 +30,7 @@ int	main(int ac, char **av)
 		return (test_mlx());
 	if (init_map(&map) || init_map_mlx(&map))
 		return (1);
+	init_player(map);
 	if (parse_args(ac, av, &map))
 	{
 		cleanup(&map);

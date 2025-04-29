@@ -23,9 +23,9 @@ void	texture_definition(t_file *map, int wall_hight)
 			+ map->perpendicular_wall_distance * map->ray_dir_x;
 	map->pos_hit_wall_x -= floor(map->pos_hit_wall_x);
 	map->texture_cordinat_x = map->pos_hit_wall_x * 128;
-	if ((map->hit_vertical_wall == 1 && map->ray_dir_x > 0))
+	if ((map->hit_vertical_wall == 1 && map->ray_dir_x < 0))
 		map->texture_cordinat_x = 128 - map->texture_cordinat_x - 1;
-	if (map->hit_horizontal_wall == 1 && map->ray_dir_y < 0)
+	if (map->hit_horizontal_wall == 1 && map->ray_dir_y > 0)
 		map->texture_cordinat_x = 128 - map->texture_cordinat_x - 1;
 	map->step = 1.0 * 128 / wall_hight;
 	map->tex_position = (map->start_wall
