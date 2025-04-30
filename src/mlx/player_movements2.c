@@ -56,3 +56,14 @@ void	rotate_right(t_file *map)
 	map->plane_y = tmp_plane_x * sin(rot_speed)
 		+ map->plane_y * cos(rot_speed);
 }
+
+void	update_minimap(t_file *map, double old_x, double old_y)
+{
+	if (map->minimap_scale == 0)
+		return ;
+	draw_square(map, (int)map->player_x, (int)map->player_y, COLOR_RED);
+	if ((int)map->player_x != old_x)
+		draw_square(map, old_x, old_y, COLOR_WHITE);
+	if ((int)map->player_y != old_y)
+		draw_square(map, old_x, old_y, COLOR_WHITE);
+}

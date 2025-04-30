@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   clean.c                                     :+:      :+:    :+:   */
+/*   clean_1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pghajard <pghajard@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,28 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
-
-void	cleanup_mlx(t_file *map)
-{
-	int	i;
-
-	i = 0;
-	while (i < 5)
-	{
-		if (map->image[i].img)
-			mlx_destroy_image(map->mlx.mlx, map->image[i].img);
-		i++;
-	}	
-	if (map->mlx.img_ptr.img)
-		mlx_destroy_image(map->mlx.mlx, map->mlx.img_ptr.img);
-	if (map->mlx.win)
-		mlx_destroy_window(map->mlx.mlx, map->mlx.win);
-	if (map->mlx.mlx)
-	{
-		mlx_destroy_display(map->mlx.mlx);
-		free(map->mlx.mlx);
-	}
-}
 
 void	cleanup_path(t_file *map)
 {
@@ -44,13 +22,13 @@ void	cleanup_path(t_file *map)
 		if (map->image[i].path)
 			free(map->image[i].path);
 		i++;
-	}	
+	}
 }
 
 void	cleanup_minimap(t_file *map)
 {
 	if (map->minimap_img.img)
-		mlx_destroy_image(map->mlx.mlx, map->minimap_img.img);	
+		mlx_destroy_image(map->mlx.mlx, map->minimap_img.img);
 }
 
 void	cleanup(t_file **map)
