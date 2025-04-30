@@ -14,7 +14,7 @@
 
 //*****************************************************************************
 //*                                                                            
-//* 1- we initialize the mlx and the window related variables                   *
+//* 1- we initialize the mlx and the window related variables                 *
 //*****************************************************************************
 int	init_map_mlx(t_file **map)
 {

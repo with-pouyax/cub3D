@@ -12,11 +12,10 @@
 
 #include "../includes/cub3d.h"
 
-
 //*****************************************************************************
 //*                                                                           
 //* 1- we check if the number of arguments is correct and if we recieve       
-//*    --test-mlx we call the test_mlx function                                  
+//*    --test-mlx we call the test_mlx function                           
 //* 2- using init_map we allocate memory for the map structure and initialize
 //*    the structures with the correct starting values
 //* 3- using init_map_mlx we initialize the mlx and the window related
@@ -30,7 +29,6 @@
 //* 8- using cleanup we free the memory and close the window
 //* 
 //*****************************************************************************
-
 
 int	main(int ac, char **av)
 {
