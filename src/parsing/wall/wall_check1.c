@@ -66,14 +66,14 @@ int	is_at_edge(char **map, int row, int col)
 	return (0);
 }
 
-/**
- * Checks if the current position is valid for flood filling
- * @param map The map to check
- * @param row Current row position
- * @param col Current column position
- * @param found_edge Pointer to flag indicating if edge was found
- * @return 1 if position is valid for filling, 0 if not
- */
+//*****************************************************************************
+//*                                                                            
+//* 1- using is_valid_for_fill we check if the current position is valid
+//* 2- if we reach 1 or X it is ok
+//* 3- if we reach a space or tab means we are at the edge
+//* 4- using is_at_edge we check if we are at the edge
+//*****************************************************************************
+
 int	is_valid_for_fill(char **map, int row, int col, int *found_edge)
 {
 	if (!is_valid_position(map, row, col))

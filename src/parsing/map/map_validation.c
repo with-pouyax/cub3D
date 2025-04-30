@@ -12,6 +12,15 @@
 
 #include "../../includes/cub3d.h"
 
+//*****************************************************************************
+//*                                                                            
+//* 1- we loop through the map file lines
+//* 2- we check if the current line is empty
+//* 3- if it is empty we continue to the next line
+//* 4- if it is not empty we return 0 wich means we skip the empty lines
+//*
+//*****************************************************************************
+
 int	map_is_empty(char **map)
 {
 	int	i;

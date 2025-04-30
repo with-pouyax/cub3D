@@ -12,6 +12,17 @@
 
 #include "../../includes/cub3d.h"
 
+//*****************************************************************************
+//*                                                                            
+//* 1- using init_parse_data we setup our parse_data structure.
+//* 2- we loop through the map file lines as long as we don't find the map 
+//*    start.
+//* 3- using process_current_line we process the current line.
+//* 4- we go out of the loop when we find the map start.
+//* 5- using check_all_elements_present we check if all the elements (N, S, W,
+//*    E, F, C ) are present and are not duplicated.
+//*****************************************************************************
+
 int	parse_textures_and_colors(t_file *map, int *index, \
 t_dir_flags *dir_flags, t_color_flags *color_flags)
 {
@@ -26,6 +37,15 @@ t_dir_flags *dir_flags, t_color_flags *color_flags)
 	}
 	return (check_all_elements_present(dir_flags, color_flags));
 }
+
+//*****************************************************************************
+//*                                                                            
+//* 1- first we setup our two flags structures.
+//* 2- using map_is_empty we check if the map is empty.
+//* 3- using parse_textures_and_colors we parse the textures and colors.
+//* 4- using not_map we check if the map is sourounded by walls.
+//* 
+//*****************************************************************************
 
 int	parse_map(t_file **map)
 {

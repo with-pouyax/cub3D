@@ -12,6 +12,13 @@
 
 #include "../../includes/cub3d.h"
 
+//*****************************************************************************
+//*                                                                            
+//* 1- the difference between ft_strdup and ft_strdup_map is that ft_strdup_map
+//*    removes the spaces and tabs from the end of the string
+//*
+//*****************************************************************************
+
 char	*ft_strdup_map(char *str)
 {
 	char	*dup;
@@ -55,6 +62,17 @@ size_t	update_max_width(char **map, int i, size_t max_width)
 		return (current_width);
 	return (max_width);
 }
+
+//*****************************************************************************
+//*                                                                            
+//* 1- we loop through the height (rows) of the map
+//* 2- using ft_strdup_map we copy each row to the game_map
+//* 3- the ft_strdup_map difference is that it removes the spaces and tabs from
+//*    the end of the string because we don't want to have spaces or tabs in
+//*    the game_map
+//* 4- after we copy each row we update the max width of the map because we 
+//*    want to have the max width of the map
+//*****************************************************************************
 
 int	copy_map_lines(t_file *map, int index, int height)
 {

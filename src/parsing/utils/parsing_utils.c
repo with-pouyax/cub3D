@@ -37,6 +37,17 @@ void	detect_header_end_and_map_start(char *tmp, t_mapcheck *mc)
 		mc->map_started = 1;
 }
 
+//*****************************************************************************
+//*                                                                            
+//* 1- if the current character is not a newline we return 0
+//* 2- otherwise we save the index of the next character in j variable
+//* 3- we loop through the next characters as long as they are spaces
+//* 4- if we find a newline we skip the next characters as long as they are
+//*    newlines or spaces
+//* 5- if we find a 1 or 0 we return 1
+//* 6- otherwise we return 0
+//* ****************************************************************************
+
 int	check_empty_line_inside_map(char *tmp, t_mapcheck *mc)
 {
 	int	j;
@@ -56,6 +67,19 @@ int	check_empty_line_inside_map(char *tmp, t_mapcheck *mc)
 	return (0);
 }
 
+//*****************************************************************************
+//*                                                                            
+//* 1- we initialize the mapcheck structure
+//* 2- we loop through the map file characters
+//* 3- using check_header_elements we set the N, S, W, E, F, C flags to 1 if
+//*    we find the corresponding characters in the map file
+//* 4- using detect_header_end_and_map_start we set the header_done if we find
+//*    enter after the header elements and we set the map_started if we find
+//*    a 1 after the header elements and a newline.
+//* 5- if the map_started is 1 and we find a newline inside the map we return 1
+//* 
+//*****************************************************************************
+
 int	check_map_newlines(char *tmp)
 {
 	t_mapcheck	mc;
@@ -72,6 +96,23 @@ int	check_map_newlines(char *tmp)
 	return (0);
 }
 
+//*****************************************************************************
+//*                                                                            
+//* 1- using arg_check we check if the number of arguments is correct
+//* 2- using extentions_check we check if the map file has the correct
+//*    extension
+//* 3- using get_string we read the map file and we save it as a string and
+//*    save it in tmp variable.
+//* 4- We check if there is anything in tmp variable.
+//* 5- We check if there are newlines between map lines of the map file.
+//* 6- we split the map file by newlines and save it in raw_file variable 
+//*    in the map structure.
+//* 7- using trim_empty_lines we trim the empty lines from the end of raw_file
+//*    variable.
+//* 8- using parse_map we parse the textures and colors and the map part.
+//* 9- since we saved everything in the map structure we can free tmp variable.
+//* 
+//*****************************************************************************
 int	parse_args(int ac, char **av, t_file **map)
 {
 	int		file_len;

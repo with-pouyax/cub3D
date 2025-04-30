@@ -22,6 +22,25 @@ void init_player(t_file *map)
     map->player.right_rotate = false;
 }
 
+//*****************************************************************************
+//*                                                                           
+//* 1- we check if the number of arguments is correct and if we recieve       
+//*    --test-mlx we call the test_mlx function                                  
+//* 2- using init_map we allocate memory for the map structure and initialize
+//*    the structures with the correct starting values
+//* 3- using init_map_mlx we initialize the mlx and the window related
+//*    variables.
+//* 4- if we fail in step 2 or 3 we return 1
+//* 5- using init_player we initialize the player related variables
+//* 6- using parse_args we parse map file and check if it is valid and create
+//*    the map structure with required values.
+//* 7- using start_game we start the game, we load the textures and we render
+//*    the game.
+//* 8- using cleanup we free the memory and close the window
+//* 
+//*****************************************************************************
+
+
 int	main(int ac, char **av)
 {
 	t_file	*map;

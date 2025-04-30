@@ -12,14 +12,14 @@
 
 #include "../../includes/cub3d.h"
 
-/**
- * Recursive flood fill function to check if map is enclosed by walls
- * @param map The map to check
- * @param row Current row position
- * @param col Current column position
- * @param found_edge Pointer to flag indicating if edge was found
- * @return void
- */
+//*****************************************************************************
+//*                                                                            
+//* 1- using is_valid_for_fill we check if the current position is
+//* 2- running the flood_fill recursively we fill the map with 'X'
+//* or we find the edge
+//*
+//*****************************************************************************
+
 void	flood_fill(char **map, int row, int col, int *found_edge)
 {
 	if (!is_valid_for_fill(map, row, col, found_edge))
@@ -64,12 +64,7 @@ char	**backup_map(char **map)
 	return (backup);
 }
 
-/**
- * Restores the map from backup after flood fill
- * @param map The map to restore
- * @param backup The backup map
- * @return 0 on success, 1 on failure
- */
+
 int	restore_from_backup(char **map, char **backup)
 {
 	int	i;

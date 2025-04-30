@@ -12,6 +12,12 @@
 
 #include "../../includes/cub3d.h"
 
+//*****************************************************************************
+//*                                                                            
+//* 1- we skip the white spaces after the identifier
+//* 2- using no_xpm_extension we check texture file extension
+//* 3- we copy the texture path to the dest variable
+//*****************************************************************************
 int	extract_and_assign_path(char *line, char **dest)
 {
 	char	*path;
@@ -53,6 +59,13 @@ int	wrong_rgb(char *line)
 	return (0);
 }
 
+//*****************************************************************************
+//*                                                                            
+//* 1- we skip the white spaces
+//* 2- we check if if the current character is a digit
+//* 3- if it is a digit we convert it to an integer
+//* 4- we return the integer
+//*****************************************************************************
 int	parse_rgb_value(char *str, int *i)
 {
 	int	value;
@@ -64,6 +77,8 @@ int	parse_rgb_value(char *str, int *i)
 	value = 0;
 	while (str[*i] && ft_isdigit(str[*i]))
 	{
+		if (value > INT_MAX / 10 || (value == INT_MAX / 10 && (str[*i] - '0') > INT_MAX % 10))
+			return (-1);
 		value = value * 10 + (str[*i] - '0');
 		if (value > 255)
 			return (-1);
