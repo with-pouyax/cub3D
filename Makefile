@@ -60,6 +60,7 @@ SRCS = src/main.c \
 	src/parsing/utils/init_cleanup.c \
 	src/parsing/utils/init_player.c \
 	src/parsing/utils/clean.c \
+	src/parsing/utils/clean2.c \
 	src/parsing/utils/parsing_utils.c
 
 # Object files in obj directory
