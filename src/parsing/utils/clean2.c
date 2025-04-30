@@ -22,7 +22,7 @@ void	cleanup_mlx(t_file *map)
 		if (map->image[i].img)
 			mlx_destroy_image(map->mlx.mlx, map->image[i].img);
 		i++;
-	}	
+	}
 	if (map->mlx.img_ptr.img)
 		mlx_destroy_image(map->mlx.mlx, map->mlx.img_ptr.img);
 	if (map->mlx.win)

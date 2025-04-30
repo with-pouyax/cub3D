@@ -22,13 +22,13 @@ void	cleanup_path(t_file *map)
 		if (map->image[i].path)
 			free(map->image[i].path);
 		i++;
-	}	
+	}
 }
 
 void	cleanup_minimap(t_file *map)
 {
 	if (map->minimap_img.img)
-		mlx_destroy_image(map->mlx.mlx, map->minimap_img.img);	
+		mlx_destroy_image(map->mlx.mlx, map->minimap_img.img);
 }
 
 void	cleanup(t_file **map)

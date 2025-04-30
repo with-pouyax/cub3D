@@ -98,8 +98,8 @@ int	no_xpm_extension(char *line)
 
 int	is_direction(char *line, char *dir)
 {
-	if (line[0] == dir[0] && line[1] == dir[1] && \
-	(line[2] == ' ' || line[2] == '\t'))
+	if (line[0] == dir[0] && line[1] == dir[1]
+		&& (line[2] == ' ' || line[2] == '\t'))
 		return (1);
 	return (0);
 }

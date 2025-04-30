@@ -31,8 +31,8 @@ int	basic_map_check(t_file *map, char **raw_file, int *index)
 		pos.j = 0;
 		while (raw_file[pos.i][pos.j])
 		{
-			if (not_valid_char(raw_file[pos.i][pos.j], \
-			&player_count, map, &pos))
+			if (not_valid_char(raw_file[pos.i][pos.j],
+				&player_count, map, &pos))
 				return (1);
 			pos.j++;
 		}
@@ -74,10 +74,9 @@ int	wrong_map_char(char **map)
 		j = 0;
 		while (map[i][j])
 		{
-			if (map[i][j] != '1' && map[i][j] != '0' \
-			&& map[i][j] != 'N' && map[i][j] != 'S' \
-			&& map[i][j] != 'E' && map[i][j] != 'W' \
-			&& map[i][j] != ' ')
+			if (map[i][j] != '1' && map[i][j] != '0' && map[i][j] != 'N' &&
+				map[i][j] != 'S' && map[i][j] != 'E'
+				&& map[i][j] != 'W' && map[i][j] != ' ')
 				return (ft_perror("wrong map char", EINVAL), 1);
 			j++;
 		}

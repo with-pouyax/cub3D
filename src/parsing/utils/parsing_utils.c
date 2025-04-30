@@ -39,7 +39,7 @@ void	detect_header_end_and_map_start(char *tmp, t_mapcheck *mc)
 
 int	check_empty_line_inside_map(char *tmp, t_mapcheck *mc)
 {
-	int j;
+	int	j;
 
 	if (tmp[mc->i] != '\n')
 		return (0);
@@ -58,7 +58,7 @@ int	check_empty_line_inside_map(char *tmp, t_mapcheck *mc)
 
 int	check_map_newlines(char *tmp)
 {
-	t_mapcheck mc;
+	t_mapcheck	mc;
 
 	init_mapcheck(&mc);
 	while (tmp[mc.i])

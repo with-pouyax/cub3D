@@ -19,14 +19,14 @@ int	is_texture_line(char *line)
 	i = 0;
 	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
 		i++;
-	return ((line[i] == 'N' && line[i + 1] == 'O' && \
-	(line[i + 2] == ' ' || line[i + 2] == '\t')) || \
-	(line[i] == 'S' && line[i + 1] == 'O' && \
-	(line[i + 2] == ' ' || line[i + 2] == '\t')) || \
-	(line[i] == 'W' && line[i + 1] == 'E' && \
-	(line[i + 2] == ' ' || line[i + 2] == '\t')) || \
-	(line[i] == 'E' && line[i + 1] == 'A' && \
-	(line[i + 2] == ' ' || line[i + 2] == '\t')));
+	return ((line[i] == 'N' && line[i + 1] == 'O'
+			&& (line[i + 2] == ' ' || line[i + 2] == '\t'))
+		|| (line[i] == 'S' && line[i + 1] == 'O'
+			&& (line[i + 2] == ' ' || line[i + 2] == '\t'))
+		|| (line[i] == 'W' && line[i + 1] == 'E'
+			&& (line[i + 2] == ' ' || line[i + 2] == '\t'))
+		|| (line[i] == 'E' && line[i + 1] == 'A'
+			&& (line[i + 2] == ' ' || line[i + 2] == '\t')));
 }
 
 int	is_color_line(char *line)
@@ -36,9 +36,9 @@ int	is_color_line(char *line)
 	i = 0;
 	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
 		i++;
-	return ((line[i] == 'F' && (line[i + 1] == ' ' || \
-	line[i + 1] == '\t')) || \
-	(line[i] == 'C' && (line[i + 1] == ' ' || line[i + 1] == '\t')));
+	return ((line[i] == 'F' && (line[i + 1] == ' ' || line[i + 1] == '\t'))
+		|| (line[i] == 'C'
+			&& (line[i + 1] == ' ' || line[i + 1] == '\t')));
 }
 
 int	get_identifier_position(char *line)

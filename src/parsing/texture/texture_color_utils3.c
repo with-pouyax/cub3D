@@ -27,8 +27,8 @@ int	process_color_line(t_file *map, char *line, t_color_flags *color_flags)
 int	check_all_elements_present(t_dir_flags *dir_flags, \
 t_color_flags *color_flags)
 {
-	if (dir_flags->no != 1 || dir_flags->so != 1 || \
-	dir_flags->we != 1 || dir_flags->ea != 1)
+	if (dir_flags->no != 1 || dir_flags->so != 1
+		|| dir_flags->we != 1 || dir_flags->ea != 1)
 		return (ft_perror("missing texture direction", EINVAL), 1);
 	if (color_flags->floor != 1 || color_flags->ceiling != 1)
 		return (ft_perror("missing color", EINVAL), 1);
