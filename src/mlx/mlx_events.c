@@ -62,7 +62,7 @@ void	update_player_state(t_player *player, t_file *map)
 
 int	game_loop(t_file **map)
 {
-	t_player    *player;
+	t_player	*player;
 
 	player = &(*map)->player;
 	update_player_state(player, *map);
@@ -73,10 +73,15 @@ int	game_loop(t_file **map)
 		(*map)->mlx.win,
 		(*map)->image[4].img,
 		0, 0);
-	mlx_put_image_to_window(
-		(*map)->mlx.mlx,
-		(*map)->mlx.win,
-		(*map)->minimap_img.img,
-		10, 10);
+	if ((*map)->minimap_scale != 0)
+	{
+		mlx_put_image_to_window(
+			(*map)->mlx.mlx,
+			(*map)->mlx.win,
+			(*map)->minimap_img.img,
+			10, 10);
+	}
+	else
+		return (1);
 	return (0);
 }

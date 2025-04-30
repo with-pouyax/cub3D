@@ -6,7 +6,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/cub3D",  // Path to the cub3d executable
-            "args": ["maps/r_standard.cub"],         // Arguments for your cub3d program (the map file)
+            "args": ["maps/testMaps/valid/really-big-map.cub"],         // Arguments for your cub3d program (the map file)
             "stopAtEntry": true,                     // Stop at the entry point of the program
             "cwd": "${workspaceFolder}",             // Set current working directory to the workspace folder
             "externalConsole": false,                // Use the internal terminal for debugging

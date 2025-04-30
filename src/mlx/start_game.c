@@ -22,19 +22,20 @@ int	load_image(t_file **map, int index)
 		printf("❌ Failed to load image\n");
 		return (1);
 	}
-	    // Check image size
-    if ((*map)->image[index].w < 32 || (*map)->image[index].h < 32)
-    {
-        printf("❌ Image at %s is too small (%dx%d)\n",
-            (*map)->image[index].path, (*map)->image[index].w, (*map)->image[index].h);
-        return (1);
-    }
-    if ((*map)->image[index].w > 1024 || (*map)->image[index].h > 1024)
-    {
-        printf("❌ Image at %s is too large (%dx%d)\n",
-            (*map)->image[index].path, (*map)->image[index].w, (*map)->image[index].h);
-        return (1);
-    }
+	if ((*map)->image[index].w < 32 || (*map)->image[index].h < 32)
+	{
+		printf("❌ Image at %s is too small (%dx%d)\n",
+			(*map)->image[index].path, (*map)->image[index].w,
+			(*map)->image[index].h);
+		return (1);
+	}
+	if ((*map)->image[index].w > 1024 || (*map)->image[index].h > 1024)
+	{
+		printf("❌ Image at %s is too large (%dx%d)\n",
+			(*map)->image[index].path, (*map)->image[index].w,
+			(*map)->image[index].h);
+		return (1);
+	}
 	return (0);
 }
 
@@ -83,10 +84,7 @@ int	assign_texture_paths_to_images(t_file *map)
 	i = 0;
 	if (!map->textures.north || !map->textures.south
 		|| !map->textures.west || !map->textures.east)
-	{
-		printf("❌ One or more texture paths are missing.\n");
-		return (1);
-	}
+		return (printf("❌ texture paths are missing.\n"), 1);
 	map->image[0].path = ft_strdup(map->textures.north);
 	map->image[1].path = ft_strdup(map->textures.south);
 	map->image[2].path = ft_strdup(map->textures.west);
@@ -94,17 +92,16 @@ int	assign_texture_paths_to_images(t_file *map)
 	if (!map->image[0].path || !map->image[1].path
 		|| !map->image[2].path || !map->image[3].path)
 	{
-		printf("❌ Failed to duplicate one or more texture paths.\n");
 		while (i < 4)
 		{
 			if (map->image[i].path)
-            {
-                free(map->image[i].path);
-                map->image[i].path = NULL;
-            }
+			{
+				free(map->image[i].path);
+				map->image[i].path = NULL;
+			}
 			i++;
 		}
-		return (1);
+		return (printf("❌ Failed to dup texture_paths.\n"), 1);
 	}
 	return (0);
 }

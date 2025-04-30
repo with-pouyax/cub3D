@@ -16,6 +16,9 @@
 # define WIDTH 1940
 # define HEIGHT 1280
 
+#define MINIMAP_MAX_PIXELS 200
+#define MINIMAP_MIN_SCALE   2 
+
 # define COLOR_BLUE    0x3333FF
 # define COLOR_WHITE   0xFFFFFF
 # define COLOR_GREEN   0x7FFF00
@@ -141,6 +144,7 @@ typedef struct s_file
 	int				end_wall;
 	int				texture_cordinat_x;
 	int				texture_cordinat_y;
+	int				minimap_scale;
 	double			pos_hit_wall_x;
 	double			step;
 	double			tex_position;
@@ -363,5 +367,5 @@ int	get_color(t_file *map, int i);
 
 void    cleanup(t_file **map);
 void    cleanup_mlx(t_file *map);
-
+void	update_minimap(t_file *map, double old_x, double old_y);
 #endif
