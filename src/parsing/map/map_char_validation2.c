@@ -51,8 +51,8 @@ int	not_valid_char(char c, int *player_count, t_file *map, t_coord *pos)
 	}
 	if (*player_count > 1)
 		return (ft_perror("multiple players", EINVAL), 1);
-	else if (c != '1' && c != '0' && c != 'N' && c != 'S' && c != 'E' && \
-	c != 'W' && c != ' ' && c != '\t')
+	else if (c != '1' && c != '0' && c != 'N' && c != 'S' && c != 'E'
+		&& c != 'W' && c != ' ' && c != '\t')
 		return (ft_perror("invalid character", EINVAL), 1);
 	return (0);
 }

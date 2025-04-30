@@ -32,6 +32,15 @@ int	process_ea_texture(t_file *map, char *line, t_dir_flags *dir_flags)
 	return (0);
 }
 
+//*****************************************************************************
+//*                                                                            
+//* 1- using get_identifier_position we skip the white spaces after NO, SO, WE, 
+//*    EA and return the position of the identifier.
+//* 2- we check if the current line is a texture line.
+//* 3- for each texture line we call the corresponding function to process the
+//*    texture line.
+//*****************************************************************************
+
 int	process_texture_line(t_file *map, char *line, t_dir_flags *dir_flags)
 {
 	int	i;

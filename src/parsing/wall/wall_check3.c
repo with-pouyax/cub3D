@@ -12,14 +12,15 @@
 
 #include "../../includes/cub3d.h"
 
-/**
- * Checks a single position for wall integrity
- * @param map The map to check
- * @param backup The backup map
- * @param row The row to check
- * @param col The column to check
- * @return 1 if invalid (edge found), 0 if valid
- */
+//*****************************************************************************
+//*                                                                            
+//* 1- using is_fillable we check if the current character is fillable
+//* 2- using flood_fill we see if we can reach out of the map and
+//*    if yes we return 1
+//* 3- if we can't reach out of the map we restore the map from the backup
+//* 4- if we can't reach out of the map we return 0
+//*****************************************************************************
+
 int	check_position(char **map, char **backup, int row, int col)
 {
 	int	found_edge;
@@ -34,11 +35,16 @@ int	check_position(char **map, char **backup, int row, int col)
 	return (0);
 }
 
-/**
- * Checks if a map is surrounded by walls using flood fill
- * @param map The map to check
- * @return 0 if map is valid, 1 if not
- */
+//*****************************************************************************
+//*                                                                            
+//* 1- we first backup the map
+//* 2- we loop through the map characters by characters
+//* 3- using check_position we check if the current position is a valid 
+//*    position and if we can reach out of the map
+//* 4- if we can't reach out of the map we free the backup and return 0
+//*
+//*****************************************************************************
+
 int	check_walls(char **map)
 {
 	int		i;

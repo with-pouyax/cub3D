@@ -59,6 +59,11 @@ void	init_images(t_file *map)
 	map->minimap_img.img = NULL;
 }
 
+//*****************************************************************************
+//*                                                                           
+//* 1- we allocate memory for the map structure                                
+//* 2- we initialize the structures with the correct starting values
+//*****************************************************************************
 int	init_map(t_file **map)
 {
 	*map = malloc(sizeof(t_file));

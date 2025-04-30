@@ -19,6 +19,16 @@ int	check_player_count(int player_count)
 	return (0);
 }
 
+//*****************************************************************************
+//*                                                                            
+//* 1- we initialize the player count to 0
+//* 2- we loop through the raw file
+//* 3- we check if the current character is not a valid character and save 
+//*    the position of the player
+//* 4- also we check if there is a player in the map 
+//*
+//*****************************************************************************
+
 int	basic_map_check(t_file *map, char **raw_file, int *index)
 {
 	t_coord	pos;
@@ -31,8 +41,8 @@ int	basic_map_check(t_file *map, char **raw_file, int *index)
 		pos.j = 0;
 		while (raw_file[pos.i][pos.j])
 		{
-			if (not_valid_char(raw_file[pos.i][pos.j], \
-			&player_count, map, &pos))
+			if (not_valid_char(raw_file[pos.i][pos.j],
+				&player_count, map, &pos))
 				return (1);
 			pos.j++;
 		}
@@ -74,10 +84,9 @@ int	wrong_map_char(char **map)
 		j = 0;
 		while (map[i][j])
 		{
-			if (map[i][j] != '1' && map[i][j] != '0' \
-			&& map[i][j] != 'N' && map[i][j] != 'S' \
-			&& map[i][j] != 'E' && map[i][j] != 'W' \
-			&& map[i][j] != ' ')
+			if (map[i][j] != '1' && map[i][j] != '0' && map[i][j] != 'N' &&
+				map[i][j] != 'S' && map[i][j] != 'E'
+				&& map[i][j] != 'W' && map[i][j] != ' ')
 				return (ft_perror("wrong map char", EINVAL), 1);
 			j++;
 		}
@@ -85,6 +94,19 @@ int	wrong_map_char(char **map)
 	}
 	return (0);
 }
+
+//*****************************************************************************
+//*                                                                            
+//* 1- in basic_map_check we check the validity of the map characters and if
+//*    there is a player and no duplicate players and we save the position of
+//*    the player
+//* 2- in copy_map we copy the map to our game_map in the structure and also
+//*    we get the max width of the map
+//* 3- in wrong_ratio we check if the map is too wide or too high
+//* 4- in wrong_map_char we check if the map contains only valid characters
+//     =========> no TABS  <===============
+//* 5- in check_walls we check if the walls are closed
+//*****************************************************************************
 
 int	not_map(t_file *map, int *index)
 {

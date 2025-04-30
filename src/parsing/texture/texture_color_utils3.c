@@ -27,14 +27,23 @@ int	process_color_line(t_file *map, char *line, t_color_flags *color_flags)
 int	check_all_elements_present(t_dir_flags *dir_flags, \
 t_color_flags *color_flags)
 {
-	if (dir_flags->no != 1 || dir_flags->so != 1 || \
-	dir_flags->we != 1 || dir_flags->ea != 1)
+	if (dir_flags->no != 1 || dir_flags->so != 1
+		|| dir_flags->we != 1 || dir_flags->ea != 1)
 		return (ft_perror("missing texture direction", EINVAL), 1);
 	if (color_flags->floor != 1 || color_flags->ceiling != 1)
 		return (ft_perror("missing color", EINVAL), 1);
 	return (0);
 }
 
+//*****************************************************************************
+//*                                                                            
+//* 1- using is_texture_line we check if the current line is a texture line
+//* 2- if it is a texture line we process the texture line
+//* 3- using is_color_line we check if the current line is a color line
+//* 4- if it is a color line we process the color line
+//* 5- if it is not a texture line or a color line we set the found_map_start
+//*    to 1 and return 0
+//*****************************************************************************
 int	process_line(t_file *map, char *line, t_parse_data *data)
 {
 	if (is_texture_line(line))
@@ -65,6 +74,11 @@ void	init_parse_data(t_parse_data *data, t_dir_flags *dir_flags,
 	data->found_map_start = found_map_start;
 }
 
+//*****************************************************************************
+//*                                                                            
+//* 1- we skip the empty lines at the beginning of the map file
+//* 2- we save the current line in the line variable
+//* 3- we process the current line
 int	process_current_line(t_file *map, int *index, t_parse_data *data)
 {
 	char	*line;

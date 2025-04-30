@@ -12,6 +12,15 @@
 
 #include "../../includes/cub3d.h"
 
+//*****************************************************************************
+//*                                                                            
+//* 1- we loop through the map file lines
+//* 2- we check if the current line is empty
+//* 3- if it is empty we continue to the next line
+//* 4- if it is not empty we return 0 wich means we skip the empty lines
+//*
+//*****************************************************************************
+
 int	map_is_empty(char **map)
 {
 	int	i;
@@ -98,8 +107,8 @@ int	no_xpm_extension(char *line)
 
 int	is_direction(char *line, char *dir)
 {
-	if (line[0] == dir[0] && line[1] == dir[1] && \
-	(line[2] == ' ' || line[2] == '\t'))
+	if (line[0] == dir[0] && line[1] == dir[1]
+		&& (line[2] == ' ' || line[2] == '\t'))
 		return (1);
 	return (0);
 }

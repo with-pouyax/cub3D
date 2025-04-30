@@ -12,53 +12,6 @@
 
 #include "../../includes/cub3d.h"
 
-int	parse_textures_and_colors(t_file *map, int *index, \
-t_dir_flags *dir_flags, t_color_flags *color_flags)
-{
-	int				found_map_start;
-	t_parse_data	data;
-
-	init_parse_data(&data, dir_flags, color_flags, &found_map_start);
-	while (map->raw_file[*index] && !found_map_start)
-	{
-		if (process_current_line(map, index, &data))
-			return (1);
-	}
-	return (check_all_elements_present(dir_flags, color_flags));
-}
-
-int	parse_map(t_file **map)
-{
-	t_color_flags	color_flags;
-	t_dir_flags		dir_flags;
-	int				index;
-
-	index = 0;
-	dir_flags = (t_dir_flags){0, 0, 0, 0};
-	color_flags = (t_color_flags){0, 0};
-	if (map_is_empty((*map)->raw_file))
-		return (1);
-	if (parse_textures_and_colors(*map, &index, &dir_flags, &color_flags))
-		return (1);
-	if (not_map(*map, &index))
-		return (1);
-	print_whole_structure_in_order(*map);
-	return (0);
-}
-
-void	init_mapcheck(t_mapcheck *mc)
-{
-	mc->i = 0;
-	mc->north = 0;
-	mc->south = 0;
-	mc->west = 0;
-	mc->east = 0;
-	mc->floor = 0;
-	mc->ceiling = 0;
-	mc->header_done = 0;
-	mc->map_started = 0;
-}
-
 void	check_header_elements(char *tmp, t_mapcheck *mc)
 {
 	if (tmp[mc->i] == 'N' && tmp[mc->i + 1] == 'O')
@@ -84,9 +37,20 @@ void	detect_header_end_and_map_start(char *tmp, t_mapcheck *mc)
 		mc->map_started = 1;
 }
 
+//*****************************************************************************
+//*                                                                            
+//* 1- if the current character is not a newline we return 0
+//* 2- otherwise we save the index of the next character in j variable
+//* 3- we loop through the next characters as long as they are spaces
+//* 4- if we find a newline we skip the next characters as long as they are
+//*    newlines or spaces
+//* 5- if we find a 1 or 0 we return 1
+//* 6- otherwise we return 0
+//* ****************************************************************************
+
 int	check_empty_line_inside_map(char *tmp, t_mapcheck *mc)
 {
-	int j;
+	int	j;
 
 	if (tmp[mc->i] != '\n')
 		return (0);
@@ -103,9 +67,22 @@ int	check_empty_line_inside_map(char *tmp, t_mapcheck *mc)
 	return (0);
 }
 
+//*****************************************************************************
+//*                                                                            
+//* 1- we initialize the mapcheck structure
+//* 2- we loop through the map file characters
+//* 3- using check_header_elements we set the N, S, W, E, F, C flags to 1 if
+//*    we find the corresponding characters in the map file
+//* 4- using detect_header_end_and_map_start we set the header_done if we find
+//*    enter after the header elements and we set the map_started if we find
+//*    a 1 after the header elements and a newline.
+//* 5- if the map_started is 1 and we find a newline inside the map we return 1
+//* 
+//*****************************************************************************
+
 int	check_map_newlines(char *tmp)
 {
-	t_mapcheck mc;
+	t_mapcheck	mc;
 
 	init_mapcheck(&mc);
 	while (tmp[mc.i])
@@ -119,6 +96,23 @@ int	check_map_newlines(char *tmp)
 	return (0);
 }
 
+//*****************************************************************************
+//*                                                                            
+//* 1- using arg_check we check if the number of arguments is correct
+//* 2- using extentions_check we check if the map file has the correct
+//*    extension
+//* 3- using get_string we read the map file and we save it as a string and
+//*    save it in tmp variable.
+//* 4- We check if there is anything in tmp variable.
+//* 5- We check if there are newlines between map lines of the map file.
+//* 6- we split the map file by newlines and save it in raw_file variable 
+//*    in the map structure.
+//* 7- using trim_empty_lines we trim the empty lines from the end of raw_file
+//*    variable.
+//* 8- using parse_map we parse the textures and colors and the map part.
+//* 9- since we saved everything in the map structure we can free tmp variable.
+//* 
+//*****************************************************************************
 int	parse_args(int ac, char **av, t_file **map)
 {
 	int		file_len;

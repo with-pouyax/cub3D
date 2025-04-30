@@ -361,8 +361,12 @@ void	draw_column_pixels(t_file *map, int x);
 void	draw(t_file *map, int x, int texture);
 int		get_color(t_file *map, int i);
 
-void	cleanup(t_file **map);
-void	cleanup_mlx(t_file *map);
-void	cleanup_mlx(t_file *map);
+void    cleanup(t_file **map);
+void    cleanup_mlx(t_file *map);
+
+//parsing utils2
+void	init_mapcheck(t_mapcheck *mc);
 void	update_minimap(t_file *map, double old_x, double old_y);
+
+
 #endif

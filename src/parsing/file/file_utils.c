@@ -37,6 +37,16 @@ int	file_length(char *file_name)
 	return (length);
 }
 
+//*****************************************************************************
+//*                                                                            
+//* 1- we open the file
+//* 2- we read the file and we save it in the file variable
+//* 3- we set the last character of the file to the null character
+//* because it is a string and we need to end it with a null character
+//* 4- we close the file safely
+//* 5- we return 0
+//*****************************************************************************
+
 int	copy_file(char *file_name, char **file, int file_len)
 {
 	int	fd;
@@ -52,6 +62,15 @@ int	copy_file(char *file_name, char **file, int file_len)
 	safe_close(fd);
 	return (0);
 }
+
+//*****************************************************************************
+//*                                                                            
+//* 1- we get the length of the file
+//* 2- we allocate memory for the file
+//* 3- we copy the file to the allocated memory
+//* 4- we return the file
+//* 
+//*****************************************************************************
 
 char	*get_string(int *file_len, char **av)
 {
@@ -88,6 +107,26 @@ int	is_empty_line(char *line)
 	return (0);
 }
 
+//*****************************************************************************
+//*                                                                            
+//* 1- ***map is the array of strings that contains the map in our case it is
+//*    the raw_file variable in the map structure.
+//* 2- we loop through each member (line) of the array.
+//* 3- by calling is_empty_line we check if the line is empty.
+//* 4- if the line is empty we save the index of the last non-empty line 
+//*    (member) in last_non_empty variable.
+//* 5- we continue this process until the end of the array.
+//* 6- so after the loop i will have the index of the last + 1 member of the
+//*    array.
+//* 7- is last_non_empty < i - 1 means we have empty lines at the end of the
+//*    array.
+//* 8- so in this case we set i to last_non_empty + 1 means we start from the
+//*    last non-empty line.
+//* 9- we loop until the end of the array and we free the empty lines and set
+//*    them to NULL.
+//* 10- like this we trim the empty lines from the end of the array.
+//*
+//*****************************************************************************
 void	trim_empty_lines(char ***map)
 {
 	int	i;
