@@ -29,7 +29,6 @@ int	check_player_count(int player_count)
 //*
 //*****************************************************************************
 
-
 int	basic_map_check(t_file *map, char **raw_file, int *index)
 {
 	t_coord	pos;

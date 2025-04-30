@@ -77,7 +77,8 @@ int	parse_rgb_value(char *str, int *i)
 	value = 0;
 	while (str[*i] && ft_isdigit(str[*i]))
 	{
-		if (value > INT_MAX / 10 || (value == INT_MAX / 10 && (str[*i] - '0') > INT_MAX % 10))
+		if (value > INT_MAX / 10 || (value == INT_MAX / 10 \
+		&& (str[*i] - '0') > INT_MAX % 10))
 			return (-1);
 		value = value * 10 + (str[*i] - '0');
 		if (value > 255)

@@ -64,7 +64,6 @@ char	**backup_map(char **map)
 	return (backup);
 }
 
-
 int	restore_from_backup(char **map, char **backup)
 {
 	int	i;
