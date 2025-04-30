@@ -321,11 +321,8 @@ int	set_event_hooks(t_file **map);
 int	game_loop(t_file **map);
 
 //movements
-void clean_img(t_mlx *game);
-// void update_player_state(t_player *player);
-// void perform_move(t_player *player);
-// void perform_rotation(t_player *player);
 int    	init_minimap(t_file **map);
+void 	init_player(t_file *map);
 void    draw_square(t_file *map, int col, int row, int color);
 void    draw_wall(t_file *map, int col, int row);
 void    draw_floor(t_file *map, int col, int row);
@@ -334,7 +331,7 @@ void    draw_unknown(t_file *map, int col, int row);
 void    put_pixel_minimap(t_file *map, int x, int y, int color);
 int    	recasting(t_file **map);
 void	img_pix_put(t_file *map, int x, int y, int color);
-int	assign_texture_paths_to_images(t_file *map);
+int		assign_texture_paths_to_images(t_file *map);
 
 //move key words
 void    move_up_down(t_file *map, t_direction direction);
@@ -357,15 +354,16 @@ int 	handle_keypress(int keycode, t_file **map);
 int		set_event_hooks(t_file **map);
 
 void    dda_implimentation(t_file **map);
-void calculate_perpwalldist(t_file **map);
+void 	calculate_perpwalldist(t_file **map);
 void    draw_col(t_file *map, int x);
 void    calculate_wall_hight(t_file *map, int *wall_height);
-void texture_definition(t_file *map, int wall_hight);
-void draw_column_pixels(t_file *map, int x);
+void 	texture_definition(t_file *map, int wall_hight);
+void 	draw_column_pixels(t_file *map, int x);
 void	draw(t_file *map, int x, int texture);
-int	get_color(t_file *map, int i);
+int		get_color(t_file *map, int i);
 
 void    cleanup(t_file **map);
 void    cleanup_mlx(t_file *map);
+void	cleanup_mlx(t_file *map);
 void	update_minimap(t_file *map, double old_x, double old_y);
 #endif
