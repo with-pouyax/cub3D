@@ -19,21 +19,23 @@
 // then row + i increase ---> to the right
 // and col + j increase --> to the down
 // to draw the square for each pixel
+// Don't draw minimap if scale is 0
 void	draw_square(t_file *map, int col, int row, int color)
 {
 	int	x;
 	int	y;
 	int	start_x;
 	int	start_y;
-	
 
-	start_x = col * TILE_SCALE;
-	start_y = row * TILE_SCALE;
+	if (map->minimap_scale == 0)
+		return ;
+	start_x = col * map->minimap_scale;
+	start_y = row * map->minimap_scale;
 	y = start_y;
-	while (y < start_y + TILE_SCALE)
+	while (y < start_y + map->minimap_scale)
 	{
 		x = start_x;
-		while (x < start_x + TILE_SCALE)
+		while (x < start_x + map->minimap_scale)
 		{
 			put_pixel_minimap(map, x, y, color);
 			x++;

@@ -16,6 +16,9 @@
 # define WIDTH 1940
 # define HEIGHT 1280
 
+# define MINIMAP_MAX_PIXELS 200
+# define MINIMAP_MIN_SCALE   2 
+
 # define COLOR_BLUE    0x3333FF
 # define COLOR_WHITE   0xFFFFFF
 # define COLOR_GREEN   0x7FFF00
@@ -37,7 +40,6 @@
 # define ROTATE_SPEED 0.09
 # define PLAYER_WALL_BUFFER 0.02
 
-
 # define W 		119
 # define A 		97
 # define S 		115
@@ -46,7 +48,7 @@
 # define LEFT 	65361
 # define RIGHT 	65363
 
-# define TILE_SCALE 14 // Define the size of a block (adjust this based on your map)
+# define TILE_SCALE 14 // Define the size of a block
 # define MAP_WIDTH 24  // Adjust this based on the number of columns in your map
 # define MAP_HEIGHT 24 // Adjust this based on the number of rows in your map
 
@@ -54,11 +56,11 @@
 
 typedef enum e_direction
 {
-    FORWARD,
-    BACKWARD,
-    LEFTWARD,
-    RIGHTWARD
-}   t_direction;
+	FORWARD,
+	BACKWARD,
+	LEFTWARD,
+	RIGHTWARD
+}	t_direction;
 
 enum	e_directions
 {
@@ -103,14 +105,14 @@ typedef struct s_mlx
 
 typedef struct s_player
 {
-    float 	x;
-    float 	y;
+	float	x;
+	float	y;
 	bool	key_up;
 	bool	key_down;
 	bool	key_left;
 	bool	key_right;
-	bool 	left_rotate;
-    bool 	right_rotate;
+	bool	left_rotate;
+	bool	right_rotate;
 }	t_player;
 
 typedef struct s_file
@@ -118,7 +120,7 @@ typedef struct s_file
 	char			**raw_file;
 	t_texture_paths	textures;
 	t_colors		colors;
-	t_img 			image[5];
+	t_img			image[5];
 	char			**game_map;
 	int				map_height;
 	int				map_width;
@@ -141,17 +143,18 @@ typedef struct s_file
 	int				end_wall;
 	int				texture_cordinat_x;
 	int				texture_cordinat_y;
+	int				minimap_scale;
 	double			pos_hit_wall_x;
 	double			step;
 	double			tex_position;
 	double			player_x;
 	double			player_y;
-	int				map_tile_x;  //refers to the current tile
+	int				map_tile_x;
 	int				map_tile_y;
 	double			plane_x;
 	double			plane_y;
 	t_mlx			mlx;
-	t_player        player;
+	t_player		player;
 	t_img			minimap_img;
 }	t_file;
 
@@ -185,15 +188,15 @@ typedef struct s_parse_data
 //mapcheck
 typedef struct s_mapcheck
 {
-	int i;
-	int north;
-	int south;
-	int west;
-	int east;
-	int floor;
-	int ceiling;
-	int header_done;
-	int map_started;
+	int	i;
+	int	north;
+	int	south;
+	int	west;
+	int	east;
+	int	floor;
+	int	ceiling;
+	int	header_done;
+	int	map_started;
 }	t_mapcheck;
 
 /* Error handling functions */
@@ -302,69 +305,68 @@ int		check_position(char **map, char **backup, int row, int col);
 int		check_walls(char **map);
 
 // Function declaration from test_mlx.c
-int	test_mlx(void);
+int		test_mlx(void);
 
 // Function declarations from mlx_init.c
-int	init_map_mlx(t_file **map);
-int	init_mlx(t_file **map);
-int	create_window(t_file **map);
-int	create_image_buffer(t_file **map);
-int	start_game(t_file **map);
+int		init_map_mlx(t_file **map);
+int		init_mlx(t_file **map);
+int		create_window(t_file **map);
+int		create_image_buffer(t_file **map);
+int		start_game(t_file **map);
 
 // Function declarations from mlx_events.c
-int	handle_x_press(int keycode, t_file **map);
-int	set_event_hooks(t_file **map);
-int	game_loop(t_file **map);
+int		handle_x_press(int keycode, t_file **map);
+int		set_event_hooks(t_file **map);
+int		game_loop(t_file **map);
 
 //movements
-void clean_img(t_mlx *game);
-// void update_player_state(t_player *player);
-// void perform_move(t_player *player);
-// void perform_rotation(t_player *player);
-int    	init_minimap(t_file **map);
-void    draw_square(t_file *map, int col, int row, int color);
-void    draw_wall(t_file *map, int col, int row);
-void    draw_floor(t_file *map, int col, int row);
-void    draw_player(t_file *map, int col, int row);
-void    draw_unknown(t_file *map, int col, int row);
-void    put_pixel_minimap(t_file *map, int x, int y, int color);
-int    	recasting(t_file **map);
+int		init_minimap(t_file **map);
+void	init_player(t_file *map);
+void	draw_square(t_file *map, int col, int row, int color);
+void	draw_wall(t_file *map, int col, int row);
+void	draw_floor(t_file *map, int col, int row);
+void	draw_player(t_file *map, int col, int row);
+void	draw_unknown(t_file *map, int col, int row);
+void	put_pixel_minimap(t_file *map, int x, int y, int color);
+int		recasting(t_file **map);
 void	img_pix_put(t_file *map, int x, int y, int color);
-int	assign_texture_paths_to_images(t_file *map);
+int		assign_texture_paths_to_images(t_file *map);
 
 //move key words
-void    move_up_down(t_file *map, t_direction direction);
-void    move_right_left(t_file *map, t_direction direction);
-void 	move_forward(t_file *map);
-void 	move_backward(t_file *map);
-void 	move_leftward(t_file *map);
-void 	move_rightward(t_file *map);
-void 	rotate_left(t_file *map);
-void 	rotate_right(t_file *map);
+void	move_up_down(t_file *map, t_direction direction);
+void	move_right_left(t_file *map, t_direction direction);
+void	move_forward(t_file *map);
+void	move_backward(t_file *map);
+void	move_leftward(t_file *map);
+void	move_rightward(t_file *map);
+void	rotate_left(t_file *map);
+void	rotate_right(t_file *map);
 
-int 	load_image(t_file **map, int index);
-int 	get_image_address(t_file **map, int index);
-void 	draw_floor_3d(t_file **map, int x, int y);
-void 	draw_sky_3d(t_file **map, int x, int y);
-void 	img_pix_put(t_file *map, int x, int y, int color);
+int		load_image(t_file **map, int index);
+int		get_image_address(t_file **map, int index);
+void	draw_floor_3d(t_file **map, int x, int y);
+void	draw_sky_3d(t_file **map, int x, int y);
+void	img_pix_put(t_file *map, int x, int y, int color);
 int		handle_esc_press(t_file **map);
 int		handle_x_press(int keycode, t_file **map);
-int 	handle_keypress(int keycode, t_file **map);
+int		handle_keypress(int keycode, t_file **map);
 int		set_event_hooks(t_file **map);
 
-void    dda_implimentation(t_file **map);
-void calculate_perpwalldist(t_file **map);
-void    draw_col(t_file *map, int x);
-void    calculate_wall_hight(t_file *map, int *wall_height);
-void texture_definition(t_file *map, int wall_hight);
-void draw_column_pixels(t_file *map, int x);
+void	dda_implimentation(t_file **map);
+void	calculate_perpwalldist(t_file **map);
+void	draw_col(t_file *map, int x);
+void	calculate_wall_hight(t_file *map, int *wall_height);
+void	texture_definition(t_file *map, int wall_hight);
+void	draw_column_pixels(t_file *map, int x);
 void	draw(t_file *map, int x, int texture);
-int	get_color(t_file *map, int i);
+int		get_color(t_file *map, int i);
 
 void    cleanup(t_file **map);
 void    cleanup_mlx(t_file *map);
 
 //parsing utils2
 void	init_mapcheck(t_mapcheck *mc);
+void	update_minimap(t_file *map, double old_x, double old_y);
+
 
 #endif

@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
-// Handler for X button (window close)
+
 int	handle_esc_press(t_file **map)
 {
 	cleanup(map);
@@ -19,7 +19,6 @@ int	handle_esc_press(t_file **map)
 	return (0);
 }
 
-// Handler for key press (ESC key)
 int	handle_x_press(int keycode, t_file **map)
 {
 	if (keycode == 65307)
@@ -30,41 +29,40 @@ int	handle_x_press(int keycode, t_file **map)
 	return (0);
 }
 
-// Handle key press events
 int	handle_keypress(int keycode, t_file **map)
 {
 	if (keycode == ESP)
 		handle_esc_press(map);
-    if (keycode == W)
-        (*map)->player.key_up = true;
-    else if (keycode == S)
-        (*map)->player.key_down = true;
-    else if (keycode == A)
-        (*map)->player.key_left = true;
-    else if (keycode == D)
-        (*map)->player.key_right = true;
+	if (keycode == W)
+		(*map)->player.key_up = true;
+	else if (keycode == S)
+		(*map)->player.key_down = true;
+	else if (keycode == A)
+		(*map)->player.key_left = true;
+	else if (keycode == D)
+		(*map)->player.key_right = true;
 	else if (keycode == LEFT)
-        (*map)->player.left_rotate = true;
-    else if (keycode == RIGHT)
-        (*map)->player.right_rotate = true;
-    return (0);
+		(*map)->player.left_rotate = true;
+	else if (keycode == RIGHT)
+		(*map)->player.right_rotate = true;
+	return (0);
 }
 
-int handle_keyrelease(int keycode, t_file **map)
+int	handle_keyrelease(int keycode, t_file **map)
 {
-    if (keycode == W)
-        (*map)->player.key_up = false;
-    else if (keycode == S)
-        (*map)->player.key_down = false;
-    else if (keycode == A)
-        (*map)->player.key_left = false;
-    else if (keycode == D)
-        (*map)->player.key_right = false;
-    else if (keycode == LEFT)
-        (*map)->player.left_rotate = false;
-    else if (keycode == RIGHT)
-        (*map)->player.right_rotate = false;
-    return (0);
+	if (keycode == W)
+		(*map)->player.key_up = false;
+	else if (keycode == S)
+		(*map)->player.key_down = false;
+	else if (keycode == A)
+		(*map)->player.key_left = false;
+	else if (keycode == D)
+		(*map)->player.key_right = false;
+	else if (keycode == LEFT)
+		(*map)->player.left_rotate = false;
+	else if (keycode == RIGHT)
+		(*map)->player.right_rotate = false;
+	return (0);
 }
 
 int	set_event_hooks(t_file **map)
