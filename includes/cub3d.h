@@ -364,4 +364,7 @@ int	get_color(t_file *map, int i);
 void    cleanup(t_file **map);
 void    cleanup_mlx(t_file *map);
 
+//parsing utils2
+void	init_mapcheck(t_mapcheck *mc);
+
 #endif
