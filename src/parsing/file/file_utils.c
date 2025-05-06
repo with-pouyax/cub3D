@@ -83,7 +83,7 @@ char	*get_string(int *file_len, char **av)
 		return (NULL);
 	tmp = malloc(*file_len + 1);
 	if (!tmp)
-		return (ft_perror("malloc", errno), NULL);
+		return (NULL);
 	if (copy_file(av[1], &tmp, *file_len))
 	{
 		free(tmp);

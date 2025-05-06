@@ -128,7 +128,7 @@ int	parse_args(int ac, char **av, t_file **map)
 		return (1);
 	tmp = get_string(&file_len, av);
 	if (!tmp)
-		return (ft_perror("failed to read map file", errno), 1);
+		return (ft_perror("can't read map file", errno), 1);
 	if (check_map_newlines(tmp))
 		return (free(tmp), ft_perror("wrong format", EINVAL), 1);
 	(*map)->raw_file = ft_split(tmp, '\n');
