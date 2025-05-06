@@ -29,7 +29,7 @@ int	extract_and_assign_path(char *line, char **dest)
 		return (1);
 	*dest = ft_strdup(path);
 	if (!*dest)
-		return (ft_perror("malloc failed", errno), 1);
+		return (ft_perror("malloc failed", ENOMEM), 1);
 	return (0);
 }
 

@@ -128,12 +128,12 @@ int	parse_args(int ac, char **av, t_file **map)
 		return (1);
 	tmp = get_string(&file_len, av);
 	if (!tmp)
-		return (ft_perror("can't read map file", errno), 1);
+		return (ft_perror("can't read map file", EINVAL), 1);
 	if (check_map_newlines(tmp))
 		return (free(tmp), ft_perror("wrong format", EINVAL), 1);
 	(*map)->raw_file = ft_split(tmp, '\n');
 	if (!(*map)->raw_file)
-		return (free(tmp), ft_perror("malloc", errno), 1);
+		return (free(tmp), ft_perror("malloc failed", ENOMEM), 1);
 	trim_empty_lines(&((*map)->raw_file));
 	if (parse_map(map))
 		return (free(tmp), 1);
