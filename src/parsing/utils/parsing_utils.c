@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pghajard <pghajard@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: mhoushma <mhoushma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 15:30:01 by pghajard          #+#    #+#             */
-/*   Updated: 2025/03/13 16:39:08 by pghajard         ###   ########.fr       */
+/*   Updated: 2025/05/06 13:23:03 by mhoushma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ int	parse_args(int ac, char **av, t_file **map)
 	if (!tmp)
 		return (ft_perror("failed to read map file", errno), 1);
 	if (check_map_newlines(tmp))
-		return (free(tmp), ft_perror("newline between map lines", EINVAL), 1);
+		return (free(tmp), ft_perror("wrong format", EINVAL), 1);
 	(*map)->raw_file = ft_split(tmp, '\n');
 	if (!(*map)->raw_file)
 		return (free(tmp), ft_perror("malloc", errno), 1);

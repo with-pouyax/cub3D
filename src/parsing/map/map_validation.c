@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_validation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pghajard <pghajard@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: mhoushma <mhoushma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 15:29:21 by pghajard          #+#    #+#             */
-/*   Updated: 2025/03/13 16:21:30 by pghajard         ###   ########.fr       */
+/*   Updated: 2025/05/06 13:41:48 by mhoushma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int	no_xpm_extension(char *line)
 	if (len < 5)
 		return (ft_perror("Texture path too short", EINVAL), 1);
 	if (len >= 4 && ft_strncmp(path + len - 4, ".xpm", 4) != 0)
-		return (ft_perror("Texture file must have .xpm extension", EINVAL), 1);
+		return (1);
 	if (len > 4 && path[len - 5] == '/')
 		return (ft_perror("Texture path must not contain a '/'", EINVAL), 1);
 	return (0);

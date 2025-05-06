@@ -1,10 +1,10 @@
-NO ./path_to_the_north_texture.xpm
+NO ./textures/pouyax/North.xpm
 
-SO ./path_to_the_south_texture.xpm
+SO ./textures/pouyax/South.xpm
 
-WE ./path_to_the_west_texture.xpm
+WE ./textures/pouyax/West.xpm
 
-EA ./path_to_the_east_texture.xpm
+EA ./textures/pouyax/East.xpm
 
 F 220,100,0
 C 225,30,0
