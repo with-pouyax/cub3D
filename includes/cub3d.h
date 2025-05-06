@@ -206,7 +206,7 @@ void	pexit(char *msg, int err, int exit_code);
 /* File handling functions */
 int		extentions_check(char *file);
 int		arg_check(int ac);
-void	safe_close(int fd);
+int	safe_close(int fd);
 int		file_length(char *file_name);
 int		copy_file(char *file_name, char **file, int file_len);
 char	*get_string(int *file_len, char **av);

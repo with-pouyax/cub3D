@@ -92,11 +92,12 @@ int	arg_check(int ac)
 //*    need to close it
 //* 
 //*****************************************************************************
-void	safe_close(int fd)
+int	safe_close(int fd)
 {
 	if (fd != -1)
 	{
 		if (close(fd) < 0)
-			ft_perror("close", errno);
+			return -1;			
 	}
+	return (0);
 }

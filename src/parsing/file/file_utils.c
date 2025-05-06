@@ -31,8 +31,8 @@ int	file_length(char *file_name)
 	}
 	if (ret < 0)
 	{
-		safe_close(fd);
-		return (ft_perror("", errno), -1);
+		if(safe_close(fd))
+			return (-1);
 	}
 	return (length);
 }
@@ -59,7 +59,8 @@ int	copy_file(char *file_name, char **file, int file_len)
 	if (ret < 0)
 		return (1);
 	(*file)[file_len] = '\0';
-	safe_close(fd);
+	if (safe_close(fd))
+		return (1);
 	return (0);
 }
 
