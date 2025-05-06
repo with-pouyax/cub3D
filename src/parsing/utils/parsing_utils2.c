@@ -62,7 +62,6 @@ int	parse_map(t_file **map)
 		return (1);
 	if (not_map(*map, &index))
 		return (1);
-	print_whole_structure_in_order(*map);
 	return (0);
 }
 

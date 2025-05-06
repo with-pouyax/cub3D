@@ -53,7 +53,6 @@ SRC = \
 	src/parsing/wall/wall_check2.c \
 	src/parsing/wall/wall_check3.c \
 	src/parsing/utils/error_utils.c \
-	src/parsing/utils/debug_utils.c \
 	src/parsing/utils/init_cleanup.c \
 	src/parsing/utils/init_player.c \
 	src/parsing/utils/clean_1.c \
