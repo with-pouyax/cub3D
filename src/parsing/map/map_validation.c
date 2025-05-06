@@ -6,7 +6,7 @@
 /*   By: mhoushma <mhoushma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 15:29:21 by pghajard          #+#    #+#             */
-/*   Updated: 2025/05/06 13:41:48 by mhoushma         ###   ########.fr       */
+/*   Updated: 2025/05/06 14:22:54 by mhoushma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	no_xpm_extension(char *line)
 	char	*path;
 
 	if (!line)
-		return (ft_perror("Error", EINVAL), 1);
+		return (ft_perror("Problem controling extension", EINVAL), 1);
 	i = 2;
 	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
 		i++;
