@@ -87,7 +87,7 @@ int	wrong_map_char(char **map)
 			if (map[i][j] != '1' && map[i][j] != '0' && map[i][j] != 'N' &&
 				map[i][j] != 'S' && map[i][j] != 'E'
 				&& map[i][j] != 'W' && map[i][j] != ' ')
-				return (ft_perror("wrong map char", EINVAL), 1);
+				return (1);
 			j++;
 		}
 		i++;
