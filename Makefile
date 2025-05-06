@@ -25,7 +25,6 @@ RESET   = \033[0m
 # === Source Files ===
 SRC = \
 	src/main.c \
-	src/test_mlx.c \
 	src/drawings/drawings.c \
 	src/drawings/mini_map.c \
 	src/drawings/draw_minimap.c \
