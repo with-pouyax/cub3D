@@ -1,33 +1,30 @@
-# Program name
-NAME = cub3D
+# === Compiler and Flags ===
+CC      = cc
+CFLAGS  = -Wall -Wextra -Werror -MMD -MP
 
-# Compiler and flags
-CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+# === Executable Name ===
+NAME    = cub3D
 
-# Check OS for MLX flags
-UNAME_S := $(shell uname -s)
-ifeq ($(UNAME_S),Darwin)
-    MLX_FLAGS = -framework OpenGL -framework AppKit
-    MLX_PATH = -L/usr/local/lib
-    MLX_LIB = -lmlx
-    MLX_SYSTEM = $(shell if [ -f /usr/local/lib/libmlx.a ]; then echo 1; else echo 0; fi)
-else
-    MLX_FLAGS = -lXext -lX11 -lm -lbsd
-    MLX_SYSTEM = $(shell if [ -f /usr/lib/libmlx.a ] || [ -f /usr/local/lib/libmlx.a ]; then echo 1; else echo 0; fi)
-    ifeq ($(MLX_SYSTEM),1)
-        MLX_PATH = -L/usr/lib -L/usr/local/lib
-        MLX_LIB = -lmlx
-    else
-        MLX_PATH = -L./libraries/mlx
-        MLX_LIB = -lmlx
-    endif
-endif
+# === Directories ===
+SRC_DIR     = src
+OBJ_DIR     = obj
+INCLUDE_DIR = includes
+LIBFT_DIR   = libraries/libft
 
-INCLUDES = -I./includes -I./libraries/libft -I./libraries/mlx
+# === MLX Flags ===
+MLX_FLAGS   = -lmlx -lXext -lX11 -lm
 
-# Source files with new directory structure
-SRCS = src/main.c \
+# === Terminal Colors ===
+GREEN   = \033[0;32m
+YELLOW  = \033[1;33m
+BLUE    = \033[1;34m
+CYAN    = \033[0;36m
+RED     = \033[0;31m
+RESET   = \033[0m
+
+# === Source Files ===
+SRC = \
+	src/main.c \
 	src/test_mlx.c \
 	src/drawings/drawings.c \
 	src/drawings/mini_map.c \
@@ -64,92 +61,43 @@ SRCS = src/main.c \
 	src/parsing/utils/parsing_utils.c \
 	src/parsing/utils/parsing_utils2.c
 
+# === Object and Dependency Files ===
+OBJ = $(SRC:.c=.o)
+OBJ := $(OBJ:$(SRC_DIR)/%=$(OBJ_DIR)/%)
+DEP = $(OBJ:.o=.d)
 
-# Object files in obj directory
-OBJS = $(SRCS:src/%.c=obj/%.o)
+# === Build All ===
+all: $(NAME)
 
-# Libraries
-LIBFT = libraries/libft/libft.a
-MLX = libraries/mlx/libmlx.a
+$(NAME): $(OBJ)
+	@echo "$(CYAN)🔧 [Step 1] Building libft...$(RESET)"
+	@make -C $(LIBFT_DIR) --silent
+	@echo "$(CYAN)🎨 [Step 2] Linking cub3D...$(RESET)"
+	@$(CC) $(CFLAGS) $(OBJ) -I$(INCLUDE_DIR) -I$(LIBFT_DIR) -L$(LIBFT_DIR) -lft $(MLX_FLAGS) -o $(NAME)
+	@echo "$(GREEN)✅ Done: $(NAME) built successfully.$(RESET)"
 
-# Colors
-GREEN = \033[0;32m
-RED = \033[0;31m
-RESET = \033[0m
-
-# Main rule
-all: $(LIBFT) check_mlx $(NAME)
-
-# Force using local MLX library for testing
-test-local-mlx: clean-mlx
-	@echo "$(GREEN)Forcing use of local MLX library for testing$(RESET)"
-	@if [ ! -d libraries/mlx ]; then \
-		echo "$(GREEN)Cloning MLX library...$(RESET)"; \
-		mkdir -p libraries/mlx; \
-		git clone https://github.com/42Paris/minilibx-linux.git libraries/mlx; \
-		rm -rf libraries/mlx/.git; \
-	fi
-	@$(MAKE) -sC libraries/mlx > /dev/null 2>&1 || $(MAKE) -C libraries/mlx
-	@$(MAKE) MLX_SYSTEM=0
-
-# Clean MLX
-clean-mlx:
-	@if [ -d libraries/mlx ]; then \
-		$(MAKE) -sC libraries/mlx clean > /dev/null 2>&1 || $(MAKE) -C libraries/mlx clean; \
-	fi
-
-# Check if MLX needs to be compiled
-check_mlx:
-ifeq ($(MLX_SYSTEM),0)
-	@echo "$(GREEN)Using local MLX library$(RESET)"
-	@if [ ! -d libraries/mlx ]; then \
-		echo "$(GREEN)Cloning MLX library...$(RESET)"; \
-		mkdir -p libraries/mlx; \
-		git clone https://github.com/42Paris/minilibx-linux.git libraries/mlx; \
-		rm -rf libraries/mlx/.git; \
-	fi
-	@$(MAKE) -sC libraries/mlx > /dev/null 2>&1 || $(MAKE) -C libraries/mlx
-else
-	@echo "$(GREEN)Using system MLX library$(RESET)"
-endif
-
-# Compile libft
-$(LIBFT):
-	@make -sC libraries/libft
-
-# Compile program
-$(NAME): $(LIBFT) $(OBJS)
-ifeq ($(MLX_SYSTEM),0)
-	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LIBFT) $(MLX_PATH) $(MLX_LIB) $(MLX_FLAGS) -o $(NAME)
-else
-	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LIBFT) $(MLX_PATH) $(MLX_LIB) $(MLX_FLAGS) -o $(NAME)
-endif
-	@echo "$(GREEN)✓ $(NAME) created$(RESET)"
-
-# Compile object files
-obj/%.o: src/%.c
+# === Compile Each .c to .o and .d ===
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(@D)
-	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
-	@#echo "\033[33mCompiling: $<\033[0m"
+	@$(CC) $(CFLAGS) -I$(INCLUDE_DIR) -I$(LIBFT_DIR) -c $< -o $@
 
-# Clean object files
+# === Clean Object and Dependency Files ===
 clean:
-	@make -sC libraries/libft clean
-ifeq ($(MLX_SYSTEM),0)
-	@if [ -d libraries/mlx ]; then \
-		$(MAKE) -sC libraries/mlx clean > /dev/null 2>&1 || $(MAKE) -C libraries/mlx clean; \
-	fi
-endif
-	@rm -rf obj
-	@echo "$(RED)✓ Objects removed$(RESET)"
+	@echo "$(RED)🧹 Cleaning object and dependency files...$(RESET)"
+	@rm -rf $(OBJ_DIR)
+	@make -C $(LIBFT_DIR) clean --silent
 
-# Clean everything
+# === Clean Everything ===
 fclean: clean
-	@make -sC libraries/libft fclean
+	@echo "$(RED)🧨 Removing executable...$(RESET)"
 	@rm -f $(NAME)
-	@echo "$(RED)✓ $(NAME) removed$(RESET)"
+	@make -C $(LIBFT_DIR) fclean --silent
 
-# Rebuild everything
+# === Rebuild Everything ===
 re: fclean all
 
-.PHONY: all clean fclean re check_mlx test-local-mlx clean-mlx 
+# === Include Dependency Files if They Exist ===
+-include $(DEP)
+
+# === Declare Phony Targets ===
+.PHONY: all clean fclean re
