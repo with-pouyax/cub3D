@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_char_validation.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pghajard <pghajard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhoushma <mhoushma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 15:29:08 by pghajard          #+#    #+#             */
-/*   Updated: 2025/03/18 12:59:30 by pghajard         ###   ########.fr       */
+/*   Updated: 2025/05/06 13:12:08 by mhoushma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,11 @@ int	wrong_ratio(char **map)
 	while (map[i])
 	{
 		if (ft_strlen(map[i]) > (size_t)max_width)
-			return (ft_perror("wrong width", EINVAL), 1);
+			return (1);
 		i++;
 	}
 	if ((size_t)i > max_height)
-		return (ft_perror("wrong height", EINVAL), 1);
+		return (1);
 	return (0);
 }
 

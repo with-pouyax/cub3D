@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_copy_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pghajard <pghajard@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: mhoushma <mhoushma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/13 15:29:16 by pghajard          #+#    #+#             */
-/*   Updated: 2025/03/13 16:59:39 by pghajard         ###   ########.fr       */
+/*   Created: 2025/05/06 12:55:13 by mhoushma          #+#    #+#             */
+/*   Updated: 2025/05/06 12:55:26 by mhoushma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
