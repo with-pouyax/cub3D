@@ -99,16 +99,16 @@ int	no_xpm_extension(char *line)
 	if (len < 5)
 		return (ft_perror("Texture path too short", EINVAL), 1);
 	if (len >= 4 && ft_strncmp(path + len - 4, ".xpm", 4) != 0)
-		return (1);
+		return (ft_perror("wrong texture extension", EINVAL), 1);
 	if (len > 4 && path[len - 5] == '/')
 		return (ft_perror("Texture path must not contain a '/'", EINVAL), 1);
 	return (0);
 }
 
-int	is_direction(char *line, char *dir)
-{
-	if (line[0] == dir[0] && line[1] == dir[1]
-		&& (line[2] == ' ' || line[2] == '\t'))
-		return (1);
-	return (0);
-}
+// int	is_direction(char *line, char *dir)
+// {
+// 	if (line[0] == dir[0] && line[1] == dir[1]
+// 		&& (line[2] == ' ' || line[2] == '\t'))
+// 		return (1);
+// 	return (0);
+// }
