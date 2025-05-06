@@ -28,7 +28,6 @@ INCLUDES = -I../includes -I../libraries/libft -I../libraries/mlx
 
 # Source files with new directory structure
 SRCS = ../src/main.c \
-	../src/test_mlx.c \
 	../src/drawings/drawings.c \
 	../src/drawings/mini_map.c \
 	../src/drawings/draw_minimap.c \
@@ -56,7 +55,6 @@ SRCS = ../src/main.c \
 	../src/parsing/wall/wall_check2.c \
 	../src/parsing/wall/wall_check3.c \
 	../src/parsing/utils/error_utils.c \
-	../src/parsing/utils/debug_utils.c \
 	../src/parsing/utils/init_cleanup.c \
 	../src/parsing/utils/init_player.c \
 	../src/parsing/utils/clean_1.c \
