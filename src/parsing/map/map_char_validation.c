@@ -111,9 +111,9 @@ int	wrong_map_char(char **map)
 int	not_map(t_file *map, int *index)
 {
 	if (basic_map_check(map, map->raw_file, index))
-		return (ft_perror("basic map check", EINVAL), 1);
+		return (1);
 	if (copy_map(map, *index))
-		return (ft_perror("copy map", EINVAL), 1);
+		return (ft_perror("problem copying map", ENOMEM), 1);
 	map->player_y = map->player_y - *index;
 	if (wrong_ratio(map->raw_file))
 		return (ft_perror("wrong ratio", EINVAL), 1);

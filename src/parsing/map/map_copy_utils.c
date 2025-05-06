@@ -106,7 +106,7 @@ int	copy_map(t_file *map, int index)
 	height = get_map_height(map->raw_file, index);
 	map->game_map = malloc(sizeof(char *) * (height + 1));
 	if (!map->game_map)
-		return (ft_perror("malloc", errno), 1);
+		return (ft_perror("malloc failed", ENOMEM), 1);
 	if (copy_map_lines(map, index, height))
 		return (1);
 	return (0);
