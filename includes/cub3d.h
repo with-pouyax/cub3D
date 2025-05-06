@@ -32,9 +32,9 @@
 # include <fcntl.h>
 # include <math.h>
 # include <stdbool.h>
+# include <mlx.h>
 
 # include "../libraries/libft/libft.h"
-# include "../libraries/mlx/mlx.h"
 
 # define MOVE_SPEED 0.09
 # define ROTATE_SPEED 0.09
@@ -48,9 +48,9 @@
 # define LEFT 	65361
 # define RIGHT 	65363
 
-# define TILE_SCALE 14 // Define the size of a block
-# define MAP_WIDTH 24  // Adjust this based on the number of columns in your map
-# define MAP_HEIGHT 24 // Adjust this based on the number of rows in your map
+# define TILE_SCALE 14
+# define MAP_WIDTH 24
+# define MAP_HEIGHT 24
 
 # define PI 3.14159265359
 
@@ -361,12 +361,11 @@ void	draw_column_pixels(t_file *map, int x);
 void	draw(t_file *map, int x, int texture);
 int		get_color(t_file *map, int i);
 
-void    cleanup(t_file **map);
-void    cleanup_mlx(t_file *map);
+void	cleanup(t_file **map);
+void	cleanup_mlx(t_file *map);
 
 //parsing utils2
 void	init_mapcheck(t_mapcheck *mc);
 void	update_minimap(t_file *map, double old_x, double old_y);
-
 
 #endif
