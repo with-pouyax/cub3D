@@ -61,16 +61,16 @@ int	extentions_check(char *file)
 	int	len;
 
 	if (!file)
-		return (ft_perror("Error", EINVAL), 1);
+		return (ft_perror("extension", EINVAL), 1);
 	len = ft_strlen(file);
 	while (len > 0 && (file[len - 1] == ' ' || file[len - 1] == '\t'))
 		len--;
 	if (len < 5)
-		return (ft_perror("Error", EINVAL), 1);
+		return (ft_perror("extension", EINVAL), 1);
 	if (ft_strncmp(file + len - 4, ".cub", 4))
-		return (ft_perror("Error", EINVAL), 1);
+		return (ft_perror("extension", EINVAL), 1);
 	if (len > 4 && file[len - 5] == '/')
-		return (ft_perror("Error", EINVAL), 1);
+		return (ft_perror("extension", EINVAL), 1);
 	return (0);
 }
 
@@ -78,7 +78,7 @@ int	arg_check(int ac)
 {
 	if (ac != 2)
 	{
-		ft_perror("Error", EINVAL);
+		ft_perror("honey", EINVAL);
 		return (1);
 	}
 	return (0);
