@@ -6,7 +6,7 @@
 /*   By: mhoushma <mhoushma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 15:29:51 by pghajard          #+#    #+#             */
-/*   Updated: 2025/05/06 14:15:39 by mhoushma         ###   ########.fr       */
+/*   Updated: 2025/05/08 13:39:10 by mhoushma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int	safe_close(int fd)
 	if (fd != -1)
 	{
 		if (close(fd) < 0)
-			return -1;			
+			return (-1);			
 	}
 	return (0);
 }

@@ -3,21 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   mini_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pghajard <pghajard@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: mhoushma <mhoushma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 15:27:25 by pghajard          #+#    #+#             */
-/*   Updated: 2025/03/15 15:27:25 by pghajard         ###   ########.fr       */
+/*   Updated: 2025/05/08 11:09:20 by mhoushma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-// pixel for--> Calculate the address of the pixel based on row and column
-// (int *)pixel casts the pixel pointer (
-// why we cast pixel to the *int --> A char is typically 1 byte.
-// An int is typically 4 bytes on most systems (32-bit), which is the typical
-//  size
-//  for a color value like 0xRRGGBB or 0xAARRGGBB (a 32-bit value).
+//responsible for drawing a single pixel on the minimap
+// if (...)-->ensures the pixel being drawn is within the bounds of minimap
+// map->minimap_img.addr:  It points to the first pixel of the image.
+// line_length the number of bytes in one row of the image.
+// bits_per_pixel-->ndicates how many bits are used to represent a single pixel
+// /8 --> converts bits to bytes
+//*(int *)pixel--> setting the pixel at (x, y) to the specified color.
 void	put_pixel_minimap(t_file *map, int x, int y, int color)
 {
 	char	*pixel;
@@ -29,6 +30,7 @@ void	put_pixel_minimap(t_file *map, int x, int y, int color)
 	*(int *)pixel = color;
 }
 
+//map->game_map[row][col] refers to accessing a specific cell in the 2D array
 void	draw_minimap(t_file *map)
 {
 	int	row;
@@ -58,6 +60,9 @@ void	draw_minimap(t_file *map)
 	}
 }
 
+// This function sets the scale of the minimap based on the map dimensions
+// The minimap scale is calculated to fit within a maximum pixel size
+// is necessary to ensure that the minimap is not too large to be displayed
 void	set_minimap_scale(t_file *map)
 {
 	int	scale_w;

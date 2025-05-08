@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mlx_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pghajard <pghajard@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: mhoushma <mhoushma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 15:27:25 by pghajard          #+#    #+#             */
-/*   Updated: 2025/03/15 15:27:25 by pghajard         ###   ########.fr       */
+/*   Updated: 2025/05/08 10:53:23 by mhoushma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,11 @@ int	create_window(t_file **map)
 	return (0);
 }
 
+//here we create the image buffer and load the textures
+//mlx_new_image--> to create a new image
+//The number 4 corresponds to the four directions
+//The fifth image (map->image[4]) is created to act as a blank canvas 
+//where the game will draw everything the player sees
 int	create_image_buffer(t_file **map)
 {
 	int	i;

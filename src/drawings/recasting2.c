@@ -6,7 +6,7 @@
 /*   By: mhoushma <mhoushma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 15:27:25 by pghajard          #+#    #+#             */
-/*   Updated: 2025/05/06 12:58:45 by mhoushma         ###   ########.fr       */
+/*   Updated: 2025/05/08 13:10:35 by mhoushma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,9 @@ void	texture_definition(t_file *map, int wall_hight)
 			- (HEIGHT / 2 - wall_hight / 2)) * map->step;
 }
 
+//Based on the perpendicular distance, it calculates how tall the
+// wall should appear on the screen.
+//computes where to start and stop drawing the wall slice for the current col
 void	calculate_wall_hight(t_file *map, int *wall_height)
 {
 	*wall_height = HEIGHT / map->perpendicular_wall_distance;
@@ -57,6 +60,10 @@ void	draw_col(t_file *map, int x)
 	draw_column_pixels(map, x);
 }
 
+//فاصله بین بازیکن تا دیوار به‌صورت عمودی 
+//Calculates the perpendicular distance from the player 
+// to the wall (not the direct distance of the ray).
+// This avoids the fish-eye distortion effect and ensures correct wall scaling.
 void	calculate_perpwalldist(t_file **map)
 {
 	if ((*map)->hit_vertical_wall == 1)

@@ -6,21 +6,16 @@
 /*   By: mhoushma <mhoushma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 15:27:25 by pghajard          #+#    #+#             */
-/*   Updated: 2025/05/06 12:58:36 by mhoushma         ###   ########.fr       */
+/*   Updated: 2025/05/08 13:33:39 by mhoushma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-//how far ray travels in the x and y directions (step_x, step_y)
-// how far the ray is from the next wall in each direction (side_dist_x,
-//  side_dist_y).
-//dist_from_next_wall_x : The distance to the next vertical grid boundary 
-// (left|right).
-// dist_from_next_wall_y :  The distance to the next horizontal grid boundary 
-// (up|down).
-// If side_dist_x is smaller than side_dist_y, it means the ray will hit a 
-// vertical grid line first, so we update the x coordinate.
+//Determines whether the ray will step in a positive or negative direction in
+//  both X and Y axes.
+// It also calculates the initial distance to the first vertical or horizontal
+//  grid boundary.
 void	get_steps(t_file **map)
 {
 	if ((*map)->ray_dir_x < 0)
@@ -61,7 +56,7 @@ double	my_fabs(double x)
 	}
 }
 
-//his function calculates how far the ray has to travel in X or Y direction to
+//calculates how far the ray has to travel in X or Y direction to
 //  go from one vertical or horizontal gridline to the next.
 // for example : If the ray is perfectly vertical (ray_dir_x == 0), then
 //  you’d never hit a vertical wall, we set the distance to the max.
@@ -82,12 +77,19 @@ void	get_distance_to_next_cell(t_file **map)
 	get_steps(map);
 }
 
+// جهت دقیق اشعه را تعیین می‌کند.
 // it's preparing all the data you need to cast a single ray at column col 
 // on the screen.
-// ray_screen_pos --> is telling us where on the screen we are in relation
+// ray_screen_pos --> where on the screen we are in relation
 //  to the center of the screen.
+// ray_screen_pos موقعیت پرتو در صفحه است (نسبت به وسط صفحه).
 // ray_dir_x --> calculating the direction of the ray in the X and Y axes
 //  based on the player's position and camera settings.
+//map_tile _x --> places the player in a specific tile on the 2D grid.
+//player_x -->is double, e.g., 4.53.
+// By assigning it to map_tile_x (an int), we’re saying:
+// “The player is currently inside tile 4 on the X-axis.”
+
 void	setup_ray(t_file **map, int col)
 {
 	(*map)->map_tile_x = (*map)->player_x;
@@ -99,6 +101,11 @@ void	setup_ray(t_file **map, int col)
 		+ (*map)->plane_y * (*map)->ray_screen_pos;
 }
 
+//شبیه‌سازی پرتوهایی که از موقعیت بازیکن به سمت دنیای 
+// بازی شلیک می‌شوند تا بررسی شود کجا به دیوار
+//برخورد می‌کنند و بر اساس آن ستون‌هایی از دیوار روی صفحه نمایش داده می‌شود
+/*it simulates rays being cast from the player's point of view into the
+ 2D map grid to detect walls and draw them on the screen*/
 /*
 loop over each column of pixels on the screen
 initialize ray direction based on the camera plane

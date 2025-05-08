@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   player_movements2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pghajard <pghajard@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: mhoushma <mhoushma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 15:27:25 by pghajard          #+#    #+#             */
-/*   Updated: 2025/03/15 15:27:25 by pghajard         ###   ########.fr       */
+/*   Updated: 2025/05/08 12:22:56 by mhoushma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../../includes/cub3d.h"
 
 void	rotate_left(t_file *map)
@@ -57,6 +58,8 @@ void	rotate_right(t_file *map)
 		+ map->plane_y * cos(rot_speed);
 }
 
+//If the player's tile has changed in X or Y:
+// Repaint the old tile white to erase the previous red square
 void	update_minimap(t_file *map, double old_x, double old_y)
 {
 	if (map->minimap_scale == 0)

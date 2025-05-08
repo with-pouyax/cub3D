@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pghajard <pghajard@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: mhoushma <mhoushma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 15:27:25 by pghajard          #+#    #+#             */
-/*   Updated: 2025/03/15 15:27:25 by pghajard         ###   ########.fr       */
+/*   Updated: 2025/05/08 11:42:39 by mhoushma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
+//x, y: Coordinates of the pixel to draw.
+// pixel --> This computes the memory address of the pixel to draw:
 void	img_pix_put(t_file *map, int x, int y, int color)
 {
 	char	*pixel;

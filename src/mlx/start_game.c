@@ -1,17 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*  start_game.c                                        :+:      :+:    :+:   */
+/*   start_game.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pghajard <pghajard@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: mhoushma <mhoushma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 15:27:25 by pghajard          #+#    #+#             */
-/*   Updated: 2025/03/15 15:27:25 by pghajard         ###   ########.fr       */
+/*   Updated: 2025/05/08 12:23:09 by mhoushma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
+//mlx_xpm_file_to_image--> to load the image from the file
 int	load_image(t_file **map, int index)
 {
 	(*map)->image[index].img = mlx_xpm_file_to_image((*map)->mlx.mlx,
@@ -39,6 +40,9 @@ int	load_image(t_file **map, int index)
 	return (0);
 }
 
+// mlx_get_data_addr--> to get the address of the image
+// This address allows direct access to the image's pixel data, 
+// enabling you to read or modify individual pixels. 
 int	get_image_address(t_file **map, int index)
 {
 	(*map)->image[index].addr = mlx_get_data_addr((*map)->image[index].img,
@@ -53,6 +57,8 @@ int	get_image_address(t_file **map, int index)
 	return (0);
 }
 
+// here we initialize the player position and direction
+// based on the map data
 void	init_game_state(t_file **map)
 {
 	if ((*map)->player_dir == 'N')
@@ -77,6 +83,8 @@ void	init_game_state(t_file **map)
 	}
 }
 
+// This function assigns the texture paths to the image structures
+// in the map structure. It duplicates the paths to ensure they are stored
 int	assign_texture_paths_to_images(t_file *map)
 {
 	int	i;

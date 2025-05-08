@@ -50,6 +50,9 @@ void	draw(t_file *map, int x, int texture)
 	img_pix_put(map, x, map->start_wall, color);
 }
 
+// looping through each pixel vertically 
+//drawing one vertical column of pixels for a wall slice
+//use the correct texture and orientation based on where the ray hit the wall
 void	draw_column_pixels(t_file *map, int x)
 {
 	while (map->start_wall < map->end_wall)
